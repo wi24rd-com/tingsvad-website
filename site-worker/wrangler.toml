@@ -1,0 +1,93 @@
+# Site-Workeren for tingsvad.dk (runde 11): Workers Static Assets + router i stedet for Cloudflare Pages.
+# Konfigurationen ligger her (ikke i roden), så Pages-projektets wrangler.toml i roden står urørt som tilbagefald i overgangsugen.
+# Workers Builds: Path = site-worker, Deploy command `npx wrangler deploy`, Preview command `npx wrangler preview`.
+# Ting-ai (worker/) og MCP-serveren (mcp/) er separate Workers og deployes fortsat manuelt.
+name = "tingsvad-site"
+main = "index.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+preview_urls = true
+routes = [{ pattern = "tingsvad.dk", custom_domain = true }]
+
+[observability]
+enabled = true
+
+# Runde 12: Workers Issues (fejl grupperes og kan sendes videre) og Traces.
+# Workers Paid: CPU-loft pr. kald (standard 30 s), så en løbsk løkke ikke koster.
+[limits]
+cpu_ms = 2000
+
+[observability.issues]
+enabled = true
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 0.05
+
+# Hele repoet er asset-mappen; ../.assetsignore holder alt andet end sitet ude (worker/, mcp/, tests/, functions/, site-worker/,
+# .github/, Markdown, konfiguration, zip-filer …). _headers og _redirects ligger i roden og virker nativt for de statiske svar.
+[assets]
+directory = ".."
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+# Workeren kører først på HTML-sider, /*/index.md, /api/*, /admin/* og /sag/* – resten serveres direkte fra kanten (gratis).
+# Spejler den tidligere _routes.json (exclude → negationer).
+run_worker_first = [
+  "/*",
+  "!/assets/*",
+  "!/partials/*",
+  "!/sw.js",
+  "!/manifest.webmanifest",
+  "!/robots.txt",
+  "!/sitemap.xml",
+  "!/llms.txt",
+  "!/favicon.ico",
+  "!/arkivet/protokol/*",
+  "!/en/archive/minutes/*",
+]
+
+[vars]
+MILJOE = "production"   # runde 13: gæstebogen afviser uden Turnstile-secret i produktion; previews og lokalt må køre uden
+# Turnstile-widgetens offentlige sitekey. Hemmeligheden: `npx wrangler secret put TURNSTILE_SECRET` (og for previews:
+# `npx wrangler preview base-config secret put TURNSTILE_SECRET`).
+TURNSTILE_SITEKEY = "0x4AAAAAAFmMzNKAUzZnti2H"
+ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"
+ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"
+# ADMIN_EMAILS (kommasepareret allowliste til /admin/) er en secret: `npx wrangler secret put ADMIN_EMAILS`.
+# For previews: `npx wrangler preview base-config secret put ADMIN_EMAILS`.
+# Web Analytics-beacon (offentligt token; Pages indsatte det automatisk). Kun produktion – previews tælles ikke med.
+WEB_ANALYTICS_TOKEN = "86e59310fa224069a0613eda1d3bbeb3"
+
+[[kv_namespaces]]
+binding = "SAGER"
+id = "5ad65c88ab174c29b7bd72cce99880e3"
+
+[[analytics_engine_datasets]]
+binding = "TAEL"
+dataset = "tingsvad_taelle"
+
+[[services]]
+binding = "TING_AI"
+service = "tingsvad-ting-ai"
+
+# Worker Previews (Workers Builds på andre branches end main, eller `npx wrangler preview`): arver intet fra toppen, så alt står
+# fuldt ud og peger på preview-ressourcerne. tingsvad-ting-ai-preview er en selvstændig Worker; en preview kalder dens produktion.
+[previews.vars]
+MILJOE = "preview"
+TURNSTILE_SITEKEY = "0x4AAAAAAFmMzNKAUzZnti2H"
+ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"
+ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"
+# ADMIN_EMAILS (kommasepareret allowliste til /admin/) er en secret: `npx wrangler secret put ADMIN_EMAILS`.
+
+[[previews.kv_namespaces]]
+binding = "SAGER"
+id = "0ddd7bb5238d4f2d9a5b6ba5becc448c"
+
+[[previews.analytics_engine_datasets]]
+binding = "TAEL"
+dataset = "tingsvad_taelle_preview"
+
+[[previews.services]]
+binding = "TING_AI"
+service = "tingsvad-ting-ai-preview"

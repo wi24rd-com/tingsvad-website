@@ -1,0 +1,2 @@
+{ "name": "Tingsvad", "short_name": "Tingsvad", "description": "Vadestedet hvor tinget mødtes.", "start_url": "/", "display": "standalone", "background_color": "#111417", "theme_color": "#111417", "lang": "da",
+  "icons": [ { "src": "/assets/fav-ko-180.png", "sizes": "180x180", "type": "image/png" }, { "src": "/assets/fav-ko-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" } ] }

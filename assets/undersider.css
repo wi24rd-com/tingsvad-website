@@ -1,0 +1,635 @@
+/* tingsvad.dk — undersidernes skabelon (runde 12), efter Jans ChatGPT-mockup af arkivet.
+   Gælder body.r12s og bygger oven på forside.css (farver, knapper, topbjælke, footer).
+   Opbygning: brødkrumme · grøn top med maleri · »På denne side« til venstre · indhold som kort på pergament · afslutningsbanner.
+   Ældre komponenter fra site.css (tabeller, fold, ordbog …) får pergamentets farver via variablerne nedenfor. */
+
+body.r12s {
+  --bg: var(--p); --bg-2: var(--p2); --mist: var(--ink); --mist-dim: var(--ink2); --rule: var(--linje);
+  --dawn: var(--guldtekst); --dawn-fyld: var(--guld); --moss: #4f5c33; --rust: #8c4a2f; --rust-tekst: #8c4a2f;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body.r12s { --moss: #9aab72; --rust-tekst: #e0906b; color-scheme: dark; }
+}
+:root[data-theme="dark"] body.r12s { --moss: #9aab72; --rust-tekst: #e0906b; color-scheme: dark; }
+.r12s main { display: block; }
+
+/* ── Brødkrumme ── */
+.r12s-krumme { background: var(--p2); border-bottom: 1px solid var(--linje); font-size: .92rem; }
+.r12s-krumme-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 2.6rem; max-width: 1400px; margin-inline: auto; }
+.r12s-krumme ol { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0; padding: 0; list-style: none; color: var(--ink2); }
+.r12s-krumme li + li::before { content: "/"; margin-right: .45rem; opacity: .6; }
+.r12s-krumme a { color: var(--ink2); text-decoration: none; }
+.r12s-krumme a:hover { color: var(--ink); text-decoration: underline; }
+.r12s-krumme [aria-current] { color: var(--ink); font-weight: 600; }
+.r12s-tilbage { display: inline-flex; align-items: center; gap: .35rem; min-height: 2.6rem; font-weight: 600; color: var(--ink) !important; text-decoration: none; white-space: nowrap; }
+.r12s-tilbage:hover { color: var(--guldtekst) !important; }
+@media (max-width: 720px) { .r12s-krumme { margin-top: calc(3.3rem + env(safe-area-inset-top, 0px)); } }
+
+/* ── Toppen ── */
+.r12s-hero { position: relative; overflow: hidden; color: #fbf3de; color-scheme: dark;
+  background: radial-gradient(ellipse 60% 90% at 78% 40%, rgba(230,189,104,.28), transparent 70%), linear-gradient(100deg, #0f2117 0%, #18321f 55%, #2a3f22 100%); }
+.r12s-hero::before { content: ""; position: absolute; inset: auto 0 0 0; height: 40%; background: linear-gradient(0deg, rgba(8,16,10,.45), transparent); pointer-events: none; }
+.r12s-hero-in { position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: 2rem; max-width: 1400px; margin-inline: auto; min-height: clamp(20rem, 34vw, 27rem); }
+.r12s-hero-tekst { padding-block: 2.6rem; }
+.r12s-overtekst { display: flex; align-items: center; gap: .8rem; margin: 0 0 .6rem; font-size: .8rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--guld2); }
+.r12s-overtekst::before { content: ""; width: 2.6rem; height: 1px; background: currentColor; }
+.r12s-hero h1 { margin: 0; font-weight: 800; font-size: clamp(2.8rem, 6.4vw, 5.6rem); line-height: .95; letter-spacing: -.01em; color: #fbf3de; text-shadow: 0 3px 24px rgba(0,0,0,.45); }
+.r12s-praemis { margin: .7rem 0 .3rem; font-weight: 700; font-size: clamp(1.2rem, 2.2vw, 1.75rem); line-height: 1.2; }
+.r12s-hero-sub { margin: 0; max-width: 34rem; font-size: clamp(1.02rem, 1.4vw, 1.2rem); color: #efe2c2; }
+.r12s-status { margin: 1.1rem 0 0; font-size: .9rem; color: #d9caa5; font-style: italic; }
+.r12s-hero-motiv { position: relative; margin: 0; align-self: end; justify-self: center; width: min(100%, 27rem); }
+.r12s-hero-motiv > img:first-child { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 30px rgba(0,0,0,.45)); }
+.r12s-hero-stempel { position: absolute; right: -4%; bottom: 14%; width: 38%; height: auto; transform: rotate(-12deg); opacity: .9; filter: drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+@media (max-width: 760px) {
+  .r12s-hero-in { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: 0; }
+  .r12s-hero-tekst { padding-block: 1.8rem 0; }
+  .r12s-hero-motiv { width: min(72%, 18rem); justify-self: end; margin-top: -.5rem; }
+}
+
+/* ── Ramme: menu til venstre, indhold til højre ── */
+.r12s-ramme { display: grid; grid-template-columns: 15.5rem minmax(0, 1fr); gap: 2.4rem clamp(1.6rem, 3.5vw, 3.6rem); max-width: 1400px; margin-inline: auto; padding-block: 2.6rem 3.5rem; }
+.r12s-side { position: relative; border-right: 1px solid var(--linje); padding-right: 1.4rem; }
+.r12s-side-in { position: sticky; top: 1.2rem; }
+.r12s-menu-h { margin: 0 0 .7rem; font-weight: 700; font-size: 1.15rem; }
+.r12s-menu ul { display: grid; gap: .2rem; margin: 0; padding: 0; list-style: none; }
+.r12s-menu a { display: flex; align-items: center; gap: .65rem; min-height: 2.6rem; padding: .4rem .7rem; border-radius: 9px; color: var(--ink) !important; text-decoration: none; font-size: 1.02rem; line-height: 1.2; }
+.r12s-menu a:hover { background: var(--p2); }
+.r12s-menu a[aria-current="true"] { background: linear-gradient(180deg, #f1d18b, #dfae55); color: var(--guld-ink) !important; font-weight: 700; box-shadow: 0 6px 14px -10px rgba(0,0,0,.6); }
+.r12s-menu a:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
+.r12s-ikon { width: 1.25rem; height: 1.25rem; flex: none; color: var(--guldtekst); }
+.r12s-menu a[aria-current="true"] .r12s-ikon { color: var(--guld-ink); }
+.r12s-side-ill { margin: 2.2rem 0 0; text-align: center; }
+.r12s-side-ill img { width: 100%; height: auto; }
+.r12s-side-ill figcaption { margin-top: .4rem; font-style: italic; font-size: 1.15rem; line-height: 1.25; color: var(--ink2); transform: rotate(-5deg); }
+@media (max-width: 960px) {
+  .r12s-ramme { grid-template-columns: minmax(0, 1fr); padding-top: 1.2rem; }
+  .r12s-side { border-right: 0; padding: 0; position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--gx)); padding-inline: var(--gx); background: var(--p); border-bottom: 1px solid var(--linje); }
+  .r12s-side-in { position: static; }
+  .r12s-menu-h, .r12s-side-ill { display: none; }
+  .r12s-menu ul { display: flex; gap: .4rem; overflow-x: auto; padding-block: .6rem; scrollbar-width: none; }
+  .r12s-menu ul::-webkit-scrollbar { display: none; }
+  .r12s-menu a { white-space: nowrap; border: 1px solid var(--linje); background: var(--kortflade); padding: .35rem .8rem; min-height: 2.5rem; font-size: .95rem; }
+}
+@media (max-width: 720px) { .r12s-side { top: calc(3.3rem + env(safe-area-inset-top, 0px)); } }
+
+/* ── Indhold ── */
+.r12s-indhold { min-width: 0; }
+.r12s-indhold > section, .r12s-smaat { scroll-margin-top: 1.5rem; padding: 0 0 2.6rem; margin: 0 0 2.6rem; border-bottom: 1px solid var(--linje); display: block; }
+.r12s-indhold > section:last-child { border-bottom: 0; margin-bottom: 0; }
+@media (max-width: 960px) { .r12s-indhold > section, .r12s-smaat, .r12s-kort { scroll-margin-top: 4.6rem; } }
+@media (max-width: 720px) { .r12s-indhold > section, .r12s-smaat, .r12s-kort { scroll-margin-top: 8rem; } }
+.r12s h2 { font-family: var(--serif); font-weight: 800; font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.1; margin: 0 0 .4rem; color: var(--ink); letter-spacing: -.005em; }
+.r12s h3 { font-family: var(--serif); color: var(--ink); }
+.r12s-lead { margin: 0 0 1.3rem; font-size: 1.15rem; color: var(--ink2); }
+.r12s-midt { text-align: center; }
+.r12s .kicker { font-family: var(--serif); font-weight: 600; font-size: .78rem; letter-spacing: .18em; color: var(--guldtekst); margin-bottom: .55rem; }
+.r12s .kicker::after { background: var(--linje); }
+.r12s .note { color: var(--ink2); }
+.r12s .knap { font-family: var(--serif); }
+
+/* Spørg Mímir */
+.r12s-sog { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .7rem; align-items: stretch; margin: 0; }
+.r12s-sog[hidden] { display: none; }
+.r12s-sogefelt { position: relative; display: flex; align-items: center; }
+.r12s-sogefelt svg { position: absolute; left: .95rem; width: 1.2rem; height: 1.2rem; color: var(--ink2); pointer-events: none; }
+.r12s-sogefelt input { width: 100%; min-height: 3rem; padding: .6rem 1rem .6rem 2.8rem; border-radius: 10px; border: 1.5px solid var(--linje); background: var(--kortflade); color: var(--ink); font: inherit; font-size: 1.05rem; }
+.r12s-sogefelt input::placeholder { color: var(--ink2); opacity: .85; }
+.r12s-sogefelt input:focus-visible { outline: 3px solid #8a5a12; outline-offset: 1px; border-color: var(--guld); }
+.r12s-sml { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: .5rem; font-size: .92rem; color: var(--ink2); cursor: pointer; justify-self: start; min-height: 2.2rem; }
+.r12s-sml input { width: 1.05rem; height: 1.05rem; accent-color: #b07d2a; }
+.r12s-proev { margin: .5rem 0 1.2rem; font-size: .95rem; color: var(--ink2); }
+.r12s-chip { background: none; border: 0; padding: .3rem .15rem; font: inherit; color: var(--ink); text-decoration: underline; text-decoration-color: var(--guld); text-underline-offset: 3px; cursor: pointer; min-height: 2.2rem; }
+.r12s-chip:hover { color: var(--guldtekst); }
+.r12s-chip:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
+.r12s-svarkort { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.4rem; align-items: start; padding: 1.3rem 1.5rem; border-radius: 14px; background: var(--kortflade); border: 1.5px solid var(--guld); box-shadow: 0 16px 30px -24px rgba(50,30,5,.8); }
+.r12s-medaljon { width: 7rem; height: 7rem; border-radius: 50%; object-fit: cover; border: 4px solid #d9ad56; box-shadow: 0 0 0 2px #7a5510, 0 0 0 7px rgba(217,173,86,.25); }
+.r12s-svarkort h3 { margin: .2rem 0 .3rem; font-size: 1.55rem; font-weight: 800; }
+.r12s-pladsholder { margin: 0; font-size: 1.08rem; color: var(--ink2); }
+.r12s-svarkort:has(#arkiv-svar:not(:empty)) .r12s-pladsholder { display: none; }
+.r12s #arkiv-svar blockquote { margin: .3rem 0 .8rem; padding: 0 0 0 1rem; border-left: 3px solid var(--guld); font-size: 1.12rem; color: var(--ink); }
+.r12s #arkiv-svar h3 { font-size: 1.05rem; margin: 1rem 0 .4rem; }
+.r12s #arkiv-svar ol { padding-left: 1.2rem; }
+.r12s #arkiv-svar li { margin-bottom: .6rem; }
+.r12s #arkiv-svar li p { margin: .15rem 0 0; font-size: .95rem; color: var(--ink2); }
+.r12s #arkiv-svar a { color: var(--ink); text-decoration-color: var(--guld); }
+.r12s-fodnote { margin: .9rem 0 0; font-size: .9rem; color: var(--ink2); }
+.r12s-fodnote a { color: var(--ink); }
+.r12s .r6-status:empty { display: none; }
+@media (max-width: 560px) {
+  .r12s-sog { grid-template-columns: minmax(0, 1fr); }
+  .r12s-sog .r12-knap { justify-content: center; }
+  .r12s-svarkort { grid-template-columns: 4.6rem minmax(0, 1fr); padding: 1.1rem; gap: .9rem; }
+  .r12s-medaljon { width: 4.6rem; height: 4.6rem; }
+}
+
+/* Sagsudvalget */
+.r12s-sager { margin: 0 0 1.2rem; padding: 0; list-style: none; border-top: 1px solid var(--linje); }
+.r12s-sager li { border-bottom: 1px solid var(--linje); }
+.r12s-sager a { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr) auto auto; align-items: center; gap: 1.2rem; padding: .7rem .4rem; color: var(--ink) !important; text-decoration: none; border-radius: 8px; }
+.r12s-sager a:hover { background: var(--p2); }
+.r12s-sager a:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
+.r12s-sager img { width: 7.5rem; height: 4.6rem; object-fit: cover; border-radius: 8px; border: 1px solid var(--linje); }
+.r12s-sag-l { object-position: 50% 30%; }
+.r12s-sag-tekst b { display: block; font-size: 1.2rem; line-height: 1.2; }
+.r12s-sag-tekst > span { color: var(--ink2); font-size: .98rem; }
+.r12s-stempel { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .75rem; border-radius: 7px; background: #f1d79c; color: #3a2709; font-weight: 700; font-size: .9rem; white-space: nowrap; border: 1px solid #d9b56a; }
+.r12s-stempel svg { width: 1rem; height: 1rem; }
+.r12s-sag-pil { font-size: 1.3rem; color: var(--ink2); padding-right: .3rem; }
+@media (max-width: 620px) {
+  .r12s-sager a { grid-template-columns: 4.6rem minmax(0, 1fr) auto; gap: .8rem; }
+  .r12s-sager img { width: 4.6rem; height: 4.6rem; }
+  .r12s-stempel { grid-column: 2; justify-self: start; }
+  .r12s-sag-pil { grid-column: 3; grid-row: 1 / span 2; }
+  .r12s-sag-tekst { grid-column: 2; }
+  .r12s-sager img { grid-row: 1 / span 2; }
+}
+
+/* Ældre sagsakter (protokol, fakta, praktisk, noter) i skabelonen */
+.r12s-gammel .split, .r12s-gammel .split-l { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
+@media (min-width: 1240px) { .r12s-gammel .split, .r12s-gammel .split-l { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.r12s-gammel figure { margin: 0; }
+.r12s-gammel figure img { max-width: 100%; height: auto; border-radius: 12px; }
+.r12s-gammel figcaption { font-size: .92rem; color: var(--ink2); }
+.r12s-gammel .protokol, .r12s-gammel .regnskab, .r12s-gammel .gitlog-wrap { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; }
+.r12s-gammel .vidfakta { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; }
+.r12s .fold-knap.knap.sek { border-radius: 10px; border-color: var(--guld); color: var(--ink); background: var(--kortflade); }
+.r12s .fold-knap.knap.sek:hover { background: var(--p2); }
+.r12s-gammel .fakta li { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; }
+
+/* Det står med småt */
+.r12s-smaat > h2 { margin-bottom: 1.6rem; }
+.r12s-kortpar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem; margin-bottom: 1.4rem; align-items: start; }
+.r12s-kort { --bg: var(--kortflade); position: relative; display: block; min-width: 0; padding: 1.4rem 1.5rem; border-radius: 14px; background: var(--kortflade); border: 1px solid var(--linje); box-shadow: 0 16px 30px -26px rgba(50,30,5,.7); }
+.r12s-kort h2 { font-size: clamp(1.45rem, 2.2vw, 1.8rem); padding-right: 5.5rem; }
+.r12s-kort-ill { position: absolute; top: 1rem; right: 1.1rem; width: 4.4rem; height: auto; transform: rotate(6deg); filter: drop-shadow(0 6px 8px rgba(0,0,0,.25)); }
+.r12s-kort-ill-bred { width: 6rem; top: 1.6rem; transform: rotate(-14deg); }
+.r12s-teaser { margin: 0 0 1rem; color: var(--ink2); font-size: 1.05rem; padding-right: 3rem; }
+.r12s-kort .kicker { padding-right: 5rem; }
+.r12s-kort .kicker::after { display: none; }
+.r12s-kort .ordbog { grid-template-columns: minmax(0, 1fr) !important; }
+@media (max-width: 1100px) { .r12s-kortpar { grid-template-columns: minmax(0, 1fr); } }
+
+/* Spørgsmål som harmonika */
+.r12s-harmonika { max-width: 46rem; margin: 1.2rem auto 0; border-top: 1px solid var(--linje); }
+.r12s-svar { border-bottom: 1px solid var(--linje); }
+.r12s-svar summary { display: flex; align-items: center; gap: .9rem; min-height: 3.2rem; padding: .55rem .2rem; cursor: pointer; list-style: none; font-weight: 700; font-size: 1.1rem; }
+.r12s-svar summary::-webkit-details-marker { display: none; }
+.r12s-svar summary::before { content: "+"; display: grid; place-items: center; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 1.5px solid var(--guldtekst); color: var(--guldtekst); font-weight: 700; line-height: 1; }
+.r12s-svar[open] summary::before { content: "–"; background: #f1d79c; color: #3a2709; border-color: #c8963c; }
+.r12s-svar summary:hover { color: var(--guldtekst); }
+.r12s-svar summary:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
+.r12s-svar p { margin: 0 0 1rem 2.5rem; color: var(--ink2); }
+.r12s-svar p a { color: var(--ink); }
+#faq .kicker { justify-content: center; }
+#faq .kicker::after { display: none; }
+
+/* Afslutningsbanner */
+.r12s-afslut { position: relative; overflow: hidden; color: #fbf3de; color-scheme: dark;
+  background: radial-gradient(ellipse 50% 120% at 85% 60%, rgba(230,160,80,.3), transparent 70%), linear-gradient(90deg, #12251a, #1d3524 60%, #34401f); }
+.r12s-afslut-in { display: grid; grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); align-items: center; gap: 2.4rem; max-width: 1400px; margin-inline: auto; padding-block: 2.4rem; }
+.r12s-afslut-ill { width: 100%; height: auto; filter: drop-shadow(0 12px 20px rgba(0,0,0,.45)); }
+.r12s-afslut h2 { margin: 0 0 .4rem; font-weight: 800; font-size: clamp(1.8rem, 3.6vw, 2.8rem); line-height: 1.1; color: #fbf3de; }
+.r12s-afslut p { margin: 0 0 1.3rem; font-size: 1.15rem; color: #efe2c2; }
+.r12s-afslut .r12-knap:focus-visible, .r12s-afslut .r12-link:focus-visible { outline-color: #fff2cf; }
+@media (max-width: 760px) {
+  .r12s-afslut-in { grid-template-columns: minmax(0, 1fr); gap: 1rem; text-align: left; }
+  .r12s-afslut-ill { width: min(60%, 14rem); }
+}
+
+@media print {
+  .r12s-krumme, .r12s-side, .r12s-afslut, .r12s-sog, .r12s-proev { display: none !important; }
+  .r12s-ramme { display: block; }
+  .r12s-hero { background: none; color: #000; }
+  .r12s-hero h1, .r12s-praemis, .r12s-hero-sub { color: #000; text-shadow: none; }
+  .r12s-svar:not([open]) p { display: block; }
+}
+
+/* Finjustering af ældre komponenter i skabelonen */
+.r12s .fakta { grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)) !important; gap: .7rem; background: none; border: 0; }
+.r12s .fakta b, .r12s .ordbog dt, .r12s .vej b { font-family: var(--serif); letter-spacing: 0; }
+.r12s .fakta b { font-size: 1.35rem; line-height: 1.15; hyphens: auto; }
+.r12s .note.r12s-midt { max-width: 40rem; margin-inline: auto; }
+
+/* ── Malerier fra runde 12 (arkivet): toppen og afslutningsbanneret som fuldbredde malerier ── */
+.r12s-hero-maleri { background: #0f2117; }
+.r12s-hero-maleri::before { display: none; }
+.r12s-hero-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 45%; }
+.r12s-hero-maleri::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(8,16,10,.82) 0%, rgba(8,16,10,.6) 30%, rgba(8,16,10,.12) 55%, rgba(8,16,10,0) 70%), linear-gradient(0deg, rgba(8,16,10,.4), rgba(8,16,10,0) 35%); }
+.r12s-hero-maleri .r12s-hero-in { z-index: 2; grid-template-columns: minmax(0, 1fr); min-height: clamp(22rem, 37.5vw, 36rem); }
+.r12s-hero-maleri .r12s-hero-tekst { max-width: 36rem; text-shadow: 0 2px 14px rgba(0,0,0,.55); }
+@media (max-width: 760px) {
+  .r12s-hero-bg img { position: static; display: block; aspect-ratio: 16 / 9; height: auto; object-position: 78% 50%; }
+  .r12s-hero-maleri::after { display: none; }
+  .r12s-hero-maleri .r12s-hero-in { min-height: 0; }
+  .r12s-hero-maleri .r12s-hero-tekst { padding-block: 1.4rem 1.8rem; }
+}
+.r12s-medaljon { border: 0; border-radius: 0; box-shadow: none; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,.25)); }
+.r12s-kort-ill { width: 7.5rem; top: .6rem; right: .6rem; transform: rotate(4deg); }
+.r12s-kort h2 { padding-right: 7rem; }
+.r12s-teaser { padding-right: 5rem; }
+.r12s-dekor { float: right; width: 9rem; height: auto; margin: -.6rem 0 .4rem 1rem; transform: rotate(-6deg); filter: drop-shadow(0 6px 8px rgba(0,0,0,.2)); }
+#protokol { display: flow-root; }
+.r12s-sager img.r12s-sag-fri { object-fit: contain; border: 0; background: none; }
+.r12s-afslut-maleri { background: #12251a; }
+.r12s-afslut-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 8%; } /* forankret foroven: kragens hoved sidder helt oppe i maleriet */
+.r12s-afslut-maleri::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(270deg, rgba(8,16,10,.78) 0%, rgba(8,16,10,.55) 35%, rgba(8,16,10,0) 62%); }
+.r12s-afslut-maleri .r12s-afslut-in { position: relative; z-index: 2; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: clamp(18rem, 33.4vw, 31rem); } /* tæt på maleriets 3:1, så næsten intet skæres væk */
+.r12s-afslut-maleri .r12s-afslut-tekst { grid-column: 2; text-shadow: 0 2px 14px rgba(0,0,0,.6); }
+@media (max-width: 760px) {
+  .r12s-afslut-bg img { position: static; display: block; aspect-ratio: 2 / 1; height: auto; object-position: 12% 50%; }
+  .r12s-afslut-maleri::after { display: none; }
+  .r12s-afslut-maleri .r12s-afslut-in { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-block: 1.4rem 2rem; }
+  .r12s-afslut-maleri .r12s-afslut-tekst { grid-column: 1; }
+}
+.r12s-hero, .r12s-afslut { display: block; }
+.r12s-hero-in, .r12s-afslut-in { width: 100%; }
+
+/* ── Efter gennemgang: luft omkring dekorationer og faktaboksen i fuld bredde ── */
+.r12s-kort-ill { position: static; float: right; width: 7rem; margin: -.5rem -.5rem .6rem 1rem; transform: rotate(4deg); shape-outside: margin-box; }
+.r12s-kort h2, .r12s-teaser, .r12s-kort .kicker { padding-right: 0; }
+.r12s-kort .fold, .r12s-kort .fold-knap, .r12s-kort > .note { clear: both; }
+.r12s-kort .fold-knap { display: inline-flex; }
+.r12s .fakta-rk { display: block; margin: 1.4rem 0; }
+.r12s .fakta-rk > .vidfakta { max-width: none; }
+.r12s .fakta-rk .graatand { margin-top: 1.2rem; }
+.r12s-dekor { width: 8rem; margin: -.4rem 0 .8rem 1.2rem; }
+.r12s .vidfakta p { max-width: 62rem; }
+
+/* ── Oplevelser: illustrerede kort i tre grupper, uden sidemenu ── */
+.r12s-uden-menu { grid-template-columns: minmax(0, 1fr); max-width: 1240px; }
+.r12s-gruppe { display: flex; align-items: center; gap: .9rem; margin: 2.2rem 0 1rem; font-size: 1.5rem; color: var(--ink); }
+.r12s-gruppe::after { content: ""; flex: 1; height: 1px; background: var(--linje); }
+.r12s-oplev-gitter { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin: 0; padding: 0; list-style: none; }
+.r12s-oplev-stor { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.r12s-oplev-stor .r12s-oplev { grid-template-columns: 12rem minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: 1.4rem; align-items: start; }
+.r12s-oplev-stor .r12s-oplev-ill { grid-row: 1 / span 3; height: 11rem; margin: 0; }
+.r12s-oplev-stor .r12s-oplev-ill img { max-height: 11rem; }
+.r12s-oplev-stor .r12s-oplev b { font-size: 1.9rem; }
+@media (max-width: 1000px) { .r12s-oplev-gitter { grid-template-columns: repeat(2, minmax(0, 1fr)); } .r12s-oplev-stor { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .r12s-oplev-gitter { grid-template-columns: minmax(0, 1fr); } .r12s-oplev-stor .r12s-oplev { grid-template-columns: 7rem minmax(0, 1fr); } .r12s-oplev-stor .r12s-oplev-ill { height: 7rem; } .r12s-oplev-stor .r12s-oplev-ill img { max-height: 7rem; } }
+.r12s-oplev { display: grid; grid-template-rows: auto auto 1fr auto; gap: .35rem; height: 100%; padding: 1.1rem 1.2rem 1.2rem; border-radius: 14px; background: var(--kortflade); border: 1px solid var(--linje); color: var(--ink) !important; text-decoration: none; box-shadow: 0 16px 30px -26px rgba(50,30,5,.7); transition: transform .15s, box-shadow .15s, border-color .15s; }
+.r12s-oplev:hover { transform: translateY(-3px); border-color: var(--guld); box-shadow: 0 20px 34px -24px rgba(50,30,5,.8); }
+.r12s-oplev:focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; }
+.r12s-oplev-ill { display: grid; place-items: center; height: 9.5rem; margin-bottom: .3rem; overflow: hidden; }
+.r12s-oplev-ill img { max-width: 100%; max-height: 9.5rem; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0,0,0,.22)); }
+.r12s-oplev b { font-family: var(--overskrift); font-weight: 600; font-size: 1.55rem; font-size-adjust: .5; line-height: 1.1; }
+.r12s-oplev > span:not(.r12s-oplev-ill) { color: var(--ink2); font-size: 1rem; }
+.r12s-oplev em { font-style: normal; font-weight: 700; justify-self: start; margin-top: .4rem; border-bottom: 1.5px solid var(--guld); padding-bottom: 2px; }
+@media (prefers-reduced-motion: reduce) { .r12s-oplev { transition: none; } .r12s-oplev:hover { transform: none; } }
+.r12s-hero-oplevelser .r12s-hero-bg img { object-position: 72% 50%; }
+.r12s-hero-historien .r12s-hero-bg img { object-position: 60% 40%; }
+.r12s-lead.r12s-midt { max-width: 40rem; margin-inline: auto; }
+@media (max-width: 560px) { .r12s-oplev-stor .r12s-oplev b { font-size: 1.45rem; } .r12s-oplev b { overflow-wrap: anywhere; hyphens: auto; } .r12s-oplev-stor .r12s-oplev { column-gap: 1rem; padding: 1rem; } }
+/* Ældre komponenter: deres display-skrift (Bricolage) og maskinskrift i billedtekster følger skabelonens skrifter */
+body.r12s { --display: var(--serif); }
+.r12s-gammel figcaption { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: .95rem; font-style: italic; color: var(--ink2); }
+.r12s .personer b { font-size: 1.08rem; }
+.r12s-hero-historien .r12s-hero-bg img { object-position: 70% 45%; }
+#slaegt { display: flow-root; }
+
+/* ── Den flydende Mímir-knap (alle skabelonsider undtagen arkivet) ── */
+.r12s-mimir { position: fixed; z-index: 29; right: calc(3.2rem + env(safe-area-inset-right, 0px)); bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); display: inline-flex; align-items: center; gap: .55rem; padding: .3rem 1rem .3rem .3rem; border-radius: 999px; background: rgba(20,42,30,.92); color: #f2e4c1 !important; border: 1px solid rgba(230,189,104,.55); box-shadow: 0 10px 24px -12px rgba(0,0,0,.7); text-decoration: none; font-weight: 700; font-size: .98rem; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: transform .15s, background .15s; }
+.r12s-mimir img { width: 2.6rem; height: 2.6rem; object-fit: contain; }
+.r12s-mimir:hover { background: #1e3829; transform: translateY(-2px); }
+.r12s-mimir:focus-visible { outline: 3px solid #e6bd68; outline-offset: 3px; }
+@media (max-width: 720px) { .r12s-mimir { right: calc(.8rem + env(safe-area-inset-right, 0px)); padding: .25rem; } .r12s-mimir span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .r12s-mimir img { width: 2.9rem; height: 2.9rem; } }
+@media (prefers-reduced-motion: reduce) { .r12s-mimir { transition: none; } .r12s-mimir:hover { transform: none; } }
+@media print { .r12s-mimir { display: none; } }
+/* Sider med fritlagt motiv i toppen (oplevelserne, sagsregistret) */
+.r12s-hero-motiv-side .r12s-hero-motiv img { display: block; width: 100%; height: auto; max-height: 22rem; object-fit: contain; filter: drop-shadow(0 18px 30px rgba(0,0,0,.45)); }
+.r12s-hero-motiv-side .r12s-hero-motiv { align-self: center; padding-block: 1.5rem; }
+
+/* ── Den flydende Mímir-knap (alle skabelonsider undtagen arkivet) ── */
+.r12s-mimir { position: fixed; z-index: 29; right: calc(3.2rem + env(safe-area-inset-right, 0px)); bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); display: inline-flex; align-items: center; gap: .55rem; padding: .3rem 1rem .3rem .3rem; border-radius: 999px; background: rgba(20,42,30,.92); color: #f2e4c1 !important; border: 1px solid rgba(230,189,104,.55); box-shadow: 0 10px 24px -12px rgba(0,0,0,.7); text-decoration: none; font-weight: 700; font-size: .98rem; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: transform .15s, background .15s; }
+.r12s-mimir img { width: 2.6rem; height: 2.6rem; object-fit: contain; }
+.r12s-mimir:hover { background: #1e3829; transform: translateY(-2px); }
+.r12s-mimir:focus-visible { outline: 3px solid #e6bd68; outline-offset: 3px; }
+@media (max-width: 720px) { .r12s-mimir { right: calc(.8rem + env(safe-area-inset-right, 0px)); padding: .25rem; } .r12s-mimir span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .r12s-mimir img { width: 2.9rem; height: 2.9rem; } }
+@media (prefers-reduced-motion: reduce) { .r12s-mimir { transition: none; } .r12s-mimir:hover { transform: none; } }
+@media print { .r12s-mimir { display: none; } }
+/* Sider med fritlagt motiv i toppen (oplevelserne, sagsregistret) */
+.r12s-hero-motiv-side .r12s-hero-motiv img { display: block; width: 100%; height: auto; max-height: 22rem; object-fit: contain; filter: drop-shadow(0 18px 30px rgba(0,0,0,.45)); }
+.r12s-hero-motiv-side .r12s-hero-motiv { align-self: center; padding-block: 1.5rem; }
+/* Maskinparken på gæstesiden: produktnavne, filter og »Vis maskineriet« hører til i Maskinrummet.
+   Kommer man fra Maskinrummet med ?produkt=, vises filteret (undersider.js sætter klassen). */
+.r12s .r10-filter, .r12s #r10-viser, .r12s .r10-p { display: none; }
+.r12s.r12s-produkt .r10-filter, .r12s.r12s-produkt #r10-viser { display: flex; }
+.r12s.r12s-produkt #r10-viser { display: block; }
+
+/* ── Maskinrummet (body.r12m): skabelonens topbjælke og brødkrumme, men maskinrummets mørke og seriøse udtryk ── */
+body.r12m { --gron2: #142a1e; --guld2: #e6bd68; --serif: "Alegreya Sans", "Gill Sans", "Segoe UI", sans-serif; --titel: "Cormorant Unicase", "Cormorant Garamond", Georgia, serif; }
+.r12m .r12-logo span { font-family: var(--titel); font-weight: 700; letter-spacing: .08em; }
+.r12m .r12-nav a { font-family: var(--serif); }
+.r12m .r12s-krumme { background: #0d1013; border-bottom-color: rgba(217,164,65,.22); font-family: var(--serif); color-scheme: dark; }
+.r12m .r12s-krumme ol, .r12m .r12s-krumme a { color: #a9aea8; }
+.r12m .r12s-krumme a:hover { color: #e8e9e3; }
+.r12m .r12s-krumme [aria-current] { color: #e8e9e3; }
+.r12m .r12s-tilbage { color: #e6bd68 !important; }
+.r12m .r12s-tilbage:hover { color: #f4d690 !important; }
+.r12m .side-hoved { padding-top: 2.4rem; }
+.r12m .topbar .flag { padding: .4rem .35rem; }
+.r12m .topbar .flag svg { width: 18px; height: 18px; box-shadow: 0 0 0 1px rgba(0,0,0,.5); opacity: .7; }
+.r12m .topbar .flag[aria-current="page"] { background: none; }
+.r12m .topbar .flag[aria-current="page"] svg { opacity: 1; box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 0 0 2.5px rgba(230,189,104,.7); }
+.r12m .topbar .webmail { background: none; color: #e6bd68; border: 1px solid rgba(230,189,104,.5); box-shadow: none; }
+.r12m .topbar .webmail:hover { background: rgba(230,189,104,.14); color: #f4d690; }
+.r12m .rul { right: max(.5rem, env(safe-area-inset-right, 0px)); top: auto; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); transform: none; }
+.r12m .rul button { width: 2.2rem; height: 2.2rem; opacity: .55; box-shadow: none; }
+.r12m .rul button:hover, .r12m .rul button:focus-visible { opacity: 1; }
+@media (max-width: 720px) { .r12m .rul { display: none; } }
+.r12m .brodkrummer, .r12 .brodkrummer { display: none; } /* skabelonens brødkrumme erstatter den gamle i toppen */
+
+/* ── Ensartede knapper (runde 12): alle knapper på de nye sider har samme form som »Tilbage til landsbykortet«
+   – guldgradient, runde hjørner, fed tekst. Sekundære knapper (.knap.sek) har samme form i en lysere udgave. ── */
+:is(.r12, .r12m) :is(.knap, button.knap, a.knap) {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 2.9rem; padding: .6rem 1.35rem; border-radius: 10px; cursor: pointer;
+  font-family: var(--serif); font-weight: 700; font-size: 1rem; line-height: 1.2; letter-spacing: 0; text-transform: none; text-decoration: none;
+  color: #241805 !important; background: linear-gradient(180deg, #ecc576, #c58f36); border: 1px solid #f4d690;
+  box-shadow: 0 8px 18px -10px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.45);
+}
+:is(.r12, .r12m) .knap:hover { background: linear-gradient(180deg, #f4d189, #d09c43); color: #241805 !important; }
+:is(.r12, .r12m) .knap:active { transform: translateY(1px); }
+:is(.r12, .r12m) .knap.sek { background: linear-gradient(180deg, #fbf1d8, #ecd6a2); border-color: #d9b56a; box-shadow: 0 6px 14px -10px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.6); }
+:is(.r12, .r12m) .knap.sek:hover { background: linear-gradient(180deg, #fff6df, #f1dcaa); }
+:is(.r12, .r12m) .knap:focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; }
+.r12m .knap:focus-visible { outline-color: #f4d690; }
+:is(.r12, .r12m) .knap[disabled], :is(.r12, .r12m) .knap[aria-disabled="true"] { opacity: .55; cursor: default; transform: none; }
+:is(.r12, .r12m) .knap.r9-chip-knap, :is(.r12, .r12m) .knap.r6-luk { min-height: 2.4rem; padding: .4rem 1rem; font-size: .92rem; }
+.r12s .fold-knap.knap.sek { border-radius: 10px; }
+
+/* ── Svar og status efter et tryk (runde 12): tydelig beskedboks med luft, ikke lille maskinskrift under knapperne ── */
+:is(.r12, .r12m) .r9-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0 0; }
+:is(.r12, .r12m) .r6-status { min-height: 0; margin: 0; }
+:is(.r12, .r12m) .r6-status:not(:empty) {
+  display: flex; align-items: flex-start; gap: .6rem; margin: 1.4rem 0 1rem; padding: .9rem 1.1rem; max-width: 46rem;
+  font-family: var(--serif); font-size: 1.08rem; line-height: 1.45; letter-spacing: 0; text-transform: none; color: var(--mist);
+  background: color-mix(in srgb, var(--dawn-fyld) 14%, var(--bg)); border: 1px solid color-mix(in srgb, var(--dawn-fyld) 45%, transparent); border-left: 4px solid var(--dawn-fyld); border-radius: 10px;
+  box-shadow: 0 12px 24px -20px rgba(0,0,0,.6); animation: r12-ind .25s ease-out;
+}
+:is(.r12, .r12m) .r6-status:not(:empty)::before { content: ""; flex: none; width: .65rem; height: .65rem; margin-top: .45rem; border-radius: 50%; background: var(--dawn-fyld); }
+:is(.r12, .r12m) .r6-status.venter:not(:empty)::before { animation: r6-puls 1.2s infinite; margin-right: 0; }
+:is(.r12, .r12m) .r6-status.fejl:not(:empty) { border-left-color: #b4513a; border-color: color-mix(in srgb, #b4513a 45%, transparent); background: color-mix(in srgb, #b4513a 10%, var(--bg)); }
+:is(.r12, .r12m) .r6-status.fejl:not(:empty)::before { background: #b4513a; }
+:is(.r12, .r12m) :is(#hg-fund, #arkiv-svar, .r9-resultat):not(:empty) { margin-top: 1rem; }
+:is(.r12, .r12m) .r9-hylde { margin-top: 1.2rem; }
+@keyframes r12-ind { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { :is(.r12, .r12m) .r6-status:not(:empty) { animation: none; } }
+
+/* ── Maskinparken (runde 12): hvert kort står for sig selv (ingen mørk gitterbaggrund i tomme felter),
+   og det åbne panel er sit eget kort med luft til oversigten ── */
+.r12s .r6-kort { gap: .75rem; background: none; border: 0; }
+.r12s .r6-kortknap { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; box-shadow: 0 10px 22px -20px rgba(50,30,5,.7); transition: border-color .15s, transform .15s, box-shadow .15s; }
+.r12s .r6-kortknap:hover { background: var(--kortflade); border-color: var(--guld); transform: translateY(-2px); box-shadow: 0 14px 26px -20px rgba(50,30,5,.8); }
+.r12s .r6-kortknap[aria-expanded="true"] { background: var(--p2); border: 2px solid var(--guld); }
+.r12s .r6-kortknap b { font-family: var(--serif); font-weight: 700; }
+.r12s .r6-kortknap:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
+.r12s #r6-panel:not([hidden]) { margin-top: 2.2rem; border: 1px solid var(--guld); border-top: 4px solid var(--guld); border-radius: 16px; background: var(--kortflade); box-shadow: 0 24px 44px -30px rgba(50,30,5,.85); }
+.r12s .r6-panelhoved { padding-bottom: .9rem; border-bottom: 1px solid var(--linje); }
+@media (prefers-reduced-motion: reduce) { .r12s .r6-kortknap { transition: none; } .r12s .r6-kortknap:hover { transform: none; } }
+
+/* ── Maskinernes egne rum (runde 12): maskinen fylder siden; scenen står i toppen i stedet for i panelet ── */
+.r12s .r6-eget-rum #r6-panel:not([hidden]) { margin-top: 0; padding: 0; border: 0; background: none; box-shadow: none; display: block; }
+.r12s .r6-eget-rum .r6-scene { display: none; }
+.r12s .r6-eget-rum :is(.r6-split, .r6-split-bred) { grid-template-columns: minmax(0, 1fr); }
+.r12s .r6-eget-rum .r6-txt { max-width: 52rem; }
+.r12s .r6-eget-rum .r6-maskineri { margin-top: 2rem; }
+.r12s-tilbage-park { margin: 2.4rem 0 0; }
+.r12s-hero-maskine .r12s-hero-bg img { object-position: 60% 50%; }
+
+/* ── Tingsvad Tidende (runde 12): ren avisside på pergament med egne kantlinjer, så teksten aldrig går ud over
+   papirbilledets tegnede kanter; spalterne starter i samme højde, også den uden vignet; hovedet er centreret ── */
+.r12s .r6-avis { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 6px; padding: clamp(1.2rem, 3.5vw, 2.6rem);
+  box-shadow: inset 0 0 0 6px var(--kortflade), inset 0 0 0 7px var(--linje), 0 20px 40px -30px rgba(50,30,5,.8); }
+.r12s .r6-avis-papir { display: none; }
+.r12s .r6-avis-hoved > * { justify-self: center; max-width: none; }
+.r12s .r6-avis-hoved h3 { font-family: var(--titel); font-weight: 700; font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: .01em; font-size-adjust: none; }
+.r12s .r6-avis-hoved p { font-family: var(--overskrift); font-size: 1.1rem; }
+.r12s .r6-avis-dato { font-family: var(--serif); font-style: normal; font-size: .8rem; }
+.r12s .r6-avis-spalter { gap: 0; }
+.r12s .r6-artikel { padding: 0 1.4rem; border-left: 1px solid var(--linje); grid-template-rows: 6.5rem auto auto 1fr; min-width: 0; }
+.r12s .r6-artikel:first-child { border-left: 0; padding-left: 0; }
+.r12s .r6-artikel:last-child { padding-right: 0; }
+.r12s .r6-artikel:not(:has(.r6-vignet))::before { content: ""; }
+.r12s .r6-vignet { width: 6rem; height: 6rem; object-fit: contain; }
+.r12s .r6-artikel h4 { font-family: var(--overskrift); font-weight: 700; font-size: 1.5rem; font-size-adjust: .5; }
+.r12s .r6-artikel p { max-width: none; overflow-wrap: break-word; hyphens: auto; }
+@media (max-width: 800px) {
+  .r12s .r6-artikel { padding: 1.2rem 0 0; border-left: 0; border-top: 1px solid var(--linje); grid-template-rows: auto; margin-top: 1.2rem; }
+  .r12s .r6-artikel:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+  .r12s .r6-artikel:not(:has(.r6-vignet))::before { display: none; }
+}
+
+/* ── Maskinrummet (runde 12): lagene som afsnit med egen fold, kortene lige store med »Læs mere« ── */
+.maskinrum-lag { margin-top: 1.2rem; }
+.mr-lag { margin: 0; padding: 1.6rem 0 1.4rem; border-top: 1px solid var(--rule); }
+.mr-lag:last-child { border-bottom: 1px solid var(--rule); }
+.mr-lag-hoved { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .8rem 2.5rem; align-items: end; }
+.mr-lag-tekst > * { margin: 0; }
+.mr-lag-over { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--dawn); }
+.mr-lag-tekst h3 { margin: .3rem 0 .2rem; font-family: var(--display); font-weight: 500; font-size: clamp(1.6rem, 2.8vw, 2.2rem); letter-spacing: -.02em; line-height: 1.1; color: var(--mist); }
+.r12m .mr-lag-tekst h3 { font-family: var(--titel); font-weight: 700; letter-spacing: .01em; }
+.mr-lag-kort { font-style: italic; color: var(--dawn); font-size: 1.02rem; }
+.mr-lag-tekst p:last-child { margin-top: .5rem; max-width: 68ch; color: var(--mist-dim); line-height: 1.55; }
+.mr-lag-knap { white-space: nowrap; }
+.mr-lag-knap::after { content: ""; width: .45rem; height: .45rem; margin-left: .55rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-.15rem) rotate(45deg); transition: transform .2s; display: inline-block; }
+.mr-lag-knap[aria-expanded="true"]::after { transform: translateY(.1rem) rotate(-135deg); }
+.mr-lag .maskinrum { margin-top: 1.3rem; }
+@media (max-width: 720px) { .mr-lag-hoved { grid-template-columns: 1fr; } .mr-lag-knap { justify-self: start; } }
+
+/* kortene: eget kort med kant i stedet for 1px-gitteret, så tomme pladser er baggrund og et udfoldet kort ikke strækker naboerne */
+.maskinrum { gap: 1rem; background: none; border: 0; align-items: start; }
+.maskinrum article { border: 1px solid var(--rule); border-radius: 8px; grid-template-rows: auto minmax(2.4em, auto) auto auto; }
+.maskinrum h3 { min-height: 2.4em; display: flex; align-items: flex-start; }
+.maskinrum.mr-klar article:not(.aaben) p { height: calc(1.5em * 7); overflow: hidden; }
+.maskinrum.mr-klar article.mr-lang:not(.aaben) p { -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent); mask-image: linear-gradient(180deg, #000 62%, transparent); }
+.mr-mere { justify-self: start; display: inline-flex; align-items: center; gap: .45rem; margin-top: .2rem; padding: .35rem 0; min-height: 2rem; background: none; border: 0; cursor: pointer; font: 600 .78rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dawn); }
+.mr-mere::after { content: ""; width: .4rem; height: .4rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-.12rem) rotate(45deg); transition: transform .2s; }
+.mr-mere[aria-expanded="true"]::after { transform: translateY(.08rem) rotate(-135deg); }
+.mr-mere:hover { text-decoration: underline; text-underline-offset: 3px; }
+.mr-mere:focus-visible { outline: 2px solid var(--dawn); outline-offset: 3px; border-radius: 3px; }
+.mr-mere-tom { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .mr-lag-knap::after, .mr-mere::after { transition: none; } }
+
+/* ── Tingsvad-nettet i Historien (runde 12, flyttet fra maskinrummet): seks sten i to rækker à tre ── */
+.r12s .r12s-nettet { margin: 1.4rem 0 .6rem; }
+.r12s .r12s-nettet .net-wrap { border-radius: 6px; overflow: hidden; }
+.r12s #nettet .drift-liste { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 560px) { .r12s #nettet .drift-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ── Revisionen (runde 12): tal-fliser og sidekort grupperet som maskinrummets lag ── */
+.r9-fliser { list-style: none; margin: 1rem 0 .6rem; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.r9-fliser li { border: 1px solid var(--rule); border-radius: 8px; padding: .9rem 1.1rem 1rem; background: var(--bg-2); display: grid; gap: .15rem; }
+.r9-fliser b { font-family: var(--titel, var(--display)); font-weight: 700; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1; color: var(--mist); }
+.r9-fliser span { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mist-dim); }
+.r9-fliser .r9-flise-ok b { color: #4f7a45; }
+.r9-fliser .r9-flise-fejl.har { border-color: color-mix(in srgb, #b4513a 55%, transparent); background: color-mix(in srgb, #b4513a 8%, var(--bg-2)); }
+.r9-fliser .r9-flise-fejl.har b { color: #b4513a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .r9-fliser .r9-flise-ok b { color: #7fc27a; } :root:not([data-theme="light"]) .r9-fliser .r9-flise-fejl.har b { color: #ef8a70; } }
+:root[data-theme="dark"] .r9-fliser .r9-flise-ok b { color: #7fc27a; }
+:root[data-theme="dark"] .r9-fliser .r9-flise-fejl.har b { color: #ef8a70; }
+@media (max-width: 640px) { .r9-fliser { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+#revisionen-ind .r9-gudrun { margin: .4rem 0 .2rem; font-size: 1.05rem; }
+#revisionen-ind .maskinrum-lag, #revisionen-ind .r9-gruppe:first-of-type { margin-top: 1.4rem; }
+.r9-kort article b { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }
+.r9-kort .r9-meta { letter-spacing: .06em; color: var(--mist-dim); }
+.r9-kort h3 a { color: inherit; text-decoration: none; }
+.r9-kort h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.r9-kort.mr-klar article:not(.aaben) p { height: calc(1.5em * 4); }
+.r9-kort .r9-billede { justify-self: start; font-size: .9rem; color: var(--dawn); }
+.r9-gruppe-fejlet .r9-kort article { border-left: 3px solid #b4513a; }
+
+/* ── 404 i skabelonen (runde 12): fem lige store veje videre ── */
+.fejl-kort { list-style: none; margin: 1.4rem 0 1.2rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1rem; }
+.fejl-kort a { display: grid; gap: .3rem; height: 100%; padding: 1rem 1.2rem 1.1rem; border: 1px solid var(--linje); border-radius: 8px; background: var(--kortflade); color: var(--ink); text-decoration: none; transition: border-color .15s, transform .15s; }
+.fejl-kort a:hover { border-color: var(--guld); transform: translateY(-2px); }
+.fejl-kort a:focus-visible { outline: 3px solid var(--guld); outline-offset: 3px; }
+.fejl-kort b { font-family: var(--overskrift); font-size: 1.35rem; font-weight: 700; }
+.fejl-kort b::after { content: " →"; color: var(--guld); }
+.fejl-kort span { font-size: .95rem; opacity: .85; }
+@media (prefers-reduced-motion: reduce) { .fejl-kort a { transition: none; } }
+
+#revisionen-ind .r9-github { margin: .5rem 0 0; padding: .55rem .9rem; border-left: 3px solid var(--dawn); background: color-mix(in srgb, var(--dawn) 9%, transparent); font-size: .95rem; max-width: 70ch; }
+#revisionen-ind .r9-github b { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; margin-right: .4rem; color: var(--dawn); }
+#revisionen-ind .r9-github-live { border-left-color: #4f7a45; }
+#revisionen-ind .r9-github-fejl { border-left-color: #b4513a; }
+
+/* ── Revisionen (runde 12, rettet): regnearket tilbage; billede og detaljer i et vindue oven på siden ── */
+/* position: relative holder den skjulte skærmlæsertekst (.sr-only, absolut placeret) inde i den rulbare boks; ellers gav den vandret scroll på mobil */
+.r9-tabel-wrap { position: relative; }
+#revisionen-ind .r9-tabel { min-width: 40rem; }
+#revisionen-ind .r9-tabel td { vertical-align: middle; }
+#revisionen-ind .r9-bem { color: var(--mist-dim); }
+#revisionen-ind .r9-r-fejlet td { background: color-mix(in srgb, #b4513a 7%, transparent); }
+#revisionen-ind .r9-r-fejlet .r9-bem { color: #a3412b; }
+#revisionen-ind .r9-handling { text-align: right; white-space: nowrap; }
+.r9-vis { font: 600 .74rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dawn); background: none; border: 1px solid color-mix(in srgb, var(--dawn) 55%, transparent); border-radius: 999px; padding: .35rem .8rem; cursor: pointer; min-height: 2rem; }
+.r9-vis:hover { background: color-mix(in srgb, var(--dawn) 14%, transparent); }
+.r9-vis:focus-visible { outline: 2px solid var(--dawn); outline-offset: 2px; }
+.r9-dlg { width: min(60rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 1px solid var(--rule); border-radius: 12px; background: var(--bg); color: var(--mist); box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); }
+.r9-dlg::backdrop { background: rgba(12, 14, 16, .72); backdrop-filter: blur(2px); }
+.r9-dlg-in { display: grid; gap: 1rem; padding: 1.2rem 1.4rem 1.3rem; }
+.r9-dlg-hoved { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+.r9-dlg-hoved h3 { margin: .3rem 0 0; font-family: var(--titel, var(--display)); font-weight: 700; font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.r9-dlg-over { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font: .75rem var(--mono); letter-spacing: .06em; color: var(--mist-dim); }
+.r9-dlg-luk { flex: none; width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--rule); background: var(--bg-2); color: var(--mist); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.r9-dlg-luk:hover { border-color: var(--dawn); }
+.r9-dlg-luk:focus-visible { outline: 2px solid var(--dawn); outline-offset: 2px; }
+.r9-dlg-fig { display: block; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: #fff; max-height: 55dvh; overflow-y: auto; }
+.r9-dlg-fig img { display: block; width: 100%; height: auto; }
+.r9-dlg-dl { margin: 0; display: grid; gap: .5rem; }
+.r9-dlg-dl > div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; }
+.r9-dlg-dl dt { font: 600 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dawn); padding-top: .15rem; }
+.r9-dlg-dl dd { margin: 0; overflow-wrap: anywhere; }
+.r9-dlg-dl ul { margin: 0; padding-left: 1rem; }
+.r9-dlg-dl code { font-size: .82rem; }
+.r9-dlg-fod { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--rule); padding-top: 1rem; }
+.r9-dlg-tal { font: .8rem var(--mono); color: var(--mist-dim); }
+@media (max-width: 560px) { .r9-dlg-dl > div { grid-template-columns: 1fr; gap: .1rem; } .r9-dlg-in { padding: 1rem; } }
+
+/* ── Tilbage-knappen (runde 12): guldpille med pil, øverst i brødkrummen og nederst på lange sider ── */
+.r12s-tilbage.tv-tilbage { gap: .55rem; min-height: 2.4rem; padding: .25rem 1rem .25rem .25rem; border-radius: 999px; border: 1px solid color-mix(in srgb, #c9973f 60%, transparent); background: color-mix(in srgb, #e6bd68 14%, transparent); font-family: var(--serif); font-weight: 700; max-width: min(24rem, 55vw); transition: background-color .15s, border-color .15s; }
+.r12s-tilbage.tv-tilbage:hover { background: color-mix(in srgb, #e6bd68 28%, transparent); border-color: #c9973f; }
+.r12s-tilbage.tv-tilbage:focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; }
+.tv-pil { flex: none; display: grid; place-items: center; width: 1.85rem; height: 1.85rem; border-radius: 50%; background: linear-gradient(180deg, #f1cd82, #d6a24a); color: #241805; box-shadow: 0 3px 8px -4px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.5); transition: transform .18s; }
+.tv-pil svg { width: 1.05rem; height: 1.05rem; }
+.r12s-tilbage.tv-tilbage:hover .tv-pil { transform: translateX(-3px); }
+.tv-tilbage-tekst { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.r12m .r12s-tilbage.tv-tilbage { background: rgba(230,189,104,.1); border-color: rgba(230,189,104,.45); }
+.r12m .r12s-tilbage.tv-tilbage:focus-visible { outline-color: #f4d690; }
+.tv-tilbage-bund { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin: 2.5rem auto 2.5rem; padding-top: 1.4rem; border-top: 1px solid var(--linje, var(--rule)); }
+.tv-tilbage-bund .r12s-tilbage.tv-tilbage { min-height: 2.9rem; font-size: 1.05rem; padding-right: 1.3rem; color: var(--ink, var(--mist)) !important; }
+/* Maskinrummets sider har sitets farver (runde 12): knappen nederst står på pergament som på de andre undersider */
+.r12m .tv-tilbage-bund .r12s-tilbage.tv-tilbage { color: var(--ink, var(--mist)) !important; background: color-mix(in srgb, #e6bd68 14%, transparent); border-color: color-mix(in srgb, #c9973f 60%, transparent); }
+.tv-tilbage-bund .tv-pil { width: 2.2rem; height: 2.2rem; }
+.tv-til-toppen { font-family: var(--serif); font-weight: 600; color: var(--guldtekst, var(--dawn)); }
+@media (max-width: 560px) { .r12s-tilbage.tv-tilbage { max-width: 62vw; } }
+@media (prefers-reduced-motion: reduce) { .tv-pil, .r12s-tilbage.tv-tilbage { transition: none; } }
+
+/* ── Underteksten (runde 12): samme størrelse, bredde og placering under alle afsnitsoverskrifter i skabelonen ── */
+.r12s .r12s-blok .lead, .r12s .r12s-blok .r12s-lead:not(.r12s-midt) { font-size: 1.2rem; line-height: 1.6; max-width: 62ch; margin-top: .5rem; }
+.r12s .r12s-blok .r12s-lead.r12s-midt { font-size: 1.2rem; line-height: 1.6; }
+#undersoeg .r5-status { margin-top: .4rem; }
+#undersoeg .r5-ikon { margin: .3rem 0 1.4rem; }
+.r12s .r12s-blok .lead + .bevis-grid { margin-top: 1.4rem; }
+.r12s .bevis-grid { align-items: start; } /* et åbnet bilag strækker ikke naboerne i rækken */
+
+/* ── Luft om knapperne (runde 12): mindst ~1rem over og under, også når en knap står sidst i en boks eller før en note ── */
+:is(.r12, .r12m) .r5-nulstil { margin-top: 1.8rem; }
+:is(.r12, .r12m) details.bevis .knap { margin-top: 1rem; }
+:is(.r12, .r12m) :is(.knap, :has(> .knap)) + :is(.note, p.note, ul, ol) { margin-top: 1rem; }
+:is(.r12, .r12m) :is(textarea, .fold, dl) + .knap { margin-top: 1rem; }
+:is(.r12, .r12m) :is(.r9-chips, .r9-faner, .r9-stol-knapper) { gap: .7rem; }
+:is(.r12, .r12m) .r9-chips { margin-bottom: 1rem; }
+:is(.r12, .r12m) .fold-knap + .note { margin-top: 1rem; }
+:is(.r12, .r12m) #hittegods .r9-chips { margin-bottom: 1rem; }
+:is(.r12, .r12m) :has(> .knap + .knap) { row-gap: .7rem; }
+:is(.r12, .r12m) textarea + .knap { margin-top: .9rem; }
+:is(.r12, .r12m) .r9-kode { margin-bottom: 1rem; }
+.r12s #nettet .txt > p + p { margin-top: 1rem; }
+
+/* ── Maskinrummets top (runde 12): maleriet »Viking Server Farm by the River« som baggrund, mørk toning bag teksten ── */
+.r12m .side-hoved-maleri { min-height: clamp(18rem, 37.5vw, 34rem); display: flex; flex-direction: column; justify-content: center; padding-top: 2.4rem; }
+.side-hoved-maleri .side-hoved-bg { position: absolute; inset: 0; z-index: -2; }
+.side-hoved-maleri .side-hoved-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; display: block; }
+.side-hoved-maleri::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(10,12,14,.86) 0%, rgba(10,12,14,.62) 34%, rgba(10,12,14,.1) 62%, rgba(10,12,14,0) 80%), linear-gradient(0deg, rgba(10,12,14,.55), rgba(10,12,14,0) 30%); }
+.side-hoved-maleri::before { display: none; }
+.side-hoved-maleri .side-hoved-tekst { max-width: 34rem; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+@media (max-width: 720px) {
+  .r12m .side-hoved-maleri { min-height: 0; padding-top: 11rem; }
+  .side-hoved-maleri .side-hoved-bg img { object-position: 72% 30%; }
+  .side-hoved-maleri::after { background: linear-gradient(0deg, rgba(10,12,14,.92) 0%, rgba(10,12,14,.75) 38%, rgba(10,12,14,.1) 75%); }
+}
+
+/* ── Maskinrummets sider (runde 12): samme baggrunds- og tekstfarver som resten af sitet (pergament / mørkegrøn).
+   Det seriøse ligger i indholdet; infrastrukturkortets og kædens sorte tavler beholder deres egne farver. ── */
+body.r12m { --bg: #efe5cf; --bg-2: #f7f0de; --mist: #2a2118; --mist-dim: #5a4934; --rule: #cdb68a; --dawn: #7a5510; --dawn-fyld: #c99a3e; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body.r12m { --bg: #141b16; --bg-2: #1e2721; --mist: #ede3ca; --mist-dim: #bfb194; --rule: #3e4c3f; --dawn: #e2b55e; --dawn-fyld: #d9a441; color-scheme: dark; } }
+:root[data-theme="dark"] body.r12m { --bg: #141b16; --bg-2: #1e2721; --mist: #ede3ca; --mist-dim: #bfb194; --rule: #3e4c3f; --dawn: #e2b55e; --dawn-fyld: #d9a441; color-scheme: dark; }
+
+/* ── Runde 12 · Cloudflare-funktioner: kvantesikkert bevis, dagbog (SQL i Durable Objects), live-radio, udlandsrubrik ── */
+.r6-status.ok { color: var(--moss); }
+.r6-kilde-kant { color: var(--moss); }
+.cert-pq, .r6-dagbog, .r6-live, .r6-udland { margin-top: 1.25rem; padding: 1rem 1.15rem; border: 1px solid var(--rule); border-left: 3px solid var(--dawn); background: color-mix(in srgb, var(--bg-2) 70%, transparent); border-radius: 6px; }
+.cert-pq p { margin: .35rem 0; }
+.cert-pq-h code { font-family: var(--mono); font-size: .78rem; color: var(--mist-dim); margin-left: .4rem; }
+.cert-pq-sig { margin: .6rem 0; padding: .6rem .75rem; background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; font-family: var(--mono); font-size: .7rem; line-height: 1.45; white-space: pre-wrap; word-break: break-all; color: var(--mist-dim); max-height: 7.5em; overflow: hidden; }
+.cert-pq-knapper { display: flex; flex-wrap: wrap; gap: .6rem; margin: .75rem 0 .5rem; }
+.ik-dagbog-h { margin: 0 0 .2rem; } .ik-dagbog-h code { font-family: var(--mono); font-size: .78rem; color: var(--mist-dim); }
+.ik-dagbog-tal { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: .5rem; margin: .75rem 0; }
+.ik-dagbog-tal div { padding: .5rem .65rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); }
+.ik-dagbog-tal b { display: block; font-family: var(--display); font-size: 1.35rem; line-height: 1.1; color: var(--dawn); }
+.ik-dagbog-tal span { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mist-dim); }
+.ik-dagbog-ford { list-style: none; padding: 0; margin: .5rem 0; display: grid; gap: .3rem; }
+.ik-dagbog-ford li { display: grid; grid-template-columns: 7.5rem 1fr 3rem; align-items: center; gap: .6rem; font-size: .9rem; }
+.ik-dagbog-ford i { display: block; height: .55rem; min-width: 2px; border-radius: 3px; background: var(--dawn); }
+.ik-dagbog-ford b { font-family: var(--mono); font-size: .8rem; text-align: right; }
+.ik-dagbog-sql { margin: .6rem 0; padding: .55rem .75rem; background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; font-family: var(--mono); font-size: .72rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; color: var(--mist-dim); }
+.r6-live p { margin: .35rem 0; } .r6-live .r6-rk { margin: .5rem 0; }
+.r6-udland ul { list-style: none; padding: 0; margin: .6rem 0; display: grid; gap: .9rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.r6-udland h4 { margin: 0 0 .3rem; font-family: var(--display); font-size: 1.05rem; line-height: 1.25; }
+.r6-udland li p { margin: 0 0 .35rem; font-size: .95rem; }
+.r6-udland li a { font-family: var(--mono); font-size: .75rem; }
+@media (max-width: 560px) { .ik-dagbog-ford li { grid-template-columns: 5.5rem 1fr 2.5rem; } }
+
+.cert-pq-fig, .r6-live-fig { margin: -.2rem 0 .8rem; }
+.cert-pq-fig img, .r6-live-fig img { width: 100%; height: auto; border-radius: 4px; display: block; }
+.cert-pq-h { display: flex; align-items: center; flex-wrap: wrap; gap: .25rem .5rem; }
+.cert-pq-segl { width: 48px; height: auto; flex: none; }
+.r6-udland-hoved { display: flex; align-items: center; gap: 1rem; }
+.r6-udland-hoved .kicker { flex: 1; min-width: 0; }
+.r6-udland .r6-udland-ravn { flex: none; width: 84px; height: auto; margin: -.5rem 0 -.3rem; }
+.ik-dagbog-bog { float: right; width: 96px; height: auto; margin: -.3rem 0 .4rem .8rem; }
+.ik-dagbog-tal { clear: both; }
+@media (max-width: 560px) { .r6-udland .r6-udland-ravn, .ik-dagbog-bog { width: 64px; } }
+.cert-pq-teaser { display: flex; align-items: flex-start; gap: .7rem; margin: .2rem 0 1rem; padding: .7rem .9rem; border: 1px solid color-mix(in srgb, var(--dawn) 45%, transparent); border-radius: 12px; font-size: .95rem; }
+.cert-pq-teaser img { flex: none; margin-top: .1rem; }
+.cert-pq-teaser b { display: block; }
+/* Tal din sag (runde 12): mikrofonknappen i AI-retssalen */
+.r6-rs-knapper { display: inline-flex; flex-wrap: wrap; gap: .6rem; margin-left: auto; }
+.r6-mik[aria-pressed="true"] { background: #b8432e; border-color: #b8432e; color: #fff; animation: r6-mik 1.4s ease-in-out infinite; }
+@keyframes r6-mik { 50% { box-shadow: 0 0 0 6px rgba(184,67,46,.25); } }
+@media (prefers-reduced-motion: reduce) { .r6-mik[aria-pressed="true"] { animation: none; } }

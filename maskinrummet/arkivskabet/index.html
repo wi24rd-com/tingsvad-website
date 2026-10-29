@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Det europæiske arkivskab · Tingsvad</title>
+<meta name="description" content="Det europæiske arkivskab på tingsvad.dk: en live demonstration af, hvordan man som Cloudflare-kunde selv bestemmer, at data kun gemmes i EU, med D1, KV, R2 og Durable Objects låst til EU-jurisdiktionen.">
+<meta property="og:title" content="Det europæiske arkivskab · Tingsvad">
+<meta property="og:description" content="D1, KV, R2 og Durable Objects låst til EU. Målt, mens du ser på det.">
+<meta property="og:image" content="https://tingsvad.dk/assets/og/maskinrummet-arkivskabet.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Det europæiske arkivskab – D1, KV, R2 og Durable Objects låst til EU. Målt, mens du ser på det.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tingsvad.dk/maskinrummet/arkivskabet/">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#111417">
+<meta name="view-transition" content="same-origin">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.da">
+  <link rel="canonical" href="https://tingsvad.dk/maskinrummet/arkivskabet/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://tingsvad.dk/maskinrummet/arkivskabet/#page", "url": "https://tingsvad.dk/maskinrummet/arkivskabet/", "name": "Det europæiske arkivskab · Tingsvad", "description": "Det europæiske arkivskab på tingsvad.dk: en live demonstration af, hvordan man som Cloudflare-kunde selv bestemmer, at data kun gemmes i EU, med D1, KV, R2 og Durable Objects låst til EU-jurisdiktionen.", "inLanguage": "da", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "license": "https://creativecommons.org/licenses/by/4.0/"}]}
+</script>
+<link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/arkivskabet/">
+<link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/archive-cabinet/">
+<link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/arkivskabet/">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/fav-ko-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-ko-512.png">
+<link rel="apple-touch-icon" href="/assets/fav-ko-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=88083686">
+<link rel="stylesheet" href="/assets/forside.css?v=88083686">
+<link rel="stylesheet" href="/assets/undersider.css?v=88083686">
+<link rel="stylesheet" href="/assets/infrakort.css?v=88083686">
+<link rel="stylesheet" href="/assets/vagt.css?v=88083686">
+</head>
+<body data-side="arkivskab" data-tilbage-bund class="r12m">
+<header class="r12-top" id="top">
+  <div class="r12-top-in gutter">
+    <a class="r12-logo" href="/" aria-label="Tingsvad – til forsiden">
+      <img class="r12-logo-ikon" src="/assets/pak/grafik/logo-oekser-48.webp" srcset="/assets/pak/grafik/logo-oekser-48.webp 1x, /assets/pak/grafik/logo-oekser-96.webp 2x" alt="" width="48" height="48">
+      <span>TINGSVAD<small>.dk</small></span>
+    </a>
+    <nav class="r12-nav" aria-label="Sider">
+      <a href="/">Vadestedet</a>
+      <a href="/historien/">Historien</a>
+      <a href="/oplevelser/">Oplevelser</a>
+      <a href="/arkivet/">Arkivet</a>
+    </nav>
+    <div data-tv-del="topbar"></div>
+  </div>
+</header>
+
+<nav class="r12s-krumme" aria-label="Du er her">
+  <div class="r12s-krumme-in gutter">
+    <ol><li><a href="/">Vadestedet</a></li><li><a href="/maskinrummet/">Maskinrummet</a></li><li aria-current="page">Det europæiske arkivskab</li></ol>
+    <a class="r12s-tilbage" href="/#kortet"><span aria-hidden="true">←</span> Tilbage til kortet</a>
+  </div>
+</nav>
+
+<header class="side-hoved side-hoved-maleri">
+  <picture class="side-hoved-bg"><img src="/assets/pak/undersider/hero-arkivskab-1400.webp" srcset="/assets/pak/undersider/hero-arkivskab-900.webp 900w, /assets/pak/undersider/hero-arkivskab-1400.webp 1400w, /assets/pak/undersider/hero-arkivskab-2048.webp 2048w" sizes="100vw" alt="Maleri: i en tømret arkivhal sidder ulven med et rødt voksegl i munden ved et højt, udskåret egeskab med hængelåse og en krans af tolv guldstjerner. Lysende tråde løber fra skabet til et Europakort på væggen, og gåsen kigger ind i et ulåst skab bagved." width="2048" height="768" fetchpriority="high"></picture>
+  <div class="side-hoved-indre gutter uden-motiv">
+    <div class="side-hoved-tekst">
+      <div class="runes" aria-hidden="true">ᛏᛁᚾᚴᛋᚢᛅᚦ</div>
+      <h1>Det europæiske arkivskab</h1>
+      <p class="praemis">Tinget bestemmer selv, hvor protokollen ligger.</p>
+    </div>
+  </div>
+  <img class="side-aa" src="/assets/pak/toppe/aa-linje.svg" alt="" width="1440" height="48">
+</header>
+
+<main class="col gutter">
+  <section id="arkivskab-live">
+    <p class="lead">Cloudflares net svarer fra det datacenter, der ligger nærmest gæsten, overalt i verden. Men hvor data gemmes, kan kunden selv bestemme. Tingets arkivskab har fire lagre, der er låst til EU: et Durable Object, en D1-database, et KV-navnerum og en R2-bucket. Ved siden af står et Durable Object uden lås. Kortet og kortene herunder måler, hvor de svarer fra, mens du ser på siden. Læg et segl i skabet, og se, hvor det havner. Seglet gemmer kun tidspunktet og datacentret, intet om dig.</p>
+    <div class="ik" id="arkivskab"><noscript><p class="note">Målingen kræver JavaScript. Rå tal ligger på <a href="/api/ting-ai/eu/skab">/api/ting-ai/eu/skab</a>.</p></noscript></div>
+  </section>
+  <section id="lagene" aria-labelledby="lagene-h">
+    <h2 id="lagene-h">De fire lag af kontrol</h2>
+    <p class="vg-intro">Jurisdiktionen styrer, hvor data gemmes. Det er det, skabet viser, og det kan alle bruge. Resten kræver Cloudflares Data Localization Suite på Enterprise-planen.</p>
+    <div class="as-lag"><article><span class="as-plan">Alle planer</span><h3>Jurisdiktioner</h3><p>D1, KV, R2, Durable Objects og Workflows kan låses til eu, us eller fedramp. Data kører og gemmes kun dér, også når gæsten sidder i den anden ende af verden. Låsen sættes ved oprettelsen og kan ikke ændres bagefter.</p></article><article><span class="as-plan">Enterprise</span><h3>Regional Services</h3><p>Bestemmer, hvor kanten må dekryptere og behandle trafikken. Uden den kan en gæsts forbindelse blive åbnet i det nærmeste datacenter, uanset land.</p></article><article><span class="as-plan">Enterprise</span><h3>Customer Metadata Boundary</h3><p>Holder logs og analysedata i EU eller USA, så også metadata om trafikken bliver i regionen.</p></article><article><span class="as-plan">Enterprise</span><h3>Geo Key Manager</h3><p>Bestemmer, i hvilke lande sitets private TLS-nøgler må findes.</p></article></div>
+  </section>
+  <section id="loven" aria-labelledby="loven-h">
+    <h2 id="loven-h">Hvorfor det betyder noget: lovgivningen</h2>
+    <p class="vg-intro">Mange tror, at GDPR kræver, at data ligger i EU. Det gør den ikke direkte. Men reglerne gør det meget lettere at overholde loven, når data bliver i EU, og nogle brancher kræver mere.</p>
+    <div class="as-lag">
+      <article><span class="as-plan">GDPR · kapitel V</span><h3>Overførsel til tredjelande</h3><p>Persondata må gerne behandles uden for EU, men kun med et retsgrundlag for overførslen: en afgørelse om, at landet beskytter data tilstrækkeligt (artikel 45), eller fx EU's standardkontraktbestemmelser med en vurdering af modtagerlandet (artikel 46). Bliver data i EU, er der ingen overførsel at dokumentere.</p></article>
+      <article><span class="as-plan">Schrems II · 2020</span><h3>Når rammen falder</h3><p>EU-Domstolen underkendte i 2020 aftalen Privacy Shield mellem EU og USA, fordi amerikanske myndigheder kunne få adgang til data om europæere. Den nuværende EU–US Data Privacy Framework fra 2023 er gyldig, men stadig omstridt. Data, der bor i EU, er ikke afhængige af, at sådan en ramme holder.</p></article>
+      <article><span class="as-plan">Data Act · NIS2 · DORA</span><h3>Mere end persondata</h3><p>EU's dataforordning (Data Act) kræver, at cloududbydere beskytter også ikke-persondata mod ulovlig adgang fra myndigheder uden for EU. NIS2 og, for den finansielle sektor, DORA stiller krav til sikkerhed og styring af leverandører. Ingen af dem kræver EU-placering direkte, men placering er ofte en del af svaret.</p></article>
+      <article><span class="as-plan">Kontrakter og brancher</span><h3>Når kunden kræver det</h3><p>Offentlige myndigheder, sundhed og finans stiller ofte krav om, at data ligger i EU eller i Danmark, i deres udbud og databehandleraftaler. Her er en jurisdiktion, der ikke kan ændres bagefter, et konkret svar.</p></article>
+    </div>
+    <p class="vg-note">Én ting løser placeringen ikke: Cloudflare er et amerikansk selskab. Hvor tungt det vejer, afhænger af data, risikovurdering og kontrakter. Det er derfor, Enterprise-lagene og databehandleraftalen findes. Teksten her er en forklaring, ikke juridisk rådgivning.</p>
+  </section>
+  <section id="ikke-laast" aria-labelledby="ikke-h">
+    <h2 id="ikke-h">Det, man ikke kan låse</h2>
+    <p>Workeren selv kører i det datacenter, der er nærmest gæsten. Placering kan flytte den tættere på data, men ikke spærre den inde. Workers AI kører, hvor grafikkortene er. Tingets øvrige lagre (databasen, KV, R2 og Durable Objects bag de andre sider) blev oprettet uden jurisdiktion. Målingerne viser, at de i dag ligger i Vesteuropa, men det er et tilfælde, ikke et løfte.</p>
+  </section>
+  <section id="selv" aria-labelledby="selv-h">
+    <h2 id="selv-h">Sådan gør man selv</h2>
+    <pre class="as-kode" tabindex="0"><code># 1. Opret lagrene med jurisdiktion (kan kun sættes ved oprettelsen)
+npx wrangler d1 create tingsvad-eu-skab --jurisdiction=eu
+npx wrangler kv namespace create tingsvad-eu-skab --jurisdiction=eu
+npx wrangler r2 bucket create tingsvad-eu-skab --jurisdiction=eu
+
+# 2. wrangler.toml: R2 skal have jurisdiktionen med i bindingen
+[[r2_buckets]]
+binding = &quot;EU_R2&quot;
+bucket_name = &quot;tingsvad-eu-skab&quot;
+jurisdiction = &quot;eu&quot;
+
+// 3. Durable Objects: vælg jurisdiktionen, når objektet hentes
+const stub = env.EU_SKAB.jurisdiction(&quot;eu&quot;).getByName(&quot;skabet&quot;);
+// … og inde i objektet: this.ctx.id.jurisdiction === &quot;eu&quot;</code></pre>
+    <p class="note">Rå målinger som JSON: <a href="/api/ting-ai/eu/skab"><code>/api/ting-ai/eu/skab</code></a>. Kilder: <a href="https://developers.cloudflare.com/d1/configuration/data-location/" rel="noopener">D1</a> · <a href="https://developers.cloudflare.com/r2/reference/data-location/" rel="noopener">R2</a> · <a href="https://developers.cloudflare.com/kv/reference/data-location/" rel="noopener">KV</a> · <a href="https://developers.cloudflare.com/durable-objects/reference/data-location/" rel="noopener">Durable Objects</a> · <a href="https://developers.cloudflare.com/data-localization/" rel="noopener">Data Localization Suite</a></p>
+    <p class="note">Familien: <a href="/maskinrummet/vaernet/">Værnet</a> · <a href="/maskinrummet/crawlerne/">Crawlerne</a> · <a href="/maskinrummet/hastigheden/">Hastigheden</a> · <a href="/maskinrummet/danmark/">Danmark lige nu</a> · <a href="/maskinrummet/arkivskabet/">Arkivskabet</a> · <a href="/maskinrummet/doeren/">Tingets dør</a> · <a href="/maskinrummet/kortet/">Infrastrukturkortet</a> · <a href="/maskinrummet/">Tilbage til maskinrummet</a></p>
+  </section>
+</main>
+
+<div data-tv-del="footer"></div>
+
+<script src="/assets/site.js?v=88083686"></script>
+<script src="/assets/round5-tekst.js?v=88083686" defer></script>
+<script src="/assets/round5.js?v=88083686" defer></script>
+<script src="/assets/arkivskab.js?v=88083686" defer></script>
+</body>
+</html>

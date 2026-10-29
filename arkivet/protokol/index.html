@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Udskrift af tingprotokollen – Tingsvad</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/fav-brian-32.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Spectral:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  body { padding-block: 2rem 4rem; }
+  .dok { max-width: 52rem; margin: 0 auto; display: grid; gap: 1.6rem; }
+  .dok-hoved { display: grid; gap: .4rem; border-bottom: 2px solid var(--dawn); padding-bottom: 1rem; }
+  .dok h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.03em; line-height: 1; margin: 0; }
+  .dok .sub { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--dawn); }
+  .dok .runer { font-size: 1.4rem; letter-spacing: .3em; color: var(--dawn); }
+  .dok .protokol table { min-width: 0; }
+  .dok .protokol td:nth-child(2) { font-size: .95rem; }
+  .handlinger { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; }
+  .stempel2 { display: inline-block; transform: rotate(-6deg); font-family: var(--display); font-weight: 800; font-size: 2rem; color: var(--rust); border: 4px double var(--rust); padding: .1em .5em; letter-spacing: .06em; justify-self: end; }
+  .paategn { font-style: italic; color: var(--mist-dim); border-top: 1px solid var(--rule); padding-top: 1rem; }
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    .handlinger, .note { display: none !important; }
+    .dok { max-width: none; }
+    .protokol { border: 0; background: none; }
+    .protokol tr { page-break-inside: avoid; }
+    body::before { content: "UDSKRIFT AF TINGPROTOKOLLEN · TINGSVAD.DK · UDSAT"; }
+    .stempel { display: block !important; position: fixed; top: 25%; right: 5%; }
+    .stempel2 { color: #7a3a20; border-color: #7a3a20; }
+  }
+</style>
+</head>
+<body>
+<main class="dok gutter">
+  <div class="dok-hoved">
+    <div class="runer" aria-hidden="true">ᛏᛁᚾᚴᛋᚢᛅᚦ</div>
+    <h1>Udskrift af tingprotokollen</h1>
+    <div class="sub">Tinget ved vadestedet · ført af Mímir (ulv) og Gudrun (gås) · tingsvad.dk</div>
+  </div>
+  <div class="handlinger"><button class="knap" type="button" id="print-knap">Gem som PDF</button><a class="knap sek" href="/api/ting-ai/pdf/protokol?lang=da" rel="nofollow">Hent som PDF (fra nettet)</a><a class="knap sek" href="/">Tilbage til vadestedet</a></div>
+  <p class="note">Tryk på knappen (eller ⌘P / Ctrl+P) og vælg "Gem som PDF" som printer. Stemplet og sidehovedet kommer med.</p>
+  <p>Udskrevet på begæring. Protokollen er fuldstændig i den forstand, at der ikke mangler noget, som nogensinde har været ført ind. Den er samtidig ufuldstændig i den forstand, at intet er afgjort. Begge dele er korrekte.</p>
+  <div class="protokol" tabindex="0" role="region" aria-label="Tingprotokollen"><table>
+        <thead><tr><th>År</th><th>Punkt</th><th>Afgørelse</th></tr></thead>
+        <tbody>
+          <tr><td>ca. 890</td><td>Ordet "Danmark" nævnes for første gang, i en rejseberetning nedskrevet ved den engelske kong Alfreds hof. Tinget er ikke sat endnu. Koen er ikke født. Tågen er der.</td><td class="dk">Noteret</td></tr>
+          <tr><td>ca. 965</td><td>Harald Blåtand rejser Jellingstenen og skriver "Danmark" på den: landets dåbsattest. Tinget hører, at nogen har skrevet på en sten, og finder det anmassende. Beslutter at skrive "udsat" på en sten som svar. Stenen er ikke fundet.</td><td class="dk">Noteret</td></tr>
+          <tr><td>ca. 980</td><td>Tinget sættes ved vadestedet. Sagen om koen: hvem ejer den?</td><td class="u">Udsat</td></tr>
+          <tr><td>1086</td><td>Knud den Hellige spørger, om tinget kan bruges til noget. Tinget overvejer.</td><td class="u">Udsat</td></tr>
+          <tr><td>1241</td><td>Jyske Lov nævner ikke Tingsvad med ét ord. Tinget beslutter at tage det personligt.</td><td class="u">Udsat</td></tr>
+          <tr><td>1397</td><td>Kalmarunionen samler Danmark, Norge og Sverige under én dronning. Tinget tilbyder at lade koen indgå i unionen. Margrete 1. svarer ikke.</td><td class="u">Udsat</td></tr>
+          <tr><td>1536</td><td>Reformationen. Koen er nu luthersk. Ejerskabet uændret.</td><td class="u">Udsat</td></tr>
+          <tr><td>1572</td><td>Åen tørrer ud. Tinget står i det tørre åløb hele sommeren og træffer sin første afgørelse: "Vi står her."</td><td>Vedtaget</td></tr>
+          <tr><td>1688</td><td>Matriklen registrerer vadestedet som "sumpet, men brugbart". Tinget er enig i begge dele.</td><td class="u">Udsat</td></tr>
+          <tr><td>1711</td><td>Pesten når egnen. Tinget beslutter at holde afstand til koen. Koen holder afstand til tinget. Første gang parterne er enige.</td><td class="u">Udsat</td></tr>
+          <tr><td>1837</td><td>Charles Babbage tegner den analytiske maskine. Tinget bestiller én til at udregne, hvem der ejer koen. Maskinen bliver aldrig bygget. Sagen om maskinen udsættes sammen med sagen om koen.</td><td class="ai">Udsat</td></tr>
+          <tr><td>1849</td><td>Grundloven indføres. Tinget overvejer, om det er et ting. Konkluderer, at det nok ikke er den slags ting.</td><td class="dk">Udsat</td></tr>
+          <tr><td>1864</td><td>Tinget tabes ikke til Preussen, da ingen af parterne kunne finde det i tågen. Regnes lokalt som Danmarks eneste sejr det år.</td><td class="u">Udsat</td></tr>
+          <tr><td>1915</td><td>Grundloven giver kvinder valgret. Samme dag ser Ragnhild på de syv, og tinget vedtager enstemmigt, at kvinder har stemmeret på tinget. Det er tingets anden afgørelse og den hurtigste.</td><td>Vedtaget</td></tr>
+          <tr><td>1936</td><td>Alan Turing beviser, at visse problemer aldrig kan afgøres af nogen maskine. Tinget føler sig set.</td><td class="ai">Udsat</td></tr>
+          <tr><td>1943</td><td>Protokollen gemmes i åen. Mímir husker ikke hvor. Protokollen genskabes fra hukommelsen: "udsat".</td><td class="u">Udsat</td></tr>
+          <tr><td>1945</td><td>ENIAC, verdens første elektroniske computer, tændes i Pennsylvania. Den fylder et rum og kan 5.000 regnestykker i sekundet. Tinget beder den om ét. Den har ikke noget svar på køer.</td><td class="ai">Udsat</td></tr>
+          <tr><td>1956</td><td>Kunstig intelligens opfindes som begreb på Dartmouth College. Forskerne lover at løse problemet "i løbet af sommeren". Tinget genkender tonen.</td><td class="ai">Udsat</td></tr>
+          <tr><td>1969</td><td>ARPANET sender sin første besked mellem to computere. Beskeden er "LO", fordi systemet går ned midt i "LOGIN". Tinget anerkender den som den første digitale udsættelse og bygger sit eget net, se sagsakt 6.</td><td class="ai">Udsat</td></tr>
+          <tr><td>1991</td><td>Tim Berners-Lee offentliggør World Wide Web. Tinget beslutter at flytte online, "så snart tågen tillader det".</td><td class="ai">Udsat</td></tr>
+          <tr><td>1990'erne</td><td>Tågen tillader det. Domænet tingsvad.dk registreres. Det er tingets tredje og hidtil seneste afgørelse.</td><td>Vedtaget</td></tr>
+          <tr><td>1997</td><td>Computeren Deep Blue slår verdensmesteren Kasparov i skak. Tinget sender sagen om koen til Deep Blue. Deep Blue svarer, at den kun spiller skak. Tinget noterer, at det er det samme, Asgeir siger om skjoldet.</td><td class="ai">Udsat</td></tr>
+          <tr><td>1998</td><td>En ny trådløs standard opkaldes efter Harald Blåtand: Bluetooth. Tinget forsøger at parre koen. Koen er ikke synlig for andre enheder.</td><td class="dk">Udsat</td></tr>
+          <tr><td>2007</td><td>iPhonen lanceres. Tinget kan nu udsætte sager fra lommen.</td><td class="ai">Udsat</td></tr>
+          <tr><td>2012</td><td>Deep learning får sit gennembrud, da et neuralt netværk lærer at genkende katte på billeder. Tinget sender et billede af koen. Netværket svarer: "kat (62 %)". Ejerskabet er fortsat uafklaret, men koen er nu muligvis en kat.</td><td class="ai">Udsat</td></tr>
+          <tr><td>2022</td><td>ChatGPT lanceres, og hele verden kan spørge en maskine om hvad som helst. Tinget spørger, hvem der ejer koen. Svaret er på 400 ord, begynder med "Det er et godt spørgsmål" og slutter med, at det "afhænger af flere faktorer". Tinget overvejer at gøre maskinen til protokolfører. Mímir gør indsigelse.</td><td class="ai">Udsat</td></tr>
+          <tr><td>2026</td><td>En kunstig intelligens maler tinget ved vadestedet efter beskrivelse. Det er første gang i 1.046 år, nogen har set stedet. Høvdingen får en bærbar af granit. Tinget flytter samme år til Cloudflare, fordi åen var for våd. Koen medbringes digitalt. Flytningen er noteret, ikke vedtaget.</td><td class="dk">Noteret</td></tr>
+          <tr><td>Næste ting</td><td>1. Koen. 2. Eventuelt.</td><td>Når tågen letter</td></tr>
+        </tbody>
+      </table></div>
+  <h2>Vedtægterne</h2>
+  <ol class="vedt">
+          <li>Tinget mødes ved vadestedet, når tågen tillader det. Tågen tillader det sjældent.</li>
+          <li>Enhver sag kan udsættes. Enhver sag bliver det.</li>
+          <li>Hunde, ulve, gæs og andre dyr har taleret, men ikke stemmeret. Mímir har gjort indsigelse. Gudrun har tilsluttet sig indsigelsen. Indsigelsen er udsat.</li>
+          <li>Den, der medbringer en ko, bærer bevisbyrden. Den, der medbringer to køer, bærer også den anden ko.</li>
+          <li>Spyddet tilhører ordstyreren. Ordstyreren tilhører slægten. Slægten tilhører domænet.</li>
+          <li>Skjoldet tilhører Asgeir. Det er ikke relevant for sagen. Dette er den eneste paragraf, Asgeir selv har foreslået.</li>
+          <li>Punktet "eventuelt" nås først, når alle foregående punkter er afgjort. Se § 2.</li>
+          <li>Ingen må forlade tinget, mens tinget er sat. Tinget har været sat siden 980. Toke den Yngre har bedt om en stol. Stolen er bevilget, men ikke taget i brug, da sagen om, hvorvidt man må sidde ned på tinget, er udsat.</li>
+          <li>Kvinder har stemmeret på tinget. Paragraffen blev vedtaget enstemmigt den 5. juni 1915, samme dag som Grundloven gav kvinder valgret, efter at Ragnhild havde set på de syv. Det er tingets anden afgørelse og den hurtigste. Ikrafttræden: når punktet nås.</li>
+          <li>Nettet må kun bruges til at sende "udsat". Al anden trafik betragtes som en afgørelse og er derfor forbudt.</li>
+        </ol>
+  <div class="stempel2" aria-hidden="true">UDSAT</div>
+  <p class="paategn">Protokollen er gennemlæst og fundet i overensstemmelse med sig selv. — Gudrun, statsautoriseret gås. Kvak.</p>
+</main>
+<div class="stempel" aria-hidden="true">UDSAT</div>
+<script src="/assets/print.js"></script>
+</body>
+</html>

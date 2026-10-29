@@ -1,0 +1,15 @@
+{
+  "name": "tingsvad-site",
+  "private": true,
+  "type": "module",
+  "description": "tingsvad.dk as one Cloudflare Worker with Static Assets (round 11).",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler preview",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "wrangler": "4.154.0"
+  }
+}

@@ -1,0 +1,133 @@
+# Kvalitetstest af tingsvad.dk: Playwright (Chromium, Firefox, WebKit, iPhone, Pixel, iPad, lyst tema) med axe-core og Lighthouse CI.
+# Kører efter hvert push til main og enhver feature-gren: venter, til site-Workeren (main → tingsvad.dk) eller branchens Worker Preview
+# (<branch>-tingsvad-site.<WORKERS_SUBDOMAIN>.workers.dev, repo-variabel) serverer netop denne commit (samme ?v=-hash som i repoet),
+# og tester så den adresse. Kan også startes manuelt med en vilkårlig adresse.
+# Testene er kun læsende; ingen formularer sendes.
+name: Kvalitet
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Adresse der skal testes'
+        required: true
+        default: 'https://tingsvad.dk'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kvalitet-${{ github.ref }}-${{ inputs.url }}
+  cancel-in-progress: true
+
+jobs:
+  # Runde 13: enhedstests og registertjek på hvert push og PR, uanset hvad der er ændret.
+  enhedstest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - name: Worker (tingsvad-ting-ai)
+        run: cd worker && npm ci --ignore-scripts && node --test test/*.test.js
+      - name: Site-Worker (tingsvad-site)
+        run: cd site-worker && npm ci --ignore-scripts && npm test
+      - name: MCP (tingsvad-mcp)
+        run: cd mcp && npm ci --ignore-scripts && node --test test/*.test.js
+      - name: Sagsregister stemmer med siderne
+        run: python3 -I sagsregister.py --tjek
+
+  adresse:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      url: ${{ steps.url.outputs.url }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - id: url
+        name: Find adressen
+        env:
+          INPUT_URL: ${{ inputs.url }}
+        run: |
+          if [ -n "$INPUT_URL" ]; then URL="$INPUT_URL";
+          elif [ "${GITHUB_REF_NAME}" = "main" ]; then URL="https://tingsvad.dk";
+          else B=$(echo "${GITHUB_REF_NAME}" | tr '[:upper:]_/.' '[:lower:]---'); URL="https://${B}-tingsvad-site.${{ vars.WORKERS_SUBDOMAIN }}.workers.dev"; fi
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Tester $URL" >> "$GITHUB_STEP_SUMMARY"
+      - name: Vent på site-Workeren
+        if: github.event_name == 'push'
+        run: |
+          V=$(grep -o 'site.css?v=[a-z0-9]*' historien/index.html | head -1)
+          echo "Venter på $V på ${{ steps.url.outputs.url }}/historien/"
+          for i in $(seq 1 60); do
+            if curl -fsS "${{ steps.url.outputs.url }}/historien/?nocache=$RANDOM" | grep -q "$V"; then echo "Deployet efter $((i*10)) s"; exit 0; fi
+            sleep 10
+          done
+          echo "::error::Site-Workeren serverede ikke $V inden for 10 minutter"; exit 1
+
+  playwright:
+    needs: adresse
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false   # én browser, der fejler, må ikke stoppe de andre
+      matrix:
+        include:
+          - { projekt: desktop-chromium, browser: chromium }
+          - { projekt: desktop-firefox, browser: firefox }
+          - { projekt: desktop-webkit, browser: webkit }
+          - { projekt: tablet-webkit, browser: webkit }
+          - { projekt: mobil-safari, browser: webkit }
+          - { projekt: mobil-chrome, browser: chromium }
+          - { projekt: lyst-tema, browser: chromium }
+    name: playwright (${{ matrix.projekt }})
+    container:   # Playwrights eget image har browsere og systemafhængigheder; ingen apt i CI. Versionen SKAL følge @playwright/test i tests/package.json
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --user 1001
+    env:
+      BASE_URL: ${{ needs.adresse.outputs.url }}
+    defaults:
+      run:
+        working-directory: tests
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright test --project=${{ matrix.projekt }}
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: playwright-rapport-${{ matrix.projekt }}
+          path: tests/playwright-report
+          retention-days: 14
+          if-no-files-found: ignore
+
+  lighthouse:
+    needs: adresse
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_URL: ${{ needs.adresse.outputs.url }}
+    defaults:
+      run:
+        working-directory: tests
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - run: npx --yes @lhci/cli@0.15.1 autorun   # hentes ved kørsel; ikke i package-lock (dens afhængigheder har kendte sårbarheder i værktøjskæden, ikke på sitet)
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: lighthouse-rapport
+          path: tests/lighthouse-rapport
+          retention-days: 14

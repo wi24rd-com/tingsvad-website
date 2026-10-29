@@ -1,0 +1,5 @@
+# Runde 10: den printbare protokol er flyttet ind under Arkivet (Browser Run laver PDF'en derfra).
+/protokol/      /arkivet/#protokol  301
+/protokol       /arkivet/#protokol  301
+/en/protokol/   /en/archive/#protokol  301
+/en/protokol    /en/archive/#protokol  301

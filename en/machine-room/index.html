@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The machine room · Tingsvad</title>
+<meta name="description" content="The machine room of tingsvad.dk: how the site is built on Cloudflare – Workers with Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize and more.">
+<meta property="og:title" content="The machine room · Tingsvad">
+<meta property="og:description" content="How the ford is built. Colophon, not fiction.">
+<meta property="og:image" content="https://tingsvad.dk/assets/og/en-machine-room.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The machine room – How the ford is built. Colophon, not fiction.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tingsvad.dk/en/machine-room/">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#111417">
+<meta name="view-transition" content="same-origin">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+  <link rel="canonical" href="https://tingsvad.dk/en/machine-room/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://tingsvad.dk/en/machine-room/#page", "url": "https://tingsvad.dk/en/machine-room/", "name": "The machine room · Tingsvad", "description": "The machine room of tingsvad.dk: how the site is built on Cloudflare – Workers with Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize and more.", "inLanguage": "en", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "genre": "Satire", "license": "https://creativecommons.org/licenses/by/4.0/"}]}
+</script>
+<link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/">
+<link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/">
+<link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/fav-brian-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-brian-512.png">
+<link rel="apple-touch-icon" href="/assets/fav-brian-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=88083686">
+<link rel="stylesheet" href="/assets/forside.css?v=88083686">
+<link rel="stylesheet" href="/assets/undersider.css?v=88083686">
+<link rel="stylesheet" href="/assets/infrakort.css?v=88083686">
+</head>
+<body data-side="maskinrummet" class="r12m">
+<header class="r12-top" id="top">
+  <div class="r12-top-in gutter">
+    <a class="r12-logo" href="/en/" aria-label="Tingsvad – to the front page">
+      <img class="r12-logo-ikon" src="/assets/pak/grafik/logo-oekser-48.webp" srcset="/assets/pak/grafik/logo-oekser-48.webp 1x, /assets/pak/grafik/logo-oekser-96.webp 2x" alt="" width="48" height="48">
+      <span>TINGSVAD<small>.dk</small></span>
+    </a>
+    <nav class="r12-nav" aria-label="Pages">
+      <a href="/en/">The ford</a>
+      <a href="/en/history/">History</a>
+      <a href="/en/experiences/">Experiences</a>
+      <a href="/en/archive/">Archive</a>
+    </nav>
+    <div data-tv-del="topbar"></div>
+  </div>
+</header>
+
+<nav class="r12s-krumme" aria-label="You are here">
+  <div class="r12s-krumme-in gutter">
+    <ol><li><a href="/en/">The ford</a></li><li aria-current="page">The machine room</li></ol>
+    <a class="r12s-tilbage" href="/en/#kortet"><span aria-hidden="true">←</span> Back to the map</a>
+  </div>
+</nav>
+
+<header class="side-hoved side-hoved-maleri">
+  <picture class="side-hoved-bg"><img src="/assets/pak/toppe/serverfarm-1400.webp" srcset="/assets/pak/toppe/serverfarm-900.webp 900w, /assets/pak/toppe/serverfarm-1400.webp 1400w, /assets/pak/toppe/serverfarm-2048.webp 2048w" sizes="100vw" alt="Painting: a Viking smith connects rope cables to carved server cabinets under a mossy roof by the river, with a water wheel, runestones with glowing screens and a raven." width="2048" height="768" fetchpriority="high"></picture>
+  <div class="side-hoved-indre uden-motiv gutter">
+    <div class="side-hoved-tekst">
+      <div class="runes" aria-hidden="true">ᛏᛁᚾᚴᛋᚢᛅᚦ</div>
+      <h1>The machine room</h1>
+      <p class="praemis">How the ford is built. Colophon, not fiction.</p>
+    </div>
+  </div>
+  <img class="side-aa" src="/assets/pak/toppe/aa-linje.svg" alt="" width="1440" height="48">
+</header>
+
+<main class="col gutter">
+  <section id="maskinrum-side">
+    <div class="txt r6-intro" id="maskinrummet">
+      <h3 class="maskinrum-h">How the ford is built</h3>
+      <p class="lead">For the technically minded: the thing runs on Cloudflare’s platform, from DNS to artificial intelligence, without a single server anyone has to watch. That suits the thing. It has never watched anything. The site is thereby also an open demo of what can be built on Cloudflare Workers and the rest of the platform – with the source code freely available.</p>
+      <p class="note">Colophon, not fiction. Everything below is what the site actually uses. The source is on <a href="https://github.com/wi24rd-com/tingsvad-website" rel="noopener">GitHub</a>.</p>
+    </div>
+    <div class="txt">
+      <h3 class="maskinrum-h" id="arkitektur-h">The architecture, as it answers right now</h3>
+      <p>The diagram is drawn by your browser from the Worker’s <code>health</code> answer: the layers from your browser to the models, every product, whether its binding is on, and how many of the thing’s sixteen machines use it.</p>
+    </div>
+    <div class="ik-indgang"><p><b>See all of it on one map</b>The infrastructure map shows which data centre answered you, where the database and the two Durable Objects live, and measured response times for every binding.</p><a class="knap" href="/en/machine-room/map/">Open the infrastructure map <span aria-hidden="true">→</span></a></div>
+    <div class="ik-indgang"><p><b>The defences, the crawlers, the speed and Denmark right now</b>What Cloudflare kept out, who came to read, how fast the pages are for real guests, and what it looks like for the rest of Denmark. Counted every hour from Cloudflare’s own figures.</p><span class="vg-indgang-knapper"><a class="knap" href="/en/machine-room/defences/">The defences <span aria-hidden="true">→</span></a> <a class="knap sek" href="/en/machine-room/crawlers/">The crawlers</a> <a class="knap sek" href="/en/machine-room/speed/">The speed</a> <a class="knap sek" href="/en/machine-room/denmark/">Denmark right now</a> <a class="knap sek" href="/en/machine-room/archive-cabinet/">The archive cabinet</a> <a class="knap sek" href="/en/machine-room/the-door/">The thing’s door</a></span></div>
+    <div id="arkitektur" role="region" aria-labelledby="arkitektur-h"><noscript><p class="note">The diagram needs JavaScript. The cards below are still there.</p></noscript></div>
+    <div class="maskinrum-lag" id="maskinrum-gitter">
+      <div class="mr-lag" id="lag-kant">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 1 of 7 · 8 cards</p>
+            <h3>The edge</h3>
+            <p class="mr-lag-kort">Name, shields and access in front of everything.</p>
+            <p>Before a single line of the thing’s code runs, Cloudflare’s network has already looked up the name, picked the nearest data centre, encrypted the connection and filtered out attacks and bots. The edge is everything that happens in the first milliseconds, close to you.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-kant-kort" data-aaben="Show the 8 cards" data-luk="Show less">Show the 8 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-kant-kort" hidden>
+        <article><b>DNS and domain</b><h3>The name lives on Cloudflare's name servers</h3><p>tingsvad.dk has been the family's since the 90s. Today Cloudflare's anycast DNS (<code>sid</code> and <code>val</code>) answers for the name from hundreds of cities at once, so the lookup happens close to whoever asks. The zone is signed with DNSSEC (ECDSA P-256) and the DS record sits with Punktum.dk, so a validating resolver can reject forged answers. Traffic to the site is proxied through Cloudflare, so the real IP addresses behind the Workers are never shown.</p></article>
+        <article><b>Network and security</b><h3>HTTP/3, HSTS, CSP and no third parties</h3><p>Everything is served over HTTP/3 from Cloudflare’s network with HSTS. The Content-Security-Policy allows only the site’s own scripts and Turnstile; AI text is always escaped and never becomes HTML. Sessions are a signed, HttpOnly cookie with no personal data. Web Analytics counts without cookies.</p></article>
+        <article><b>DDoS, WAF and analytics</b><h3>A guard that is on before anyone asks</h3><p>Cloudflare's DDoS protection stands in front of all traffic with no setup, and the managed WAF ruleset stops known attack patterns before they reach the Workers. <a href="/en/machine-room/defences/">The defences</a> show every hour what it has stopped, and <a href="/en/machine-room/crawlers/">the crawlers</a> which bots came by. Web Analytics counts visits with a small script from Cloudflare's own domain, with no cookies, fingerprinting or third parties. The thing's own visitor counter at the bottom of the page is a daily hash in KV (see the Workers KV card) and knows nothing about who you are. Network Error Logging (<code>NEL</code>) reports connection failures back to Cloudflare, so the site can see when something does not arrive.</p></article>
+        <article><b>Rate Limiting + Turnstile</b><h3>One vote at a time, preferably from a human</h3><p>Workers’ built-in rate limiting binding counts calls per session and endpoint inside Cloudflare’s own network. The guestbook and the stool application are protected by Turnstile, an invisible bot check with no picture puzzles; the token is validated server-side and can be used only once.</p></article>
+        <article><b>request.cf</b><h3>The edge knows where it stands</h3><p>Every request carries a <code>cf</code> object from Cloudflare: data centre, protocol, TLS version, measured round-trip time and much more. A small route in the site Worker, <code>/api/kant</code>, reads four of the fields and sends them back to you, so you can see which of Cloudflare’s data centres answered (<a href="#vejen">your way here</a>). IP, city, country and provider are in the object too; the thing does not read them, and nothing is stored.</p></article>
+        <article><b>Workers Cache</b><h3>The paper is printed once and read many times</h3><p>Today's paper, radio, audit and the diaries are the same for everyone, so they are cached in front of the Worker with <code>Cache-Control: public</code>, a <code>Cache-Tag</code> and an ETag from the content. The next guest gets the answer from the edge cache without the Worker running; afterwards it revalidates with <code>If-None-Match</code> and an empty 304. When Cron has printed a new edition, the Worker calls <code>ctx.cache.invalidate({tags})</code>. “Show the machinery” says whether the answer came from the cache (HIT) or from the Worker.</p></article>
+        <article><b>Web Crypto · ML-DSA-65</b><h3>A certificate that holds against a quantum computer</h3><p><a href="/en/experiences/rune-workshop/#fremmoede">The certificate of attendance</a> is now signed by the Worker with ML-DSA-65 (FIPS 204), which Workers' Web Crypto offers behind the flag <code>webcrypto_modern_algorithms</code>. The signature is 3,309 bytes, the public key is open at <code>/api/ting-ai/bevis/noegle</code>, and the page can show that a changed name makes the check fail. The case of the cow is still adjourned.</p></article>
+        <article><b>Secrets Store</b><h3>The keys in one cupboard</h3><p>The GitHub token, the Realtime token, the webhook secret and the certificate's private key can live in the account's shared Secrets Store instead of as secrets on each Worker. The code asks the cupboard first (<code>env.X_STORE.get()</code>) and falls back to the old Worker secret, so the move can happen one key at a time. Jan sets the keys; they are never in the repo.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-levering">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 2 of 7 · 5 cards</p>
+            <h3>Delivery</h3>
+            <p class="mr-lag-kort">The site itself: static files and a Worker that only wakes up when it is needed.</p>
+            <p>The pages are ordinary files sent straight from the edge. Only when a page needs its header, language or an API answer does the site Worker wake up, do its work in the same request and go back to sleep.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-levering-kort" data-aaben="Show the 5 cards" data-luk="Show less">Show the 5 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-levering-kort" hidden>
+        <article><b>Workers Static Assets</b><h3>Static site, no build step</h3><p>The whole site is one Worker, <code>tingsvad-site</code>, with the files as Static Assets. Every push to <code>main</code> becomes a new release on the global network through Workers Builds. No build: the HTML, CSS and JavaScript sit in the repo exactly as served. Images, scripts and stylesheets are sent straight from the edge without waking the Worker, and they cost nothing. <code>_headers</code> sets the Content-Security-Policy, Permissions-Policy and cache rules; <code>site-worker/wrangler.toml</code> holds the bindings.</p></article>
+        <article><b>run_worker_first</b><h3>Server logic next to the files</h3><p>A list of patterns decides when the Worker answers before the files: the HTML pages, <code>/api/*</code>, <code>/admin/*</code> and <code>/sag/*</code>, but not <code>/assets/*</code>. A small router without dependencies (<code>site-worker/index.js</code>) passes the guestbook (<code>/api/sager</code>), the counters and the shareable cases (<code>/sag/980-0007</code> with link previews) to the same small modules as before and fetches everything else from the files through <code>env.ASSETS</code>. It all happens in the same request, in the data centre nearest you.</p></article>
+        <article><b>HTMLRewriter</b><h3>One navigation, no build step</h3><p>The pages are plain HTML files with placeholders. A middleware (<code>functions/_lib/side.js</code>) streams each page through HTMLRewriter and inserts the top bar, navigation and footer from <code>/partials/</code>, fills in the language switch from the page’s <code>hreflang</code> and marks the page you are on. <code>run_worker_first</code> keeps images and scripts away from the Worker, and because <code>_headers</code> only applies to responses straight from the files, the middleware sets CSP and HSTS on HTML itself. Old links such as <code>/#gaestebog</code> are forwarded by a small script to the sub-page where the element now lives.</p></article>
+        <article><b>Content negotiation</b><h3>Markdown for the machines</h3><p>If a client asks for <code>Accept: text/markdown</code>, or adds <code>index.md</code> to a page’s address, the middleware answers with the page’s content as Markdown: title, description, canonical address and language versions as YAML front matter, then the text without navigation, scripts and decoration, plus the header <code>x-markdown-tokens</code> with an estimate of its length. Cloudflare’s built-in <i>Markdown for Agents</i> needs the Pro plan; the thing is on Free and does it itself with a small parser without dependencies (<code>functions/_lib/markdown.js</code>). Browsers never send <code>text/markdown</code> and get HTML as always; the response carries <code>Vary: Accept</code>, so no cache mixes the two up.</p></article>
+        <article><b>The error board</b><h3>Errors both kinds of guest can read</h3><p>A page that does not exist gives humans the thing’s 404 page in the right language, with links to the five pages. Machines that ask for <code>application/problem+json</code> get an RFC 9457 response with <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code>, <code>retryable</code> and suggestions; <code>application/json</code> gives the site’s own error contract, and <code>text/markdown</code> gives front matter with <code>http_status</code> and <code>retryable</code>, following the pattern of Cloudflare’s own error pages. Everything under <code>/api/</code> always answers JSON. If something below the middleware fails, it answers 503 with <code>Retry-After</code>, never 502.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-beregning">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 3 of 7 · 10 cards</p>
+            <h3>Compute</h3>
+            <p class="mr-lag-kort">The thing’s machines in a Worker with no address of its own.</p>
+            <p>Everything that needs more than sending a file happens in the machine Worker behind a service binding: votes, applications, printing the paper and raven post. This is where the long processes live that must be able to sleep, wake and carry on without losing the thread.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-beregning-kort" data-aaben="Show the 10 cards" data-luk="Show less">Show the 10 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-beregning-kort" hidden>
+        <article><b>Workers + Service Binding</b><h3>The thing’s machines behind <code>/api/ting-ai/</code></h3><p>The thing's machine park lives in a separate Worker. The site Worker calls it through a service binding, a direct call between two Workers that never touches the public internet. The machine Worker has no address of its own.</p></article>
+        <article><b>From Pages to Workers</b><h3>Moving day</h3><p>From round 1 to 10 the site lived on Cloudflare Pages. Pages published the whole repo, so even <code>worker/wrangler.toml</code> and the tests could be fetched from tingsvad.dk. In round 11 the site moved to Workers Static Assets: an <code>.assetsignore</code> keeps everything but the site out, so only what guests are meant to see is published. The middleware from <code>functions/</code> was not rewritten but moved into shared modules that both Pages and the Worker could run while the move was under way. Every branch now gets a Worker Preview with its own bindings, its own KV and its own machine Worker, so a test never writes in the thing’s real minutes. The move was tested by comparing every page in both languages with what Pages served, byte for byte. Only the fonts and the analytics script differed, and those are the zone’s own additions.</p></article>
+        <article><b>Durable Objects</b><h3>One truth about seven seats</h3><p>The Great Vote is one Durable Object per ford with WebSocket Hibernation: every connection talks to the same instance, seats are assigned atomically, and the object sleeps between messages without losing the round. A reconnect gives you the same seat, not a new vote. The same technique carries <a href="/en/experiences/the-stool/">the shared stool</a>: one stool for the whole internet, where the server owns the position and rate-limits every guest.</p></article>
+        <article><b>Workflows</b><h3>The bureaucracy sleeps durably</h3><p>A stool application starts a Workflow instance that sleeps a minute, two hours and a day between its steps. It runs while your browser is closed, and every step is idempotent: a repeated step never moves the case two places.</p></article>
+        <article><b>Workflows + Browser Run</b><h3>Documents and audits, step by step</h3><p>The raven exchange’s Workflow goes from <i>received</i> via <i>the raven is flying</i> to <i>the document is being written</i> (a PDF from a fixed, escaped template in Browser Run, filed in R2) and <i>delivered</i>; every step is an idempotent transition in D1, and the writing is retried. The audit is another Workflow that each morning takes one page at a time with a pause in between, staying within Browser Run’s free allowance.</p></article>
+        <article><b>Cron Triggers</b><h3>The paper is printed once a day</h3><p>An hourly schedule in UTC with a date guard in Europe/Copenhagen, so daylight saving never yields two editions. A job lock in D1 ensures two simultaneous triggers still print one paper per language. Page views never generate anything.</p></article>
+        <article><b>Queues</b><h3>The raven’s mailbag</h3><p>Orders to the <a href="/en/experiences/case-file/">raven exchange</a> go into the queue <code>tingsvad-ravn</code>. The queue delivers at least once, with retries and a dead-letter queue; because every Workflow instance has a fixed name (<code>ravn-&lt;job&gt;-&lt;attempt&gt;</code>), a duplicate delivery does no harm. Queues are free on Workers Free.</p></article>
+        <article><b>Email Workers</b><h3>Raven post on a domain of its own</h3><p>Email Routing applies to a whole zone, so the raven got an old domain of its own: on <code>sitesite.dk</code>, Cloudflare Email Routing hands letters for <code>brev@</code> straight to the Worker’s <code>email()</code> handler. It parses the letter with <code>postal-mime</code> and keeps only the subject, a short excerpt and the time; the sender becomes a hash, and addresses and links are removed from the excerpt. Nothing is forwarded, nothing is answered, and a letter is shown only if the sender asked for it and it has been approved.</p></article>
+        <article><b>Agents SDK + Workers RPC</b><h3>The thing as an MCP server</h3><p>A small Worker on <code>mcp.tingsvad.dk</code> speaks the Model Context Protocol with <code>createMcpHandler</code> from the Agents SDK: a fresh <code>McpServer</code> per call, no state and no Durable Object. The tools call the thing’s Worker through a service binding to a named RPC entrypoint (<code>TingMcp</code>), which runs quotas in D1 and talks directly to the Durable Objects of the vote and the stool. The public <code>/api</code> proxy only reaches the Worker’s <code>fetch()</code> and cannot reach the entrypoint. <a href="#mcp">Connect your assistant</a>.</p></article>
+        <article><b>Realtime SFU + Durable Objects</b><h3>The radio goes live</h3><p>On <a href="/en/experiences/machine-park/radio/">the radio page</a> you can listen live, together with everyone else. A Durable Object makes today's English broadcast as raw audio (Aura-2, 48 kHz) in R2 and asks Realtime SFU for a WebSocket adapter; the SFU calls back to the object, which sends the audio in real time as small protobuf packets. Every listener subscribes to the same track over WebRTC and hears the same point in the broadcast. Listening only: the site's Permissions-Policy blocks the microphone. Realtime is free up to 1,000 GB of egress a month.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-data">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 4 of 7 · 6 cards</p>
+            <h3>Data</h3>
+            <p class="mr-lag-kort">Where the thing remembers, as well as it can.</p>
+            <p>The thing’s memory is split by what it has to remember: quick counters in KV, cases and quotas in an SQL database, files in R2 and meaning in a vector index. None of it stores who you are.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-data-kort" data-aaben="Show the 6 cards" data-luk="Show less">Show the 6 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-data-kort" hidden>
+        <article><b>Workers KV</b><h3>Guestbook and counters</h3><p>A globally replicated key-value store holds the cases raised, the attempts to decide the case and today’s visitors, the last as daily hashes that expire after two days. No cookies for that; the session for the machine park is the only cookie, and it holds nothing about the person.</p></article>
+        <article><b>D1</b><h3>SQLite at the edge</h3><p>Newspaper editions, cases, quotas, idempotency keys and rate limits live in a D1 database in Western Europe. Reservations carry a lease, so a crash mid-call never locks the day’s allowance forever.</p></article>
+        <article><b>R2</b><h3>Media without egress fees</h3><p>Fictional finds and the radio’s audio files are stored in an R2 bucket under a key of choices, language, prompt version and model. The same combination is therefore fetched from the model only once; every guest shares the file.</p></article>
+        <article><b>Vectorize</b><h3>Mímir’s archive as a vector index</h3><p>The editorial corpus (characters, case files, the real facts with sources) is indexed as embeddings from bge-m3. Mímir finds the nearest excerpts to a question and may only quote them. The puzzle’s solutions are not in the index; the server still selects them by spoiler level. The <a href="/en/experiences/lost-property/">lost property office</a> has its own namespace with a fixed catalogue, so the answers always come from the catalogue and never from the model.</p></article>
+        <article><b>Analytics Engine</b><h3>The thing’s counting works</h3><p>The middleware writes one data point per page, the Worker one per machine call and one per event (a moved stool, a vote cast, the day’s audit) to the dataset <code>tingsvad_taelle</code>. A data point is a kind, a name, a language, a data centre and two numbers: no IP, no cookie, no session. Writing does not hold up the response. The Worker reads the numbers with the Analytics SQL binding, without an API token, and keeps the answer for five minutes. Under heavy traffic Analytics Engine samples and weights the numbers back; at the thing’s traffic they are practically exact.</p></article>
+        <article><b>Durable Objects · SQL</b><h3>The stool keeps a diary</h3><p>The stool and the vote are Durable Objects with SQLite storage, and now they use it: every move, vote and closed round becomes a row in the object's own table (<code>ctx.storage.sql</code>), with weekday and hour in Danish time. <a href="/en/experiences/the-stool/">The stool</a> and <a href="/en/experiences/machine-park/the-vote/">the vote</a> show the statistics and the SQL that made them. Only time and kind, never who. Rows older than half a year are cleared.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-ai">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 5 of 7 · 5 cards</p>
+            <h3>AI and browsers at the edge</h3>
+            <p class="mr-lag-kort">Models and a headless browser, all behind bindings.</p>
+            <p>Language models, image models and a real browser run inside Cloudflare’s own network and are called through bindings with no API keys in the code. Every call has a daily quota, and the answers are validated before anyone sees them.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-ai-kort" data-aaben="Show the 5 cards" data-luk="Show less">Show the 5 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-ai-kort" hidden>
+        <article><b>Workers AI</b><h3>Three models, one budget</h3><p>Courtroom, Mímir, newspaper and provenance: Llama 3.3 70B in JSON mode, so replies are validated against a schema before they are shown. The image evidence: Llama 3.2 Vision describes, the text model translates. The forge: FLUX.1 schnell. Daily quotas are reserved in the database <em>before</em> the model is called.</p></article>
+        <article><b>AI Gateway</b><h3>One gate in front of every model</h3><p>Every AI call passes through AI Gateway, which logs model, latency and tokens, caches identical calls (the same sample picture is described only once) and can set its own ceiling. The site’s own daily quotas still apply; the gateway is the safety net around them.</p></article>
+        <article><b>Browser Run + Images</b><h3>A browser at the edge</h3><p>Link previews of a shared case (<code>/sag/980-0007</code>) are drawn as a real image by a headless browser and stored in R2. The minutes can be fetched as a PDF from the same browser. The Images binding normalises uploads in the image evidence: orientation, metadata and size, before the model sees the file.</p></article>
+        <article><b>AI Search</b><h3>Ask the archive</h3><p>The ready-made counterpart to the hand-built Vectorize archive: Cloudflare AI Search with built-in storage. The Worker creates two instances itself (Danish and English) through a namespace binding and once a day puts in the site’s Markdown versions, but only the pages whose SHA-256 has changed. <a href="/en/archive/#arkiv-spoerg">Ask the archive</a> searches hybrid (vector and keyword), and Mímir answers with the text model only from the excerpts found and links to the sources. AI Search is billed from November 2026 with 1,000 queries a month included, so the thing has a hard daily quota of 25.</p></article>
+        <article><b>Web Search API</b><h3>From abroad in the Tingsvad Gazette</h3><p>When the paper is printed, the Worker can fetch a few real, harmless headlines with <code>env.AI.websearch</code> through AI Gateway and let the language model comment on them in the thing's tone. Headline, source and link come from the search, never from the model, and only happy news gets in: a word list removes anything serious before the model sees it, and the model has to approve each story as purely positive. The searches are paid with AI Gateway credit, and the Worker searches at most twice a day (<code>WEBSEARCH_ENABLED</code>).</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-browser">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 6 of 7 · 2 cards</p>
+            <h3>Your browser</h3>
+            <p class="mr-lag-kort">What never leaves your machine.</p>
+            <p>Some of the thing never runs on a server at all. The cauldron, the sounds, the excavation and your finds live in your own browser under a strict CSP and are never sent anywhere.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-browser-kort" data-aaben="Show the 2 cards" data-luk="Show less">Show the 2 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-browser-kort" hidden>
+        <article><b>Web Workers + CSP</b><h3>The guest’s code in a closed cauldron</h3><p>The site’s CSP does not allow <code>eval</code>. <a href="/en/experiences/the-cauldron/">The cauldron</a> therefore runs the guest’s function in a Web Worker from a file on the site itself, which has its own narrow CSP in <code>_headers</code>: <code>default-src 'none'</code> (no network) and <code>'unsafe-eval'</code> only there. The main page stops the worker after two seconds. Nothing is sent to the thing – it is honestly labelled “runs in your browser”.</p></article>
+        <article><b>Outside Cloudflare</b><h3>What the browser does itself</h3><p>A service worker for offline and “add to home screen”, Web Audio for the river and the wind, canvas for the excavation and the certificate, the Intl API for Danish dates and seasons, localStorage for your finds.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-vaerktoej">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Layer 7 of 7 · 5 cards</p>
+            <h3>Tooling and quality</h3>
+            <p class="mr-lag-kort">What keeps the rest honest.</p>
+            <p>Measurements, fixed numbers and automated tests make sure that what the site claims about itself is also true. Every morning Gudrun goes through the pages, and faults become issues on GitHub.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-vaerktoej-kort" data-aaben="Show the 5 cards" data-luk="Show less">Show the 5 cards</button>
+        </div>
+        <div class="maskinrum" id="lag-vaerktoej-kort" hidden>
+        <article><b>Server-Timing</b><h3>Show the machinery</h3><p>Every panel in the <a href="/en/experiences/machine-park/">machine park</a> can unfold its machinery: the products behind it, the actual call, the response time measured in your browser and the Worker’s own measurements of D1, Workers AI, R2, KV and Vectorize, sent as a <code>Server-Timing</code> header. Bindings are wrapped in a small proxy (<code>worker/src/lib/timing.js</code>), so the measuring happens in one place. Stored results are labelled <i>Stored result</i>, so it is always clear whether something is live.</p></article>
+        <article><b>One canon</b><h3>Dates and rulings in one place</h3><p><code>assets/kanon.json</code> holds the universe’s fixed figures: the thing convened in 980, the three rulings with the latest in the 1990s, foggy days and summer. The page reads the file, and Wrangler bundles the same file into the Worker on deploy, so the newspaper’s FACTS and the front-page counters cannot drift apart. A number guard removes sentences with figures the model made up.</p></article>
+        <article><b>GitHub Actions + Playwright</b><h3>Gudrun checks the browsers too</h3><p>After every release a test suite opens every page in both languages in the three browser engines (Chromium, Firefox and WebKit, which powers Safari) and as an iPhone, iPad and Pixel, in light and dark theme. It checks that no page scrolls sideways, that there is exactly one heading, that images and the site’s own files load without errors, and runs the axe-core accessibility check and Lighthouse. The first run found weak contrast in the light theme, a page 148 px too wide on mobile and a link without a name for screen readers; all three are fixed. The tests only read; they submit nothing. <a href="https://github.com/wi24rd-com/tingsvad-website/tree/main/tests">The tests</a> and <a href="https://github.com/wi24rd-com/tingsvad-website/actions/workflows/kvalitet.yml">the runs</a> are public, and the general part can be reused on other sites.</p></article>
+        <article><b>Workflows + GitHub REST</b><h3>Gudrun files cases on GitHub</h3><p>When the <a href="/en/machine-room/audit/">audit</a> has failures, its last step opens one issue per day in the repo with the failed pages: path, HTTP status, missing elements and the number of JavaScript errors, never internal error texts. Before opening one she lists the open issues and looks for an invisible date marker, so a retried step does not file the same case twice. When a later audit passes in full, she comments and closes it herself. The token is fine-grained (Issues only, on one repo) and kept as a Worker secret. If GitHub fails, the audit still finishes. <a href="https://github.com/wi24rd-com/tingsvad-website/issues?q=label%3Agudrun">See Gudrun’s issues</a>.</p></article>
+        <article><b>Workers Issues + Traces</b><h3>Errors in production go to Gudrun too</h3><p>All three Workers have Workers Issues and Traces turned on: runtime errors are collected and grouped, and a share of calls is traced all the way through the bindings. An automation sends new errors as a webhook to <code>/api/ting-ai/gudrun/issues</code>; Gudrun checks the secret, strips anything that looks like a key, and gathers the day's errors in one GitHub issue, at most 20 a day.</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Round 10 · Your way here: request.cf and the counting works -->
+  <section id="vejen">
+    <div class="txt">
+      <h2>Your way here</h2>
+      <p>Two small measurements, both real: where on Cloudflare’s network the page came from, and what the thing has counted in the last 24 hours. Neither knows who you are.</p>
+    </div>
+    <div class="r10-vej">
+      <div class="r10-boks" id="kant-kort" aria-live="polite"><noscript><p class="note">The card needs JavaScript. <code>GET /api/kant</code> works without.</p></noscript></div>
+      <div class="r10-boks r10-boks-bred" id="taelle" aria-live="polite"><noscript><p class="note">The counting works need JavaScript. <code>GET /api/ting-ai/taelle</code> works without.</p></noscript></div>
+    </div>
+    <div class="txt" id="fejltavle">
+      <h3>For the machines</h3>
+      <p>Every page also exists as Markdown, and the thing’s errors answer in a format a machine can read. Try it:</p>
+      <pre tabindex="0" aria-label="Examples with curl"><code>curl -H "Accept: text/markdown" https://tingsvad.dk/en/machine-room/
+curl https://tingsvad.dk/en/history/index.md
+curl -H "Accept: application/problem+json" https://tingsvad.dk/en/does-not-exist/</code></pre>
+      <p class="note">The method is on the cards <a href="#lag-levering">Markdown for the machines</a> and <a href="#lag-levering">The error board</a> in the machine room. An agent can also start with <a href="/llms.txt">llms.txt</a>.</p>
+    </div>
+  </section>
+
+  <!-- Round 10 · The thing as an MCP server -->
+  <section id="mcp">
+    <div class="split">
+      <div class="txt">
+        <h2>The thing as an MCP server</h2>
+        <p class="lead">Your AI assistant can connect straight to the thing. The address is <code>https://mcp.tingsvad.dk/mcp</code>, and no login is needed. The assistant can look things up in the minutes, search the lost property office and read the guestbook. If you ask it to, it can also raise a case, vote in the Great Vote and move the shared stool while the guests on the site watch it happen.</p>
+        <p>The server is a small Worker of its own, built with Cloudflare’s Agents SDK (<code>createMcpHandler</code>, Streamable HTTP). It keeps no state between calls. All logic, all quotas and all data live in the thing’s own Worker and are reached through a service binding to an RPC entrypoint that the public <code>/api</code> proxy cannot reach. Each client is recognised only by a SHA-256 fingerprint of IP address and date, so the fingerprint changes every day and the IP address never leaves the MCP Worker.</p>
+        <h3>How to connect</h3>
+        <p><b>Claude:</b> Settings → Connectors → <i>Add custom connector</i>, and paste the address above. <b>Other clients</b> that only speak locally (stdio) can use a bridge: <code>npx mcp-remote https://mcp.tingsvad.dk/mcp</code>. <b>Try it in the browser</b> with MCP Inspector: <code>npx @modelcontextprotocol/inspector</code>, choose <i>Streamable HTTP</i> and paste the address.</p>
+      </div>
+      <figure class="r9-fig"><img src="/assets/pak/r10/mcp-600.webp" srcset="/assets/pak/r10/mcp-600.webp 600w, /assets/pak/maskinpark/mcp-1200.webp 1200w" sizes="(max-width: 900px) 90vw, 36vw" width="600" height="600" alt="Illustration: a carved oak message baton on two stone stands; three leather cords carry the message on to three small rune stones with an amber glow." loading="lazy"></figure>
+    </div>
+    <div class="protokol mcp-tabel" tabindex="0" role="region" aria-label="The tools on the thing’s MCP server">
+      <table>
+        <thead><tr><th>Tool</th><th>Does</th><th>Limit</th></tr></thead>
+        <tbody>
+          <tr><td>tingets_status</td><td>The thing’s age, the latest audit, where the stool stands and the newest case.</td><td>Reads</td></tr>
+          <tr><td>slaa_op_i_protokollen</td><td>Semantic search in the archive. Answers with verbatim excerpts and their source.</td><td>Reads · 100 AI look-ups a day in total</td></tr>
+          <tr><td>spoerg_arkivet</td><td>Mímir answers from the whole site (AI Search) with source links.</td><td>Reads · shares the daily quota of 25 with guests</td></tr>
+          <tr><td>hittegods_soeg</td><td>Finds the closest items in the lost property catalogue.</td><td>Reads · same pool</td></tr>
+          <tr><td>laes_gaestebogen</td><td>The newest cases in the guestbook.</td><td>Reads</td></tr>
+          <tr><td>rejs_sag</td><td>Raises a case in the guestbook, marked “· MCP”.</td><td>Writes · 3 cases a day for all agents together</td></tr>
+          <tr><td>stem</td><td>Takes a free seat in the vote and votes ja, nej or eventuelt.</td><td>Writes · one vote per round</td></tr>
+          <tr><td>flyt_stolen</td><td>Moves the shared stool 1–3 steps.</td><td>Writes · 300 steps a day in total</td></tr>
+          <tr><td>afgoer_sagen</td><td>Asks the thing to decide the case of the cow.</td><td>Always adjourns</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Every client is limited to 30 calls a minute, and there is no access to administration. When a limit is hit, the thing answers in tone with a <code>retryAfter</code>. The code is in <a href="https://github.com/wi24rd-com/tingsvad-website/tree/main/mcp">mcp/</a> and <a href="https://github.com/wi24rd-com/tingsvad-website/blob/main/worker/src/features/mcp.js">worker/src/features/mcp.js</a>.</p>
+  </section>
+
+  <!-- 6 · The network -->
+
+  <section id="revision-kort">
+    <div class="r10-rev">
+      <div class="txt">
+        <h2>Gudrun’s audit</h2>
+        <p>Every morning Gudrun goes through every page in both languages. Only the result is shown here; the table, the pictures and the method are on <a href="/en/machine-room/audit/">the audit’s own page</a>.</p>
+        <div id="revision-resume" aria-live="polite"></div>
+      </div>
+      <figure class="r9-fig"><img src="/assets/pak/maskinpark/revisionen-600.webp" width="600" height="473" alt="Illustration: Gudrun, a white goose, with a magnifying glass over a ledger." loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="maskinrum-afslutning">
+    <p class="note maskinrum-slut">The thing has noted that all of this could have been a single text file. The note has been minuted and adjourned.<br><a href="https://github.com/wi24rd-com/tingsvad-website" rel="noopener">Source code on GitHub</a> · MIT for code, CC BY 4.0 for content</p>
+    <figure class="udvikleren">
+      <img src="/assets/pak/web/udvikleren-900.webp" srcset="/assets/pak/web/udvikleren-900.webp 900w, /assets/pak/web/udvikleren-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 56rem" alt="Painting: a hooded Viking lies on his side in the grass looking at a wooden laptop with the GitHub and Cloudflare marks on the lid." width="1600" height="533" loading="lazy">
+      <figcaption>The code is on GitHub. The site is on Cloudflare. The developer is on the floor.</figcaption>
+    </figure>
+  </section>
+</main>
+
+<div data-tv-del="footer"></div>
+
+<script src="/assets/site.js?v=88083686"></script>
+<script src="/assets/round3.js?v=88083686" defer></script>
+<script src="/assets/round4.js?v=88083686" defer></script>
+<script src="/assets/round5-tekst.js?v=88083686" defer></script>
+<script src="/assets/round5.js?v=88083686" defer></script>
+<script src="/assets/round6-tekst.js?v=88083686" defer></script>
+<script src="/assets/kaede.js?v=88083686" defer></script>
+<script src="/assets/round6.js?v=88083686" defer></script>
+<script src="/assets/round9-tekst.js?v=88083686" defer></script>
+<script src="/assets/round9.js?v=88083686" defer></script>
+<script src="/assets/round10.js?v=88083686" defer></script>
+<script src="/assets/ankre.js?v=88083686" defer></script>
+</body>
+</html><tr><td class="h">01915ragn</td><td class="d">1915</td><td class="t">feat:</td><td class="m">§ 9: women have the vote. Passed after Ragnhild looked</td><td class="ru" title="ragnhild">ᚱᛅᚴᚾᚼᛁᛚᛏ</td><td class="tag"></td></tr>
+

@@ -1,0 +1,15 @@
+{
+  "name": "tingsvad-kvalitet",
+  "private": true,
+  "description": "Udseende, tilgængelighed og hastighed for tingsvad.dk på tværs af browsere. Kun læsende tests: ingen formularer sendes. Lighthouse CI hentes med npx ved kørsel og er ikke en afhængighed her.",
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=desktop-chromium --project=mobil-chrome",
+    "rapport": "playwright show-report",
+    "lighthouse": "npx --yes @lhci/cli@0.15.1 autorun"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.0",
+    "@playwright/test": "1.63.0"
+  }
+}

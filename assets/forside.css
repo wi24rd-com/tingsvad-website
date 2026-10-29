@@ -1,0 +1,357 @@
+/* tingsvad.dk — forsiden (runde 12), bygget efter Jans ChatGPT-mockup »Tingsvad Vikinge Village«:
+   lyst pergament, dyb skovgrøn og guld, kraftig serif. Gælder kun body.r12 (forsiden da/en), så undersiderne er urørte.
+   Mørkt tema: pergamentet bliver natpergament; heroen, statusbåndet, radioen og footeren er grønne i begge temaer. */
+
+body.r12 {
+  --p: #efe5cf; --p2: #e6d8b9; --kortflade: #f7f0de; --ink: #2a2118; --ink2: #5a4934; --linje: #cdb68a;
+  --gron: #1e3829; --gron2: #142a1e; --guld: #c8963c; --guld2: #e6bd68; --guld-ink: #241805; --guldtekst: #7a5510;
+  --serif: "Spectral", "Iowan Old Style", Georgia, serif;
+  background: var(--p); color: var(--ink); font-family: var(--serif);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body.r12 { --p: #141b16; --p2: #1a221c; --kortflade: #1e2721; --ink: #ede3ca; --ink2: #bfb194; --linje: #3e4c3f; --guldtekst: #e2b55e; }
+}
+:root[data-theme="dark"] body.r12 { --p: #141b16; --p2: #1a221c; --kortflade: #1e2721; --ink: #ede3ca; --ink2: #bfb194; --linje: #3e4c3f; --guldtekst: #e2b55e; }
+
+.r12 a { color: inherit; }
+.r12 h1, .r12 h2, .r12 h3 { font-family: var(--serif); }
+.r12-in { max-width: 1200px; margin-inline: auto; min-width: 0; }
+.r12 main, .r12-sek, .r12-radio { min-width: 0; max-width: 100%; }
+.r12 main, .r12-sek { display: block; }
+.r12 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── Knapper ── */
+.r12-knapper { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.4rem; }
+.r12-knap { display: inline-flex; align-items: center; gap: .55rem; min-height: 3rem; padding: .65rem 1.45rem; border-radius: 10px; cursor: pointer;
+  font-family: var(--serif); font-weight: 700; font-size: 1.05rem; line-height: 1.2; text-decoration: none; color: var(--guld-ink) !important;
+  background: linear-gradient(180deg, #ecc576, #c58f36); border: 1px solid #f4d690; box-shadow: 0 8px 18px -10px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.45); }
+.r12-knap:hover { background: linear-gradient(180deg, #f4d189, #d09c43); }
+.r12-knap:active { transform: translateY(1px); }
+.r12-knap:focus-visible, .r12-tekstknap:focus-visible, .r12-link:focus-visible, .r12-pil:focus-visible, .r12-play:focus-visible, .r12-smaa:focus-visible, .r12-steder summary:focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; }
+.r12-hero .r12-knap:focus-visible, .r12-hero .r12-link:focus-visible, .r12-radio .r12-play:focus-visible { outline-color: #fff2cf; }
+.r12-tekstknap { background: none; border: 0; padding: .5rem 0; font: inherit; font-weight: 600; color: var(--ink2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 2.75rem; }
+.r12-tekstknap:hover { color: var(--ink); }
+.r12-pil { display: inline-flex; gap: .4rem; font-weight: 700; text-decoration: none; color: var(--ink); border-bottom: 1.5px solid var(--guld); padding-bottom: 2px; }
+.r12-pil:hover { color: var(--guldtekst); }
+.r12-lille { font-size: .92rem; color: var(--ink2); margin: .6rem 0 0; }
+.r12-lille a { color: inherit; }
+.r12-lille b { color: var(--guldtekst); }
+.r12 #r5-hero-status { color: var(--ink2) !important; opacity: 1 !important; text-decoration: underline; text-decoration-color: var(--linje); text-underline-offset: 3px; }
+
+/* ── Topbjælken ── */
+.r12-top { position: relative; z-index: 20; background: var(--gron2); border-bottom: 1px solid rgba(230,189,104,.3); color-scheme: dark; }
+.r12-top-in { display: flex; align-items: center; gap: 1.2rem; min-height: 4.25rem; max-width: 1400px; margin-inline: auto; }
+.r12-logo { display: inline-flex; align-items: center; gap: .65rem; text-decoration: none; color: #f2e4c1 !important; }
+.r12-logo svg { width: 34px; height: 34px; color: var(--guld2); flex: none; }
+.r12-logo span { font-weight: 600; font-size: 1.35rem; letter-spacing: .14em; }
+.r12-nav { display: flex; gap: .3rem; margin-left: auto; }
+.r12-nav a { color: #e8dbbd !important; text-decoration: none; font-weight: 600; font-size: 1.02rem; padding: .55rem .85rem; border-bottom: 2px solid transparent; }
+.r12-nav a:hover { color: #fff3d2 !important; }
+.r12-nav a[aria-current] { color: var(--guld2) !important; border-bottom-color: var(--guld2); }
+.r12-nav a:focus-visible { outline: 2px solid var(--guld2); outline-offset: 2px; }
+@media (min-width: 721px) {
+  .r12-top .topbar { position: static; padding: 0; margin-left: .4rem; background: none; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .r12-top .topbar::before { display: none; }
+  .r12-top .topbar > a, .r12-top .topbar > button { padding: .5rem .7rem; }
+}
+@media (max-width: 1040px) and (min-width: 721px) { .r12-top .topbar .tema span, .r12-top .topbar #lyd span { display: none; } }
+@media (max-width: 860px) and (min-width: 721px) { .r12-logo span { display: none; } }
+@media (max-width: 720px) {
+  .r12-top { background: none; border: 0; }
+  .r12-top-in { min-height: 0; padding: 0; }
+  .r12-logo, .r12-nav { display: none; }
+}
+
+/* ── Heroen: morgenmaleriet ── */
+.r12-hero { position: relative; background: var(--gron2); color: #fbf3de; overflow: hidden; color-scheme: dark; }
+.r12-hero picture, .r12-hero img { display: block; width: 100%; }
+.r12-hero img { height: auto; aspect-ratio: 2 / 1; object-fit: cover; min-height: 26rem; max-height: 82vh; object-position: 50% 40%; }
+.r12-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(8,16,10,.66) 0%, rgba(8,16,10,.34) 34%, rgba(8,16,10,0) 58%), linear-gradient(0deg, rgba(8,16,10,.62) 0%, rgba(8,16,10,0) 46%); }
+.r12-hero-tekst { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(1.6rem, 5vw, 4rem); max-width: 1400px; margin-inline: auto; }
+.r12-hero-tekst > * { max-width: 46rem; }
+.r12-hero h1 { margin: 0; font-weight: 800; font-size: clamp(3.2rem, 8.4vw, 7.4rem); line-height: .92; letter-spacing: -.01em; color: #fbf3de; text-shadow: 0 3px 24px rgba(0,0,0,.5); }
+.r12-praemis { margin: .55rem 0 .25rem; font-weight: 700; font-size: clamp(1.2rem, 2.3vw, 1.85rem); line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+.r12-hero-sub { margin: 0 0 1.4rem; font-size: clamp(1.02rem, 1.5vw, 1.25rem); color: #f3e6c6; text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+.r12-link { color: #fbf3de !important; font-weight: 700; text-decoration: none; border-bottom: 1.5px solid rgba(251,243,222,.65); padding-bottom: 2px; min-height: 2.75rem; display: inline-flex; align-items: center; gap: .4rem; }
+.r12-link:hover { border-bottom-color: var(--guld2); }
+.r12-haand { position: absolute; z-index: 2; right: 4.5%; top: 17%; margin: 0; display: flex; align-items: flex-start; gap: .2rem; font-style: italic; font-weight: 600; font-size: 1.15rem; color: #fff6df; text-shadow: 0 1px 8px rgba(0,0,0,.65); transform: rotate(-6deg); }
+.r12-haand svg { width: 52px; height: 36px; margin-top: .9rem; }
+@media (max-width: 1100px) { .r12-haand { display: none; } }
+@media (max-width: 720px) {
+  .r12-hero { margin-top: calc(3.3rem + env(safe-area-inset-top, 0px)); }
+  .r12-hero img { aspect-ratio: 9 / 5; min-height: 0; object-position: 72% 50%; }
+  .r12-hero::after { display: none; }
+  .r12-hero-tekst { position: static; padding-block: 1.3rem 1.8rem; background: var(--gron2); }
+}
+
+/* ── Statusbåndet ── */
+.r12-status { display: block; background: var(--gron); color: #efe3c4; border-block: 1px solid rgba(230,189,104,.35); color-scheme: dark; }
+.r12-status-in { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .5rem 1.2rem; min-height: 3.4rem; padding-block: .55rem; max-width: 1400px; margin-inline: auto; text-align: center; }
+.r12-knude { width: 64px; height: 16px; color: var(--guld2); opacity: .85; flex: none; }
+.r12-status-txt { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: .2rem .55rem; margin: 0; font-size: 1.05rem; }
+.r12-status-lbl { font-weight: 600; }
+.r12-status .varsel { display: inline-flex; align-items: center; gap: .45rem; border: 0; background: none; padding: 0; margin: 0; max-width: none; }
+.r12-status .varsel .ikon { width: 1.6rem; height: 1.6rem; color: var(--guld2); }
+.r12-status .varsel > div:last-child { display: inline; }
+.r12-status .varsel .m { display: none; }
+.r12-status .varsel b { display: inline; margin-right: .35rem; font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: #fff3d2; letter-spacing: 0; }
+.r12-status .varsel span { color: #e3d6b6; font-size: 1.05rem; }
+.r12-mini { min-height: 2.5rem; padding: .35rem .95rem; border-radius: 999px; border: 1px solid rgba(230,189,104,.6); background: rgba(230,189,104,.1); color: #f6e3b6; font: inherit; font-size: .95rem; font-weight: 600; cursor: pointer; }
+.r12-mini:hover { background: rgba(230,189,104,.22); }
+.r12-mini[aria-pressed="true"] { background: var(--guld2); color: var(--guld-ink); }
+@media (max-width: 720px) { .r12-knude { display: none; } }
+
+/* ── Pergamentsektioner ── */
+.r12-pergament { background: var(--p); background-image: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,250,235,.45), rgba(255,250,235,0) 70%); }
+:root[data-theme="dark"] .r12-pergament { background-image: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .r12-pergament { background-image: none; } }
+.r12-sek { padding-block: clamp(2.6rem, 6vw, 4.6rem); }
+.r12-sek + .r12-pergament { border-top: 1px solid var(--linje); }
+.r12-sek h2 { margin: 0; text-align: center; font-weight: 800; font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.08; color: var(--ink); letter-spacing: -.005em; }
+.r12-sub { margin: .6rem auto 2rem; max-width: 40rem; text-align: center; font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--ink2); }
+.r12-orn { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-bottom: .9rem; color: var(--guld); }
+.r12-orn i { display: block; width: 5rem; height: 1px; background: currentColor; opacity: .7; }
+.r12-orn svg { width: 18px; height: 9px; }
+
+/* ── Kortet ── */
+.r12-kort-rul { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; border-radius: 16px; outline: none; }
+.r12-kort { position: relative; margin: 0; }
+.r12-kort img { width: 100%; height: auto; aspect-ratio: 3 / 2; border-radius: 16px; border: 1px solid var(--linje); box-shadow: 0 24px 48px -28px rgba(50,30,5,.7); }
+@keyframes r12-aande { 0%, 100% { box-shadow: 0 0 0 3px rgba(244,214,144,.55), 0 4px 10px rgba(0,0,0,.5); } 50% { box-shadow: 0 0 0 9px rgba(244,214,144,.12), 0 4px 10px rgba(0,0,0,.5); } }
+.r12-skub { display: none; margin: .6rem 0 0; text-align: right; font-size: .9rem; color: var(--ink2); }
+@media (max-width: 760px) {
+  .r12-kort { width: 760px; }
+  .r12-skub { display: block; }
+}
+/* Kortet bryder ud af tekstspalten på brede skærme: op til 1760px, altid lidt luft i siderne */
+@media (min-width: 761px) {
+  .r12-kort-rul { --kortb: min(1760px, calc(96vw - 1rem)); width: var(--kortb); max-width: none; margin-inline: calc((100% - var(--kortb)) / 2); }
+}
+@media (min-width: 1500px) {
+}
+
+/* Listen over steder */
+.r12-steder { margin-top: 1.4rem; }
+.r12-steder > summary { list-style: none; display: flex; justify-content: center; align-items: center; gap: .4rem; min-height: 2.75rem; cursor: pointer; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+.r12-steder > summary::-webkit-details-marker { display: none; }
+.r12-steder > summary { text-decoration: underline; text-decoration-color: var(--guld); text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
+.r12-steder > summary span { display: inline-block; text-decoration: none; }
+.r12-steder[open] > summary span { transform: rotate(90deg); }
+.r12-steder ul { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+.r12-steder li a { display: grid; gap: .15rem; height: 100%; padding: .85rem 1rem; border-radius: 12px; text-decoration: none; background: var(--kortflade); border: 1px solid var(--linje); color: var(--ink); }
+.r12-steder li a:hover { border-color: var(--guld); }
+.r12-steder li a:focus-visible { outline: 3px solid var(--guld); outline-offset: 2px; }
+.r12-steder li b { font-size: 1.05rem; }
+.r12-steder li span { font-size: .93rem; color: var(--ink2); line-height: 1.4; }
+@media (max-width: 860px) { .r12-steder ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .r12-steder ul { grid-template-columns: minmax(0, 1fr); gap: .5rem; } .r12-steder li a { padding: .65rem .85rem; } }
+
+/* ── Godt selskab: Mímir og Gudrun ── */
+.r12-to { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem; margin-top: 2rem; }
+.r12-sidst .r12-to { margin-top: 0; }
+@media (max-width: 860px) { .r12-to { grid-template-columns: minmax(0, 1fr); } }
+.r12-kortet { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: 1rem 1.4rem; padding: 1.4rem 1.5rem; border-radius: 16px; background: var(--kortflade); border: 1px solid var(--linje); }
+.r12-gudrun { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+.r12-kortet img { width: 100%; height: auto; max-height: 15rem; object-fit: contain; }
+.r12-kortet h3 { margin: 0 0 .3rem; font-size: clamp(1.45rem, 2.4vw, 1.9rem); font-weight: 800; line-height: 1.1; color: var(--ink); }
+.r12-kortet p { margin: 0 0 1rem; color: var(--ink2); font-size: 1.05rem; line-height: 1.45; }
+.r12-kortet .r12-lille { margin: .6rem 0 0; font-size: .88rem; }
+.r12-svar { min-height: 0; margin: -.2rem 0 .7rem; font-weight: 800; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1; color: #8c3d1e; }
+:root[data-theme="dark"] .r12-svar { color: #e58c5f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .r12-svar { color: #e58c5f; } }
+.r12-svar:empty { display: none; }
+.r12-svar.ny { animation: pop .35s ease-out; }
+.r12-seddel { position: relative; display: inline-block; margin: 0 0 1.1rem !important; padding: .8rem 1.2rem .8rem 1rem; transform: rotate(-2deg); background: #f3e2b8; color: #3a2a14 !important; font-style: italic; font-weight: 600; font-size: 1.1rem !important; border-radius: 3px; box-shadow: 0 8px 16px -10px rgba(0,0,0,.55); }
+.r12-seddel::after { content: ""; position: absolute; right: -.55rem; bottom: -.55rem; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #c2412d, #7c1d12); box-shadow: 0 2px 4px rgba(0,0,0,.4); }
+@media (max-width: 520px) {
+  .r12-kortet, .r12-gudrun { grid-template-columns: minmax(0, 1fr); text-align: left; }
+  .r12-gudrun img { order: -1; }
+  .r12-kortet img { max-height: 12rem; }
+}
+
+/* ── Mens vi venter: tre kort ── */
+.r12-tre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 2rem; }
+.r12-tre article { display: flex; flex-direction: column; align-items: center; text-align: center; padding: .5rem 1.6rem 1rem; }
+.r12-tre article + article { border-left: 1px solid var(--linje); }
+.r12-tre .r12-ill { width: auto; max-width: 100%; height: 11rem; object-fit: contain; margin-bottom: 1rem; }
+.r12-tre h3 { margin: 0 0 .3rem; font-size: 1.45rem; font-weight: 800; color: var(--ink); }
+.r12-tre p { margin: 0 0 .8rem; color: var(--ink2); font-size: 1.02rem; }
+.r12-tre .r12-lille { margin: -.3rem 0 .8rem; }
+.r12-tre .r12-pil { margin-top: auto; }
+.r12-ting { position: relative; width: 15rem; max-width: 100%; height: 11rem; margin-bottom: 1rem; }
+.r12-ting img { position: absolute; width: 6.6rem; height: 6.6rem; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(40,25,5,.35)); }
+.r12-ting img:nth-child(1) { left: 0; top: 2.2rem; transform: rotate(-8deg); }
+.r12-ting img:nth-child(2) { left: 4.2rem; top: 3.6rem; }
+.r12-ting img:nth-child(3) { right: 0; top: .2rem; transform: rotate(14deg); }
+.r12-ting img:nth-child(4) { right: 2.6rem; top: 4.3rem; width: 4.6rem; transform: rotate(-6deg); }
+@media (max-width: 860px) {
+  .r12-tre { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .r12-tre article + article { border-left: 0; border-top: 1px solid var(--linje); padding-top: 1.8rem; }
+}
+
+/* ── Tingsvad Radio ── */
+.r12-radio { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); background: var(--gron2); color: #f1e6ca; color-scheme: dark; }
+.r12-radio-billede { width: 100%; height: 100%; min-height: 20rem; object-fit: cover; }
+.r12-radio-tekst { padding: clamp(2rem, 5vw, 3.6rem) clamp(1.4rem, 5vw, 4rem); align-self: center; }
+.r12-radio .kicker { font-family: var(--serif); font-size: .78rem; font-weight: 600; letter-spacing: .16em; color: var(--guld2); margin: 0 0 .55rem; }
+.r12-radio .kicker::after { display: none; }
+.r12-radio h2 { margin: 0; font-size: clamp(2rem, 4.2vw, 3.1rem); font-weight: 800; color: #fbf3de; line-height: 1.05; }
+.r12-radio-lead { margin: .5rem 0 1.4rem; font-size: clamp(1.05rem, 1.7vw, 1.3rem); color: #e9dcbb; }
+.r12-afspil { display: flex; align-items: center; gap: 1.1rem; }
+.r12-play { width: 4rem; height: 4rem; flex: none; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--guld-ink);
+  background: radial-gradient(circle at 35% 30%, #f6d58f, #c58f36 70%); border: 2px solid #f4d690; box-shadow: 0 10px 20px -10px rgba(0,0,0,.8); }
+.r12-play svg { width: 1.7rem; height: 1.7rem; margin-left: .15rem; }
+.r12-play[aria-pressed="true"] svg { margin-left: 0; }
+.r12-play:hover { filter: brightness(1.06); }
+.r12-boelge { width: min(12rem, 50%); height: 2rem; color: var(--guld2); opacity: .75; }
+.r12-radio.spiller .r12-boelge rect { animation: r12-boelge 1.1s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.r12-radio.spiller .r12-boelge rect:nth-child(3n) { animation-delay: -.3s; }
+.r12-radio.spiller .r12-boelge rect:nth-child(3n+1) { animation-delay: -.6s; }
+@keyframes r12-boelge { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.35); } }
+@media (prefers-reduced-motion: reduce) { .r12-radio.spiller .r12-boelge rect { animation: none; } }
+.r12-afspil-lbl { margin: .8rem 0 0; font-weight: 700; font-size: 1.05rem; color: #fbf3de; }
+.r12-radio .r12-lille { color: #cdbf9e; margin-top: .15rem; }
+.r12-radio-status { margin: .6rem 0 0; font-size: .95rem; color: #f0d48f; }
+.r12-radio-status:empty { display: none; }
+.r12-radio-status a { color: #f6e3b6; }
+.r12-radio-linje { margin: 1.2rem 0 0; padding-top: 1rem; border-top: 1px solid rgba(230,189,104,.25); font-style: italic; color: #d9cba9; font-size: 1rem; }
+.r12-radio-linje:empty { display: none; }
+@media (max-width: 860px) {
+  .r12-radio { grid-template-columns: minmax(0, 1fr); }
+  .r12-radio-billede { min-height: 0; aspect-ratio: 16 / 9; height: auto; }
+}
+
+/* ── Historien og Maskinrummet ── */
+.r12-smaa { display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem 1.4rem; border-radius: 16px; text-decoration: none; color: var(--ink) !important; background: var(--kortflade); border: 1px solid var(--linje); }
+.r12-smaa:hover { border-color: var(--guld); }
+.r12-smaa img { width: 6.5rem; height: 6.5rem; flex: none; border-radius: 50%; object-fit: cover; border: 3px solid var(--guld); }
+.r12-tandhjul { width: 6.5rem; height: 6.5rem; flex: none; color: var(--guldtekst); }
+.r12-smaa > span { display: grid; gap: .3rem; }
+.r12-smaa b { font-size: 1.25rem; line-height: 1.2; }
+.r12-smaa > span > span { color: var(--ink2); font-size: 1rem; line-height: 1.45; }
+.r12-smaa em { font-style: normal; font-weight: 700; justify-self: start; border-bottom: 1.5px solid var(--guld); padding-bottom: 1px; }
+@media (max-width: 520px) { .r12-smaa img, .r12-tandhjul { width: 4.8rem; height: 4.8rem; } }
+
+/* ── Footeren på forsiden: skovgrøn ── */
+.r12 footer { background: var(--gron2); color: #cfc2a3; border-top: 1px solid rgba(230,189,104,.3); color-scheme: dark; }
+.r12 footer a { color: #ecc776; }
+.r12 footer code { color: #f2e4c1; }
+.r12 footer .runes { color: #e6bd68 !important; opacity: .9 !important; text-shadow: none !important; }
+.r12 footer .licens { border-top-color: rgba(230,189,104,.2); }
+
+@media print {
+  .r12-top, .r12-status, .r12-afspil, .r12-steder, .r12-knap, .r12-tekstknap { display: none !important; }
+  .r12-hero::after { display: none; }
+  .r12-hero-tekst { position: static; color: #000; background: none; }
+}
+
+/* ── Skrifttyper (runde 12): Cormorant Unicase til logo og store sidetitler, Cormorant Garamond til overskrifter
+   og figurernes små citater (kursiv), Alegreya Sans til brødtekst, navigation, knapper og kortets skilte.
+   Cormorant har lav x-højde; font-size-adjust giver den samme x-højde som brødteksten (ældre browsere viser den blot lidt mindre). */
+body.r12 { --serif: "Alegreya Sans", "Gill Sans", "Segoe UI", sans-serif; --body: var(--serif);
+  --titel: "Cormorant Unicase", "Cormorant Garamond", Georgia, serif; --overskrift: "Cormorant Garamond", Georgia, serif; }
+body.r12 :is(h2, h3) { font-family: var(--overskrift); font-weight: 600; letter-spacing: 0; }
+body.r12 :is(h1, .r12-logo span) { font-family: var(--titel); font-weight: 600; letter-spacing: .01em; }
+body.r12 .r12-logo span { font-weight: 700; letter-spacing: .08em; }
+body.r12 :is(.r12-seddel, .r12-haand, .r12s-side-ill figcaption, .r12s-pladsholder) { font-family: var(--overskrift); font-style: italic; font-weight: 600; }
+body.r12 .r12s-menu-h { font-family: var(--serif); }
+body.r12 :is(h2, h3, .r12-seddel, .r12-haand, .r12s-side-ill figcaption, .r12s-pladsholder) { font-size-adjust: .5; }
+body.r12 h1 { line-height: .95; }
+
+/* ── Ro omkring indholdet (runde 12, efter gennemgang) ── */
+/* Årstidens blade og frost holder sig til maleriet øverst og er få */
+.r12-hero .aarstid-lag, .r12s-hero .aarstid-lag { position: absolute; inset: 0; z-index: 1; }
+.r12-hero .aarstid-lag-efteraar i, .r12s-hero .aarstid-lag-efteraar i { top: -14%; opacity: .92; }
+.r12-hero .aarstid-lag-efteraar i:nth-child(n+11) { display: none; }
+.r12s-hero .aarstid-lag { left: 58%; }
+.r12s-hero .aarstid-lag-efteraar i:nth-child(n+7) { display: none; }
+@media (max-width: 760px) { .r12-hero .aarstid-lag-efteraar i:nth-child(n+5), .r12s-hero .aarstid-lag-efteraar i:nth-child(n+4) { display: none; } }
+/* Op/ned-knapperne: små og dæmpede i yderkanten, så de ikke ligger på indholdet; på mobil scroller man selv */
+.r12 .rul { right: max(.5rem, env(safe-area-inset-right, 0px)); top: auto; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); transform: none; gap: .3rem; }
+.r12 .rul button { width: 2.2rem; height: 2.2rem; opacity: .55; background: rgba(20,42,30,.75); border-color: rgba(230,189,104,.45); color: #e6bd68; box-shadow: none; }
+.r12 .rul button:hover, .r12 .rul button:focus-visible { opacity: 1; }
+.r12 .rul button[disabled] { opacity: .2; }
+.r12 .til-top { right: max(.5rem, env(safe-area-inset-right, 0px)); width: 2.2rem; height: 2.2rem; }
+@media (max-width: 720px) { .r12 .rul { display: none; } }
+/* Topbjælkens hjælpefunktioner træder et skridt tilbage: små flag uden glød, Webmail som diskret kontur (stadig let at finde) */
+.r12 .topbar .flag { padding: .4rem .35rem; }
+.r12 .topbar .flag svg { width: 18px; height: 18px; box-shadow: 0 0 0 1px rgba(0,0,0,.5); opacity: .7; }
+.r12 .topbar .flag:hover svg { opacity: 1; }
+.r12 .topbar .flag[aria-current="page"] { background: none; }
+.r12 .topbar .flag[aria-current="page"] svg { opacity: 1; box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 0 0 2.5px rgba(230,189,104,.7); }
+.r12 .topbar .webmail { background: none; color: #e6bd68; border: 1px solid rgba(230,189,104,.5); box-shadow: none; font-weight: 600; }
+.r12 .topbar .webmail:hover { background: rgba(230,189,104,.14); color: #f4d690; border-color: #e6bd68; }
+
+/* ── Logoet (runde 12): Ragnhilds nøgle og økser + »Tingsvad.dk« ── */
+.r12-logo .r12-logo-ikon { width: 44px; height: 44px; flex: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
+.r12-logo span small { font-size: .7em; letter-spacing: .06em; color: var(--guld2, #e6bd68); margin-left: .05em; }
+
+
+/* ── Kortmarkørerne (runde 12, efter Jans brief): bronzebeslag med ravlys, mørke egetræsskilte, ét fælles infopanel.
+   Markøren er det præcise sted (procent af kortets billedflade); kun skiltet forskydes (km-r/l/t/b). ── */
+.r12-kort { --jern: #252720; --eg: #30271E; --bronze: #A17B43; --rav: #E6AE54; --elfenben: #F5EBD5; }
+.r12-kort > picture img { object-fit: fill; } /* billedet beskæres aldrig: markørernes procenter følger billedet */
+.km-lag { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.km { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; pointer-events: auto; }
+.km-knap { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; color: var(--elfenben); font: inherit; -webkit-tap-highlight-color: transparent; }
+.km-prik { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--rav) 0 2.6px, #b77c33 3.4px, rgba(37,39,32,0) 6px), radial-gradient(circle at 50% 35%, #3a3a31, var(--jern) 70%);
+  border: 2px solid var(--bronze);
+  box-shadow: inset 0 1.5px 1.5px rgba(245,214,150,.35), inset 0 -2px 3px rgba(0,0,0,.55), 0 2px 5px rgba(0,0,0,.55), 0 0 0 1px rgba(20,14,8,.55);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+.km-skilt { position: absolute; top: 50%; translate: 0 -50%; display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap; pointer-events: auto;
+  padding: 7px 12px 7px 11px; border-radius: 5px; border: 1px solid rgba(161,123,67,.85);
+  background: linear-gradient(180deg, #3a3027, var(--eg) 60%, #2a2219); color: var(--elfenben);
+  font-family: var(--serif, "Alegreya Sans", sans-serif); font-weight: 600; font-size: 15px; line-height: 1.2; letter-spacing: .01em;
+  box-shadow: 0 5px 12px -5px rgba(0,0,0,.7), inset 0 1px 0 rgba(245,235,213,.08); transition: transform .18s ease, border-color .18s ease; }
+.km-skilt::before { content: ""; position: absolute; background: rgba(161,123,67,.9); } /* den korte streg mod markøren */
+.km-skilt::after { content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d9b47a, var(--bronze) 70%); box-shadow: 0 0 0 1px rgba(0,0,0,.35); } /* bronzenitte */
+.km-r .km-skilt { left: 44px; }
+.km-r .km-skilt::before { left: -11px; top: 50%; width: 10px; height: 1.5px; }
+.km-l .km-skilt { right: 44px; flex-direction: row-reverse; padding: 7px 11px 7px 12px; }
+.km-l .km-skilt::before { right: -11px; top: 50%; width: 10px; height: 1.5px; }
+.km-t .km-skilt, .km-b .km-skilt { left: 50%; translate: -50% 0; top: auto; }
+.km-t .km-skilt { bottom: 44px; }
+.km-b .km-skilt { top: 44px; }
+.km-t .km-skilt::before { left: 50%; bottom: -11px; width: 1.5px; height: 10px; }
+.km-b .km-skilt::before { left: 50%; top: -11px; width: 1.5px; height: 10px; }
+/* hover og fokus: varmere lys, lysere bronze, skiltet løftes 2 px */
+.km-knap:hover .km-prik, .km-knap:focus-visible .km-prik { border-color: #c99d5c; background: radial-gradient(circle at 50% 50%, #ffd27d 0 3.4px, #e6ae54 4.4px, rgba(230,174,84,.25) 7.5px, rgba(37,39,32,0) 9px), radial-gradient(circle at 50% 35%, #3f3e34, var(--jern) 70%); }
+.km-knap:hover .km-skilt, .km-knap:focus-visible .km-skilt { transform: translateY(-2px); border-color: #c99d5c; }
+.km-knap:focus-visible { outline: none; }
+.km-knap:focus-visible .km-prik { box-shadow: 0 0 0 3px var(--elfenben), 0 0 0 5.5px #1d1408, 0 2px 6px rgba(0,0,0,.6); }
+.km-knap:focus-visible .km-skilt { outline: 2px solid var(--elfenben); outline-offset: 2px; }
+/* valgt sted: dobbelt ring om markøren og et lyst, understreget skilt (kan ses uden farve) */
+.km-knap[aria-expanded="true"] .km-prik { border-color: #d8b06c; box-shadow: 0 0 0 3px var(--elfenben), 0 0 0 5px var(--bronze), 0 2px 6px rgba(0,0,0,.6); background: radial-gradient(circle at 50% 50%, #ffd88a 0 3.6px, #e6ae54 4.6px, rgba(37,39,32,0) 7px), radial-gradient(circle at 50% 35%, #3f3e34, var(--jern) 70%); }
+.km-knap[aria-expanded="true"] .km-skilt { background: var(--elfenben); color: #22190f; border-color: var(--bronze); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.km-knap[aria-expanded="true"] { z-index: 4; }
+.km:has(.km-knap[aria-expanded="true"]) { z-index: 5; }
+/* infopanelet: lyst pergament med svag struktur, inden for kortets kanter */
+.km-panel { position: absolute; z-index: 6; width: min(19rem, calc(100% - 2rem)); padding: 1rem 1.1rem 1.05rem; border-radius: 10px; color: #2a2118;
+  background: radial-gradient(rgba(120,88,40,.07) 1px, transparent 1.2px) 0 0 / 5px 5px, linear-gradient(180deg, #fbf4e3, #f1e5c9);
+  border: 1px solid var(--bronze); box-shadow: 0 18px 36px -16px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.6); }
+.km-panel[hidden] { display: none; }
+.km-panel h3 { margin: 0 2.2rem .3rem 0; font-family: var(--overskrift, "Cormorant Garamond", serif); font-weight: 700; font-size: 1.4rem; line-height: 1.15; color: #22190f; }
+.km-panel-tekst { margin: 0 0 .7rem; font-size: 1rem; line-height: 1.45; color: #4a3b29; font-style: italic; max-width: none; }
+.km-gaa { display: inline-flex; align-items: center; gap: .35rem; font-weight: 700; color: #22190f !important; text-decoration: none; border-bottom: 2px solid #c8963c; padding-bottom: 1px; }
+.km-gaa::after { content: "→"; }
+.km-gaa:hover { border-bottom-color: #8a5a12; }
+.km-gaa:focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; }
+.km-luk { position: absolute; top: .45rem; right: .45rem; width: 2.2rem; height: 2.2rem; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(161,123,67,.6); background: rgba(255,255,255,.4); color: #3a2c1c; cursor: pointer; }
+.km-luk svg { width: 1rem; height: 1rem; }
+.km-luk:hover { background: #fff; }
+.km-luk:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
+/* skiltene vises kun, når der er plads; ellers kun markørerne (navnet står stadig for skærmlæsere) */
+@media (max-width: 999px) {
+  .km-skilt { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+}
+@media (min-width: 1500px) { .km-skilt { font-size: 16px; padding-block: 8px; } .km-prik { width: 26px; height: 26px; margin: -13px 0 0 -13px; } }
+/* mobil: panelet står under kortet */
+@media (max-width: 760px) {
+  .km-panel.km-under { position: static; width: auto; margin: .8rem 0 0; }
+}
+@media (prefers-reduced-motion: reduce) { .km-prik, .km-skilt { transition: none; } .km-knap:hover .km-skilt, .km-knap:focus-visible .km-skilt { transform: none; } }
+.r12-kort > picture, .r12-kort > picture img { display: block; } /* ingen linjeafstand under billedet: lagets procenter = billedets */
+/* Vandhjulet ved »Nysgerrig på maskineriet?« (runde 12): fritlagt, uden skjoldets ramme, samme størrelse */
+.r12-smaa img.r12-vandhjul { border: 0; border-radius: 0; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(60,35,10,.35)); }

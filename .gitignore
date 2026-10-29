@@ -1,0 +1,33 @@
+.DS_Store
+Thumbs.db
+Tingsvad-billedpakke/
+Tingsvad-billedpakke.zip
+*.png
+!assets/**/*.png
+Tingsvad-Claude-byggepakke/
+Tingsvad-Claude-byggepakke.zip
+Tingsvad-AI-Cloudflare-byggepakke.zip
+byggepakke/
+worker/node_modules/
+worker/.wrangler/
+worker/.dev.vars
+
+
+Tingsvad-taage.zip
+Tingsvad-radio-ravn.zip
+Tingsvad-undersider-grafik-og-Claude-guide.zip
+tests/node_modules/
+tests/test-results/
+tests/playwright-report/
+tests/lighthouse-rapport/
+tests/.lighthouseci/
+Tingsvad-Hittegodskontoret.zip
+.wrangler/
+Tingsvad-runde10.zip
+site-worker/node_modules/
+
+# Alle billed- og byggepakker (zip og udpakkede mapper) holdes uden for repoet
+*.zip
+Tingsvad-*/
+# Videoer til sociale medier holdes uden for repoet
+*.mp4

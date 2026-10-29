@@ -1,0 +1,6 @@
+# tingsvad.dk – how to report a security problem (RFC 9116)
+Contact: https://github.com/wi24rd-com/tingsvad-website/security/advisories/new
+Policy: https://github.com/wi24rd-com/tingsvad-website/blob/main/SECURITY.md
+Preferred-Languages: en, da
+Canonical: https://tingsvad.dk/.well-known/security.txt
+Expires: 2027-10-29T00:00:00.000Z

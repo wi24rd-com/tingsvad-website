@@ -1,0 +1,16 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://tingsvad.dk/api/ting-ai/",
+      "service-desc": [{ "href": "https://tingsvad.dk/llms.txt", "type": "text/plain" }],
+      "service-doc": [{ "href": "https://tingsvad.dk/en/machine-room/", "type": "text/html" }],
+      "status": [{ "href": "https://tingsvad.dk/api/ting-ai/health", "type": "application/json" }]
+    },
+    {
+      "anchor": "https://mcp.tingsvad.dk/mcp",
+      "service-desc": [{ "href": "https://tingsvad.dk/.well-known/mcp/server-card.json", "type": "application/json" }],
+      "service-doc": [{ "href": "https://tingsvad.dk/en/machine-room/#mcp", "type": "text/html" }],
+      "status": [{ "href": "https://mcp.tingsvad.dk/health", "type": "application/json" }]
+    }
+  ]
+}

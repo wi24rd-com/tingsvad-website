@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administration · Tingsvad</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#111417">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-ko-512.png">
+<link rel="stylesheet" href="/assets/site.css?v=88083686">
+</head>
+<body data-side="admin" class="admin">
+<header class="side-hoved" id="top">
+  <div class="side-hoved-indre gutter uden-motiv">
+    <div class="side-hoved-tekst">
+      <p class="side-eyebrow">Tinget · kun for administratoren</p>
+      <h1>Administration</h1>
+      <p class="side-status" id="adm-hvem">Logget ind via Cloudflare Access.</p>
+    </div>
+  </div>
+</header>
+<main class="col gutter adm">
+  <section>
+    <div class="kicker">Gæstebogen</div>
+    <p class="note">Sager rejst af gæster, nyeste først. En slettet sag forsvinder fra gæstebogen og fra dens delelink (<code>/sag/980-…</code>). Kun nummer, tidspunkt og hvem der slettede gemmes, ikke teksten. De tre faste grundsager kan ikke slettes.</p>
+    <p class="r6-status" id="adm-gb-status" aria-live="polite">Henter …</p>
+    <ol class="adm-liste" id="adm-gb"></ol>
+    <details class="adm-spor"><summary>Senest slettet</summary><ol id="adm-gb-slettet"></ol></details>
+  </section>
+  <section>
+    <div class="kicker">Ravneposten · brev@sitesite.dk</div>
+    <p class="note">Indkomne breve, nyeste først. Afsenderen kendes ikke (kun som hash). <b>Godkend</b> viser et brev på Sagsmappen, men kun hvis afsenderen bad om det (<code>[offentlig]</code>). <b>Afvis</b> skjuler det. <b>Slet</b> fjerner det helt.</p>
+    <p class="r6-status" id="adm-rp-status" aria-live="polite">Henter …</p>
+    <ol class="adm-liste" id="adm-rp"></ol>
+  </section>
+  <section>
+    <div class="kicker">Tingsvad Tidende</div>
+    <p class="note">Alle trykte udgaver på begge sprog, nyeste først. <b>Slet</b> fjerner udgaven fra avisen og arkivet med det samme. Sletter du dagens udgave, trykker Cron en ny ved næste kørsel (hver time efter kl. 5), og forsiden viser imens den seneste ældre udgave. Gamle udgaver trykkes ikke igen.</p>
+    <p class="r6-status" id="adm-av-status" aria-live="polite">Henter …</p>
+    <ol class="adm-liste" id="adm-av"></ol>
+  </section>
+</main>
+<script src="/assets/admin-v1.js?v=d25b0230"></script>
+</body>
+</html>

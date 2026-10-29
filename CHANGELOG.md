@@ -1,0 +1,517 @@
+# Changelog
+
+All notable changes to tingsvad.dk, round by round, newest first. Each round has a date, a line of highlights and the full details folded under it. Version 1.0 (29 October 2026) is the first public version and contains rounds 1–12; round 13 is the audit sprint after the 29 October review. The cow case is adjourned in every release.
+
+## [Round 13] · The audit · 2026-10-30 →
+
+A sprint that works through every finding of the 29 October review (security, OPSEC, architecture, design, accessibility, documentation, cost control). No new features; the cow case remains adjourned.
+
+**Highlights:** Admin login is GitHub with 2FA · Account ids and admin e-mails out of the repo · Rate limits per session *and* per IP · Daily caps on everything that costs · CSRF guard, allow-lists, pinned lockfile · Unit tests run in CI
+
+<details><summary>Details</summary>
+
+### Security and privacy
+- **Admin identities and account ids out of the repo**: `ADMIN_EMAILS`, `CF_ACCOUNT_ID`, `CF_ZONE_ID` and `RUM_SITE_TAG` are now secrets (`wrangler secret put`); the preview Worker's `SITE_ORIGIN` and `TURNSTILE_HOSTNAMES` are preview secrets too, so the workers.dev subdomain is not in the repo. `tests/site.config.js` defaults to tingsvad.dk and is overridden by `BASE_URL`.
+- **The door counts by week**: `/maskinrummet/doeren/` shows 7-day and 4-week totals and four weekly bars instead of per-day counts, so it does not reveal when the administrator logs in.
+- `/.well-known/security.txt` (RFC 9116) points at the GitHub advisory form and SECURITY.md.
+- **Admin login is GitHub with 2FA**: Cloudflare Access for `/admin/` uses GitHub as the only identity provider (One-time PIN removed), and the policy requires both the GitHub login method and an allow-listed e-mail.
+- **Rate limits in two layers** (`rateLimitSession` in `worker/src/lib/quota.js`): per session *and* per IP, so a guest who omits the cookie no longer gets a fresh allowance per request (with the Workers rate-limit binding, its own limit applies to both layers). The IP hash is an HMAC with `SESSION_SECRET`; the MCP client id can be salted with the new `MCP_SALT` secret.
+- **Daily caps** on the three calls that cost per call without one: EU seals (`EU_SEGL_PER_DAY`), live-radio listener sessions (`LIVE_LYT_PER_DAY`) and ML-DSA signatures (`BEVIS_PER_DAY`), in `worker/src/lib/budget.js`.
+- **Admin API CSRF guard**: `adminVagt` refuses writes with `Sec-Fetch-Site: cross-site` or a foreign `Origin`; the admin proxies forward the client's own content-type instead of forcing JSON.
+- **Turnstile hostnames** in the guestbook are an exact list (`TURNSTILE_HOSTNAMES`, same var as the Worker), not a regex over all of workers.dev.
+- **Vote rooms are an allow-list** (`worker/src/lib/rum.js`): unknown `?room=` names answer 404 instead of creating Durable Objects.
+- **The certificate key** (ML-DSA-65) must come from Secrets Store or the `BEVIS_NOEGLE` secret in production; the KV fallback is for local and preview only, and the public key endpoint no longer says where the key lives.
+- From the second outside review (ChatGPT, 29 October): the decision counter's KV key used a 5-second TTL, which KV rejects (minimum 60 s), so the shared counter never advanced – fixed; the guestbook refuses to run without a Turnstile secret in production (503) instead of silently skipping the check; the service worker also honours `no-store`/`private`; the MCP tool `afgoer_sagen` is no longer marked idempotent (it counts an attempt).
+- Smaller: no unsigned sessions and no built-in fallback key in production (503 instead); newlines in guest text become spaces before any prompt; CSP gains `form-action 'self'`; `mcp.tingsvad.dk` sends HSTS; the service worker never caches `/admin`; the visitor counter hashes only the IP (no user-agent amplification); `readJson` measures bytes; the live-radio key check is timing-safe. `worker/package-lock.json` is committed with pinned `postal-mime` and `wrangler` (0 audit findings).
+
+</details>
+
+## [Round 12] · The village map · 2026-10-28 – 2026-10-29
+
+**Highlights:** The village map with clickable markers on the front page · Hero paintings on every sub-page · Six live machine-room pages (the defences, the crawlers, the speed, Denmark right now, the EU archive cabinet, the door) · Quantum-safe certificate (ML-DSA-65) · Live radio over Realtime SFU · Build-your-own docs and Claude skills
+
+<details><summary>Details</summary>
+
+### Added (Cloudflare features)
+- **The footer credits the painter**: »unknown artist, possibly AI, possibly 1870« is replaced by »Paintings: ChatGPT, from the thing’s descriptions. The artist declines to comment on the cow.«
+- **The raven keeps its head**: the painted closing band above the footer now sits close to the painting's own 3:1 shape and is anchored at the top, so on wide screens the crop takes rocks from the bottom instead of the top of the raven's head.
+- **More autumn leaves in the page tops**: ten leaves instead of three on the front page (six on sub-pages and machine room pages, four and three on phones, where there were none), at different sizes and speeds, swaying both ways, already falling when the page opens, and a little more visible against the painting. They stay in the painting at the top, as before.
+- **Sound from the ford, everywhere**: the sound button now works on every page (it lived in a script the machine room pages did not load) and plays a soundscape drawn with Web Audio, no audio files: the river over the stones, wind in the leaves in gusts, a blackbird, a great tit and a chaffinch, now and then a cuckoo and a distant cow, Gudrun's quack. At night (22–5 Danish time) crickets and a tawny owl take over. Fog dims it. The choice is remembered across pages: the next page tries to start at once, and when the browser will not allow sound before a click, the button shows that it is waiting (dimmer, a slowly blinking dot) and the sound starts at the first click, tap or key anywhere on the page.
+- **Gudrun's checklist follows the redesign**: the daily audit still looked for the old side menu (`#sidenav`) and a few elements from before round 12, so every page failed although every page worked. The checklist now looks for the top bar, the village map, the experiences grid and the machine park cards, and a new test checks that every selector exists in the site's HTML or scripts, so a redesign cannot silently break the audit again.
+- **The thing's door** (`/maskinrummet/doeren/`, `/en/machine-room/the-door/`): Cloudflare Zero Trust explained with a real door. A carved door in the middle of the page is a link to `/admin/`; the page explains the castle-and-moat model against Zero Trust, what happens when you knock (the edge, Cloudflare Access and its JWT ticket, the policy, the Worker's own second check), the rest of the Zero Trust family, and how to lock a door yourself. The Worker counts every hour, from the GraphQL Analytics API, how many times `/admin/` was tried and how the edge answered (sent to login, got in, refused), counts only and no IP addresses (`GET doeren`). Linked from the machine room, the stats family and the footer. Its own hero (the wolf as doorkeeper, the goose under a trapdoor) and a painted door that opens a crack, with golden light, on hover or keyboard focus.
+- **Delete newspaper editions in the admin**: a »Tingsvad Tidende« section in `/admin/` lists every printed edition in both languages with a link to read it, and deletes one with two presses (no browser dialog). `POST admin/aviser` sits behind Cloudflare Access twice (the admin proxy and the Worker itself), clears the paper's edge cache, and logs who deleted what. Deleting today's edition lets Cron print a new one on its next hourly run.
+- **The newspaper archive**: Tingsvad Tidende now keeps every edition readable. `GET news?date=YYYY-MM-DD` returns a given edition with the previous and next dates, and `GET news/arkiv` lists every edition with its lead headline (both cached at the edge, purged with the paper's cache tag). The page gets previous/next links, a »From the archive« stamp on older editions, its own address per edition (`?dato=`), and a list of earlier editions. Nothing new is generated: the archive only reads what Cron already printed in D1.
+- **Share images for every page**: `build-og.py` makes a 1200×630 og:image for each of the 60 pages from its own painting, with the page title and description in the site's fonts, and points `og:image`, its size and a new `og:image:alt` at it, so a shared link to any page shows that page on X, LinkedIn, Discord, Slack and Facebook.
+- **The archive cabinet has its own hero**: the wolf with the wax seal by the twelve-star cabinet (`hero-arkivskab`, 900/1400/2048 webp), replacing the borrowed case-register painting.
+- **The seal’s journey** in the archive cabinet: after a seal is put in the cabinet, a chain diagram (in the style of the infrastructure map) replays the packet from the button through the edge, `tingsvad-site`, the service binding and `tingsvad-ting-ai` out to the five stores and back, with a real-time clock and a timeline. The times are measured on the guest’s own seal: the browser’s Resource Timing (connection and waiting time), the Worker’s own work (new `server` field from `POST eu/segl`) and each store’s write; the network is the rest. Vertical layout on narrow screens; no animation with reduced motion.
+- **Build your own** (English, with a Danish edition in `docs/da/`): `docs/CLOUDFLARE-FEATURES.md` lists every Cloudflare feature the site uses with what it does here and a short setup guide; `docs/BUILD-YOUR-OWN.md` takes a newcomer from nothing to their own site with Claude, GitHub, Cloudflare and ChatGPT for graphics, including a start prompt; three Claude skills in `.claude/skills/` (`build-your-own-site`, `image-prompts`, `cloudflare-setup`). `.claude/` and `docs/` are kept out of the published site.
+- **The European archive cabinet** (`/maskinrummet/arkivskabet/`, `/en/machine-room/archive-cabinet/`): a live demonstration of data location. A new Durable Object class `EuSkab` (migration v4) is used twice, once through `EU_SKAB.jurisdiction("eu")` and once without a lock; both report `ctx.id.jurisdiction` and their own data centre. Together with a D1 database, a KV namespace and an R2 bucket created with `--jurisdiction=eu`, they are measured by `GET eu/skab` and drawn on a map of Europe; `POST eu/segl` puts a seal (time and data centre only) in all four. The page explains jurisdictions (all plans) against Regional Services, Customer Metadata Boundary and Geo Key Manager (Enterprise), what cannot be locked, and why it matters legally (GDPR chapter V, Schrems II, the Data Act, NIS2, DORA, sector contracts; explanation, not legal advice) (`worker/src/euskab.js`, `worker/src/features/euskab.js`, `assets/arkivskab.js`).
+- **The speed** (`/maskinrummet/hastigheden/`, `/en/machine-room/speed/`): Core Web Vitals (LCP, INP, CLS at the 75th percentile, with good/needs improvement/poor shares), load times, where the time goes (connection phases and LCP sub-parts), pages, countries, browsers and devices, from Cloudflare Web Analytics (RUM) via the GraphQL Analytics API at account level. Hourly by the same Cron, each query on its own so one unknown field does not stop the rest (`GET hastighed`, `worker/src/features/maaling.js`, `assets/maaling.js`). Needs vars `CF_ACCOUNT_ID`, `RUM_SITE_TAG` and Account Analytics Read on the token.
+- **Denmark right now** (`/maskinrummet/danmark/`, `/en/machine-room/denmark/`): Cloudflare Radar for Denmark (bot share, the daily rhythm hour by hour, AI crawlers in Denmark and worldwide, the most active verified bots, attack origins and what stopped them, DDoS vectors, quantum-safe connections, largest networks, devices, speed, outages, top domains), side by side with the thing's own figures from the defences and the crawlers (`GET danmark`). Needs Radar Read on the token; until the first collection the page shows a labelled snapshot from 29 October.
+- **Speak your case** in the AI courtroom: a microphone button records up to a minute, `POST court/tale` sends it to Workers AI (Whisper large v3 turbo) and the text is put into the argument field for the guest to correct; the audio is stored nowhere and never logged. Daily cap `SPEECH_PER_DAY` (150) and a strict rate limit; `Permissions-Policy` allows the microphone only on the courtroom pages (`worker/src/features/tale.js`).
+- Hero paintings from ChatGPT for the speed ("Viking messenger crossing the misty river") and Denmark right now ("Mímir and a Viking over the Danish twilight"), assets/pak/undersider/hero-hastigheden/danmark-900/1400/2048.webp.
+- Border paintings above the footer of the defences (a hooded Viking on a mossy log with Kali Linux on his wooden laptop, a raven and a mouse) and the crawlers (the same log with the village map and a curious cow), `assets/pak/web/graense-*.webp`.
+- **The defences and the crawlers** (`/maskinrummet/vaernet/`, `/maskinrummet/crawlerne/`, `/en/machine-room/defences/`, `/en/machine-room/crawlers/`): two new machine room pages built from Cloudflare's own figures. Every hour a Cron Trigger in tingsvad-ting-ai asks the GraphQL Analytics API for today and yesterday (one day per query to avoid sampling, four older days per run until 30 are filled), stores cleaned rows in D1 (`vagt_dag`, 95 days) and builds two overviews in KV, served at `GET vaern` and `GET crawlere` through Workers Cache (tag `vagt`). The defences: blocks per day, a world map with arcs from the attacking country to the Cloudflare data centre that stopped it, the managed WAF rules and CVEs that fired, countries, networks, and Gudrun's minutes of what the 404 snoopers looked for. The crawlers: verified bots by category, 30 days of stacked bars, a guestbook card per bot, who read robots.txt, sitemap.xml, llms.txt, Markdown and the MCP card, unverified bots that claim a known name, and status codes. No IP addresses are queried or stored; paths and user agents are cleaned (`worker/src/features/vagt.js`, `assets/vagt.js`, `assets/vagt.css`; country centres added to `assets/verden.json` from world-countries, ODbL). Needs var `CF_ZONE_ID` and secret `CF_ANALYTICS_TOKEN` (Analytics read for the zone). Until the first collection, the pages show a labelled snapshot from 29 October (`assets/vagt-eksempel.json`).
+- `/favicon.ico` (crawlers asked for it 146 times a week).
+- Hero paintings from ChatGPT for the two new pages: "Golden shield at the Nordic ford" (the defences) and "Mechanical creatures in the golden longhouse" (the crawlers), assets/pak/undersider/hero-vaernet/crawlerne-900/1400/2048.webp.
+- The quantum-safe certificate is now visible before you make one: a note with the quantum seal in the Rune workshop's certificate section, and "quantum-safe signed" on the Experiences card (it used to appear only after the certificate was made).
+- **Quantum-safe certificate**: the Rune workshop's certificate of attendance is signed by the Worker with ML-DSA-65 (FIPS 204) in Workers' Web Crypto (compatibility flag `webcrypto_modern_algorithms`). `POST bevis`, `POST bevis/tjek`, `GET bevis/noegle` (public JWK, kty AKP). The page shows the 3,309-byte signature, checks it, demonstrates a forged name failing and offers `bevis-980-xxxx.json`; the key id is printed on the PNG. Key from Secrets Store / Worker secret `BEVIS_NOEGLE`, otherwise generated once and kept in KV (`worker/src/features/bevis.js`).
+- **Workers Cache**: `[cache] enabled = true` on tingsvad-ting-ai. The paper, radio, audit, diaries and the public key are returned with `Cache-Control: public`, `Cache-Tag` and a content ETag (requestId excluded, so 304 works); Cron calls `ctx.cache.invalidate({tags})` after printing. The site proxy copies `cf-cache-status` to `x-tingsvad-kantcache`, and "Show the machinery" shows HIT/MISS with a Workers Cache light in the chain (`worker/src/lib/kantcache.js`).
+- **SQL history in Durable Objects**: ChairRoom and TingRoom write every move, vote and closed round to their own SQLite table (`ctx.storage.sql`, weekday/hour in Europe/Copenhagen, no people, pruned after 180 days). `GET stol/dagbog` and `GET room/dagbog` return the statistics; the stool and the vote pages show a diary box with the SQL behind it (`worker/src/lib/dagbog.js`).
+- **Live radio over Realtime SFU**: new Durable Object `RadioStation` (migration v3) makes today's English broadcast as raw PCM (Aura-2 linear16, 48 kHz) in R2, opens a Realtime SFU WebSocket adapter and streams protobuf packets in real time; listeners subscribe over WebRTC (`radio/live`, `radio/live/lyt`, `radio/live/svar`). Listening only. Needs var `REALTIME_SFU_APP_ID` and secret `REALTIME_SFU_TOKEN`; the button only appears when configured.
+- **From abroad in Tingsvad Tidende** (switched on: `WEBSEARCH_ENABLED = "true"`, paid with AI Gateway credit): the morning print fetches real headlines with the Web Search API (`env.AI.websearch`), asks for good news only, drops anything serious with a word list, keeps one per domain, and lets the model add a Tingsvad comment and mark each story as purely positive (anything else is discarded); headline, source and link always come from the search (`worker/src/features/udland.js`).
+- **Secrets Store**: `worker/src/lib/hemmelighed.js` reads `<NAME>_STORE` from Secrets Store first and falls back to the Worker secret (GitHub token, Realtime token, webhook secret, certificate key). Example block in `worker/wrangler.toml`.
+- **Workers Issues + Traces** on all three Workers (wrangler ≥ 4.134). An Issues automation can post a generic webhook to `/api/ting-ai/gudrun/issues`; Gudrun checks `cf-webhook-auth` against `GUDRUN_WEBHOOK_SECRET`, scrubs anything key-like and collects the day's runtime errors in one GitHub issue (labels gudrun, runtime; at most 20 a day).
+- Machine room: new cards for Workers Cache, Web Crypto ML-DSA-65, Secrets Store, Durable Objects SQL, Web Search API and Workers Issues + Traces; the "Realtime SFU · planned" card now describes the live radio. Unit tests in `worker/test/runde12-cloudflare.test.js`.
+
+### Changed
+- Web Analytics: the beacon token belonged to the old `tingsvad-website.pages.dev` site, so Cloudflare rejected every beacon from tingsvad.dk (CORS) after the move to Workers. A new Web Analytics site for tingsvad.dk replaces it.
+- SEO and agents: BreadcrumbList JSON-LD on every sub-page from the first level (Home › History), and the machine park rooms and the infrastructure map added to the page map in `assets/kanon.json`; eleven meta descriptions shortened or rewritten to 130–165 characters (the machine park no longer promises a product filter); llms.txt updated (the eight machine rooms with their URLs, the quantum-safe certificate, the stool's SQL diary, the live radio, Mímir formerly Brian).
+- robots.txt declares Content Signals (`search=yes, ai-input=yes, ai-train=yes`, matching the CC BY 4.0 licence); Cloudflare Crawler Hints (IndexNow) switched on for tingsvad.dk.
+- New for AI agents: `/.well-known/api-catalog` (RFC 9727 linkset pointing to llms.txt, the health endpoint and the MCP server) linked from every page with `Link: rel="api-catalog"`, and `/.well-known/mcp/server-card.json` describing the MCP server at mcp.tingsvad.dk. `.assetsignore` now anchors `/mcp/` so the server card is published.
+- Audit spreadsheet: no more sideways scroll on mobile (a hidden screen-reader label escaped the scrollable box; the box is now `position: relative`). The diary boxes only call `stol/dagbog`/`room/dagbog` when the Worker's health reports `dagbog`, so an older or local Worker gives no 404.
+- Quality tests green again: the top image check accepts the full-width hero paintings, and the bottom back button on the machine room pages uses the parchment ink colour (the gold text failed colour contrast after the pages moved to the site colours).
+- Graphics from ChatGPT for the new Cloudflare features (assets/pak/cloudflare/): the Vikings' quantum computer and the quantum wax seal in the certificate box (the seal is also stamped on the PNG once signed), the raven's live studio in the live radio box, the stool's diary book in the diary boxes and the raven with foreign papers in the From abroad column. kantcache and gudrun-fejl are converted and kept for later.
+- Hero series from ChatGPT: full-width paintings at the top of the Rune workshop, the Investigation, the Machine park, the Guestbook, Lost property, the Cauldron, the Shared stool, the Case file, Tingsvad Tidende and the Case register (r12s-hero-maleri), and of Emergency drills and the Infrastructure map (side-hoved-maleri); both languages. Files: assets/pak/undersider/hero-<name>-900/1400/2048.webp. The cut-out top motifs are no longer used in the tops.
+- Workers Paid guard rails: daily site-wide caps on Browser Run (`BROWSER_PER_DAY`, 120) and embeddings (`EMBED_PER_DAY`, 400) in `worker/src/lib/budget.js`, on top of the existing per-feature AI quotas; `[limits] cpu_ms` on all three Workers (10 s on tingsvad-ting-ai, 2 s on the site and MCP Workers). In the dashboard: the account budget alert at $7 and an AI Gateway rate limit of 150 requests per hour.
+- Machine room pages (Machine room, Audit, Emergency drills, Infrastructure map) now use the same parchment / dark green page colours as the rest of the site; the black boards of the map and the chain keep their own colours.
+- Footer: a "Machine room" link next to "Bring a case" and GitHub on every page, so the colophon can be reached from anywhere (the mobile menu already had it).
+- Audit (Revisionen) top: the painting "Gudrun’s Rune-Code Audit" as a full-width hero (assets/pak/undersider/hero-revisionen-900/1400/2048.webp), same treatment as the machine room.
+- Front page: the "Curious about the machinery?" card shows a cut-out oak waterwheel (assets/pak/forside/vandhjul-256/512.webp) instead of the gear drawing.
+- Machine room top: the painting "Viking Server Farm by the River" (assets/pak/toppe/serverfarm-900/1400/2048.webp) replaces the gear SVG as a full-width background, with a dark gradient behind the title on the left; on mobile the title sits under the smith with a bottom gradient.
+- Quality tests brought up to date with the round 12 template: the page check now reads the template breadcrumb (.r12s-krumme: none on the front page, home › page, or home › section › page) and checks that pages with a cut-out top motif show it at every width inside the viewport; the old-anchor test now expects /maskinrummet/#net-wrap to go to History. The hero heading shrinks just enough when a single long word (e.g. "Hittegodskontoret") would overflow its column, which the layout test had caught.
+- Map markers redesigned (Jan's brief): small bronze fittings with an amber light (24–26 px, 44×44 px hit area, no pulsing), compact dark oak name plates with a bronze rivet and a short connector line, placed individually (right/left/above/below) so no plate covers another or a marker at 1000–1920 px in Danish and English; the marker coordinates are unchanged. Markers are buttons that open one shared parchment panel (name, one humorous line, link onward); Esc, the close button and a click outside close it, and the panel never covers the chosen place or leaves the map. Mímir's permanent speech bubble is gone (his text lives in his panel). Hover/focus warms the light, brightens the bronze and lifts the plate 2 px; the selected place gets a double ring and a light, underlined plate. Below 1000 px only markers are shown (names kept for screen readers); on mobile the panel sits under the map, and the list is now "Show all places".
+- History: the Tingsvad network section now uses the same heading/lead/paragraph rhythm as the other sections (lead subtitle, spacing between paragraphs).
+- Logo: Ragnhild's key and crossed axes (from the History page) replace the knot icon in the top bar on every page, and the name reads "Tingsvad.dk" (assets/pak/grafik/logo-oekser-48/96.webp).
+- New graphics from ChatGPT: own top motifs for Lost property, the Cauldron, the Shared stool, the Case file and Tingsvad Tidende (assets/pak/undersider/top-*-600/1200.webp, transparent). New village map (kort2-*.webp) with a stool under the oak, a mailbox with a raven by the stepping stones, a cauldron by the top hut and a machine shed by the runestones; the stool, case file, cauldron and machine park markers now point at them, Mímir's speech bubble moved up so it no longer covers the stool, and the map's alt text mentions the new details.
+- Audit: back to the spreadsheet list (with number tiles and the GitHub line on top). Failed rows are tinted; remarks are summarised ("2 missing · 1 JS error"). "Screenshot"/"Details" opens a modal <dialog> on the page (greyed backdrop, Esc closes, arrow keys and Previous/Next step through the pages) with the screenshot, missing elements, JS errors, check time and reuse date.
+- Back button: the "Back to the map" pill in the breadcrumb now goes back to the page the guest actually came from (a small path stack in sessionStorage that also follows the browser's own back button; uses history.back() when possible so the scroll position is kept), falling back to the map. Long pages get the same button at the bottom with "Back to top".
+- Consistent section subtitles: one size and width for .lead/.r12s-lead in the template; the investigation's "The thing is open" section no longer sits in the right column; opened exhibits no longer stretch their neighbours.
+- Breathing room around buttons: checked every button on every page; added space above and below where a button touched a box, a note or the next row (reset button, chip rows, tab rows, code cauldron, exhibits).
+- Audit: the GitHub step is now visible. The workflow stores the GitHub outcome (state and issue numbers only) in KV for two weeks, GET revision returns it as `github`, and the page shows a GitHub line (issue opened/closed with links, quiet, not set up, or no answer) and a GitHub node in the "Show the machinery" chain, next to Workers KV. Requires a worker deploy; the first result appears after the next morning audit.
+- Audit (Revisionen): the result table is replaced by number tiles (passed, failed, not run, total) and the pages grouped like the machine-room layers — failed pages open first, passed pages folded — as equal-size cards with HTTP, browser time, remarks and the screenshot link. The layer/card folding now lives in site.js (window.tvFold) and is shared by the machine room and the audit.
+- 404 page rebuilt in the round 12 template (header, hero with the motif, five equal cards onward, closing painting); both languages still in one file, the wrong half removed by the middleware. Test updated.
+- Case file 6 (the Tingsvad network, the runestones and their operating status) moved from the machine room to History, before the days of fog, so the machine room stays serious. Old /maskinrummet/#nettet links are forwarded; the case register is regenerated.
+- Machine room: the seven layers are now sections with a large heading, a short description of what the layer does and their own fold button (replacing the single "Open the machine room" button; #lag-… links open that layer). Every card is the same width and height, with "Read more" when the text is longer; the last card no longer stretches. Last family-mail mentions removed.
+- Tingsvad Tidende: calm newspaper layout in the template — one paper frame, columns aligned at the same height (spacer when there is no vignette), text kept inside the column rules, masthead centred; single column on mobile.
+- **New front page (da/en)** built from the ChatGPT mockup "Tingsvad: A Humorous Viking Village": a full-width painting of the seven at the ford (`assets/pak/forside/hero-*.webp`), the fog band, and an illustrated village map (`assets/pak/forside/kort-*.webp`) with eight gold markers that lead to the experiences (rune workshop, the thing stead, Mímir's archive, Gudrun's notices, the cow, the fourth stone, lost property, Tingsvad Radio) plus a speech bubble from Mímir. On phones the map scrolls sideways and the same places open as a list. Markers, text and buttons are real HTML on top of the image, not one picture.
+- Below the map: "Good company. Bad decisions." (Ask Mímir and Gudrun's notice), "While we wait for a decision …" (page 2, lost property, raise a case), a Tingsvad Radio player that fetches audio only on press, and two small cards to the history and the machine room. No Cloudflare product names on the front page; they stay in the machine room.
+- New stylesheet `assets/forside.css` and script `assets/forside.js` (front page only; added to `bump.sh` and `_headers`). Parchment, forest green and gold tokens with a dark variant; reduced motion respected.
+- **Brian is now Mímir** everywhere guests and the AI features meet him: pages (da/en), scripts, the AI prompts and canon in the `tingsvad-ting-ai` Worker, the MCP tool descriptions, `llms.txt` and the READMEs. Identifiers stay (`brian-n` in localStorage, `#brian-knap`, `fav-brian-*`, image file names). `CORPUS_VERSION` and `HITTEGODS_VERSION` are bumped so the Vectorize indexes are rebuilt with the new name.
+- The FAQ moved from the front page to the archive as case file 22 (`/arkivet/#faq`, `/en/archive/#faq`); old `/#faq` links are forwarded by `ankre.js`.
+- New social image `assets/forside-og.jpg` (1200×600).
+- **Sub-page template, first on the archive (da/en)**, after Jan's mockup of "Mímir's archive": breadcrumb with *Back to the map*, a green top with Mímir at the archive cabinet, an *On this page* menu on the left that marks the section being read (a row of chips on phones), and the content as parchment cards: *Ask Mímir* as a search field with an answer card and medallion, a new case-register excerpt (the cow, page 2, Asgeir's shield) with stamps, the minutes, *It is in the small print* (bylaws and dictionary as cards, the change history below), local facts, the FAQ as an accordion ("Questions Mímir has heard before"), finding the way, notes, and a closing banner back to the village map. All case-file kickers and anchors are unchanged, so the case register and old links still work.
+- Calmer around the content (after a review of the live pages): the autumn leaves (and winter frost) now stay inside the painting at the top of the new pages, three on the front page and two on the archive, none on phones; the up/down buttons are smaller and muted at the outer edge, bottom right, and hidden on phones; the language flags are smaller without glow and Webmail is a gold outline instead of a gold button; the card illustrations float beside the text instead of over it; the "What we actually know" box under the minutes spans the full width.
+- New typefaces on the front page and the archive: **Cormorant Unicase** for the logo and large page titles, **Cormorant Garamond** for headings and the characters' small quotes (italic), **Alegreya Sans** for body text, navigation, buttons and the map signs. `font-size-adjust` gives Cormorant the body text's x-height. (A first try with Uncial Antiqua and Alegreya was dropped the same morning.)
+- New paintings for the archive (`assets/pak/arkiv/`): the top (Mímir at the cabinet, full width with the text on the left), the closing banner (the raven on the sign by the river), Mímir's medallion and cut-out illustrations for the side menu, bylaws, dictionary, minutes and the cow.
+- **History and Experiences (da/en) in the sub-page template.** History keeps all its case files and widgets (the gallery of those present, the explanations, the family tree, the fog chart) in the new frame with a painting at the top, an *On this page* menu and the closing banner. Experiences is new: eight illustrated cards in three groups (*Decide the case*, *Write yourself into the minutes*, *Rummage in the things*), with the investigation and the machine park as large cards, and plain, humorous descriptions instead of technical ones. Older components now use the template's typefaces. New paintings in `assets/pak/undersider/`: the seven on the stepping stones with Ragnhild on the bank (History), the village from the hill (Experiences), the fourth stone with a magnifying glass (the investigation card) and the carved family tree (History, the family).
+- **All experience pages and the case register (da/en) in the template**: the machine park, the investigation, the guestbook, the rune workshop, the case file, the shared stool, lost property and the cauldron keep their content and machines, framed with a breadcrumb (*The ford / Experiences / …*), a green top with the page's cut-out illustration, an *On this page* menu where a page has three or more sections, and the closing banner. The machine room and its sub-pages keep their own, serious look on purpose.
+- **The machine room, the audit and the emergency drills (da/en)** get the template's topbar and breadcrumb (*The ford / Machine room / …*) in a dark version (`body.r12m`); their content and serious look are unchanged, and the old in-page breadcrumb is hidden.
+- **"Show the machinery" draws the chain** like the infrastructure map, with only the rings that machine actually uses (new shared `assets/kaede.js`, used by the machine park and every experience with a machinery box). After each call the bindings it touched light up green with the measured milliseconds and number of calls from the Worker's Server-Timing; the others stay amber. Techniques that are not services (idempotency, WebSocket, CSP …) are small labels under the drawing; the cauldron, which runs only in the browser, gets its own short chain.
+- **One button style everywhere** on the template pages and in the machine room: every content button (`.knap`, `.knap.sek`) has the shape of *Back to the village map* – gold gradient, rounded corners, bold text; secondary buttons are a lighter gold. The top bar keeps its own controls.
+- Every *Ask Mímir* on the front page now leads to the question field in Mímir's archive, like the floating button: the speech bubble on the map and the main button on Mímir's card. The quick answer from his minutes stays as a small *Get a quick answer* text button.
+- **Every machine in the machine park has a room of its own.** The eight machines that used to open in a panel under the grid (the AI courtroom, the Great Vote, Tingsvad Tidende, present your evidence, forge a find, the bureaucracy, Mímir's guide, radio with a voice) now each have a page (da/en, e.g. `/oplevelser/maskinparken/retssalen/`, `/en/experiences/machine-park/courtroom/`) with the machine's painting at the top, the machine itself, *Show the machinery* and a way back. `round6.js` opens the machine by itself when the section has `data-maskine`; on the overview all 16 cards are links. Old `#paafund-…` links are forwarded to the rooms, and the front page, archive and radio links point straight there. Added to the sitemap.
+- The machine park's cards stand on their own (no dark grid background in empty cells).
+- **Fold boxes fold both ways**: *Show all …* becomes *Show less* when open (it used to disappear), and the button is no longer partly covered by the fade-out.
+- **Answers after a press stand out**: status and error messages from the machines (`.r6-status`) are a message box with a gold (or red, for errors) edge, normal text size and air above and below, instead of small monospace text right under the buttons; results get their own space. Applies to every template page and the machine room.
+- **Webmail is gone from the top bar**, and the footer no longer says that the family's e-mail lives here; the minutes, the commit list, the FAQ answer about e-mailing the thing and the machine room's Email Workers card no longer mention the family's mail.
+- **New page: the infrastructure map** (`/maskinrummet/kortet/`, `/en/machine-room/map/`, linked from the machine room). Measured on load from the visitor's browser and drawn as SVG: a world map (Natural Earth land, 168 Cloudflare data centres from `assets/verden.json`) with the data centre that answered you pulsing, the data centres that served guests in the last day, and dashed arcs to where D1 and the two Durable Objects live (world/Europe zoom), plus a diagram of the whole chain (browser → edge → tingsvad-site → service binding → tingsvad-ting-ai → 16 bindings) with live/on/off lights and measured milliseconds, and the same numbers as an accessible table. *Measure again* and an optional 30-second refresh; `?eksempel` shows labelled sample data. New `assets/infrakort.css`/`.js` (in `bump.sh` and `_headers`).
+- **New Worker endpoint `GET /api/ting-ai/topologi`** in `tingsvad-ting-ai`: the Worker's data centre, D1 region/data centre/primary from the query meta, where the two Durable Objects live (new `topologi()` RPC on `TingRoom` and `ChairRoom`, which reads `colo` from Cloudflare's trace for its own outgoing call), and timings for D1, KV, R2 and Vectorize (with vector count). Each probe has its own timeout; results are cached 20 seconds per isolate; nothing is stored. Tests in `worker/test/runde12-topologi.test.js`.
+- **Floating *Ask Mímir* button** with his medallion on every template page except the archive (where he already sits); just the medallion on phones.
+- The machine park's guest page no longer shows Cloudflare product names (filter chips and product lines on each machine); the intro points to the machine room instead. Arriving from the machine room with `?produkt=` still shows the filter.
+- **Six more places on the village map** (14 in all): those present (the stepping stones), the shared stool, the case file, the cauldron, the guestbook and the machine park, also in the list on phones.
+- New `assets/undersider.css` and `assets/undersider.js` (scroll-spy for the side menu), loaded together with `forside.css`. Older components (tables, folds, dictionary, facts) get the parchment colours through the shared variables.
+- Ask Mímir no longer shows timings or product names in the answer on the archive page; the comparison is called *the old card index*. `arkiv-v1.js` is now versioned by `bump.sh` and revalidates every 10 minutes like the other scripts.
+- The village map breaks out of the text column on wide screens (up to 1760 px, 96 % of the window) and its markers grow a little above 1500 px.
+
+</details>
+
+## [Round 11] · From Pages to Workers Static Assets · 2026-10-27
+
+**Highlights:** tingsvad.dk is one Worker with Static Assets · Only the site is published. · One implementation, two hosts. · Worker Previews
+
+<details><summary>Details</summary>
+
+### Changed
+- **tingsvad.dk is one Worker with Static Assets** (`tingsvad-site`, `site-worker/`) instead of a Cloudflare Pages project. `run_worker_first` sends only HTML pages, `/*/index.md`, `/api/*`, `/admin/*` and `/sag/*` through the Worker code (mirroring the old `_routes.json`); images, scripts and stylesheets are served straight from the edge. `_headers` keeps working natively for asset responses.
+- **Only the site is published.** Pages published the whole repo (for example `/worker/wrangler.toml`, `/mcp/…`, `/tests/…`); `.assetsignore` now keeps Worker code, tests, docs, configuration and zip files out.
+- **One implementation, two hosts.** The Pages middleware moved into shared modules (`functions/_lib/side.js`, `functions/_lib/admin.js`) that both the old Pages entry points and the new dependency-free router (`site-worker/index.js`) run, so the fallback and the Worker answer the same. The router reuses every handler in `functions/` unchanged.
+- **Worker Previews** replace Pages branch previews: the `previews` block binds the preview KV, the `tingsvad_taelle_preview` dataset and the `tingsvad-ting-ai-preview` Worker. Deploys run through Workers Builds (path `site-worker`).
+- The protocol redirects (`/protokol/` → `/arkivet/#protokol` and the English ones) are also answered by the Worker code, since `_redirects` only applies to asset responses. Canonical trailing-slash redirects stay 308 as on Pages (Workers' asset handling answers 307), and the 404 page is sent with `no-store`.
+- Web Analytics: Pages injected the beacon automatically; the site Worker's middleware inserts it from `WEB_ANALYTICS_TOKEN` (production only, so previews are not counted and the Pages fallback never doubles it).
+- Turnstile accepts the site Worker's `workers.dev` preview hostnames.
+- Charset: Workers' asset server sends `text/html` and `text/plain` without a charset, so the router adds `charset=utf-8` to HTML and `_headers` sets it for `llms.txt` and `robots.txt`.
+- `_headers`: files that should revalidate every 10 minutes (`site.css`, `site.js`, `round*.js` …) no longer also inherit the year-long `immutable` rule from `/assets/*` (the two values were joined into one header, on Pages too).
+- The preview Worker `tingsvad-ting-ai-preview` now has the site Worker's branch preview as `SITE_ORIGIN`, and the quality tests default to it.
+- Machine room design pass: the “measured now” label is one pill with a live dot on its own line (diagram, edge card, counting works, audit) instead of a boxed caps tag pressed against the content; Gudrun’s audit is a status card with three large numbers, a share bar and a proper button; the counting works’ tiles carry the colour of their series and the hourly chart always shows the whole day with a time axis; buttons in the machine room are sentence-case pills with a chevron that turns when the cards open; the last card in a layer fills its row instead of leaving empty grey cells; more air in the diagram layers.
+- Machine room (da/en): the small illustrations on the round-10 cards are gone again (they did not sit well in the card layout); the images stay in `assets/pak/r10/` and the archive figure still uses one.
+- Machine room (da/en): the Delivery layer is now *Workers Static Assets* and *run_worker_first* (cards and live diagram), a new card *From Pages to Workers* tells the story of the move, and the other cards no longer mention Pages Functions.
+
+### Verified
+- Every page in the sitemap in both languages, the 404 page in both languages and the Markdown twins were compared with what Pages served from the same commit: identical apart from the zone's own Cloudflare Fonts rewrite and the analytics beacon. 14 router unit tests (`cd site-worker && npm test`).
+
+</details>
+
+## [Round 10, part 6] · Ask the archive · 2026-10-27
+
+**Highlights:** Ask the archive
+
+<details><summary>Details</summary>
+
+### Added
+- **Ask the archive** (`/arkivet/#arkiv-spoerg`, `/en/archive/#arkiv-spoerg`): Brian answers from the whole site with source links. Cloudflare **AI Search** with built-in storage via an `ai_search_namespaces` binding: the Worker creates the instances `tingsvad-arkiv-da/-en` itself and, once a day from Cron (after 07:00), uploads the site's own Markdown versions (`/<path>/index.md`), but only pages whose SHA-256 changed (`worker/src/features/arkiv.js`). Hybrid retrieval, then Brian (text model, own quota) answers only from the excerpts and marks which sources he used. A tick box compares with the hand-built Vectorize archive on the same question, with timings.
+- `POST /api/ting-ai/arkiv/spoerg`, `GET /api/ting-ai/arkiv`; hard daily quota `ARKIV_PER_DAY` (25) in D1 because AI Search billing starts in November 2026 with 1,000 queries a month included; per-guest strict rate limit; `health.configured.arkiv`; counting-works events `arkiv-spoergsmaal`, `arkiv-synk`.
+- MCP tool `spoerg_arkivet` (shares the quota). Machine room card “AI Search · Ask the archive”, catalogue machine `spoerg-arkivet` (18 machines), product `ai-search` in the diagram. `assets/arkiv-v1.js`.
+
+</details>
+
+## [Round 10, part 5] · The thing as an MCP server · 2026-10-27
+
+**Highlights:** `mcp.tingsvad.dk` – the thing as an MCP server · `TingMcp` RPC entrypoint · Image round 10
+
+<details><summary>Details</summary>
+
+### Added
+- **`mcp.tingsvad.dk` – the thing as an MCP server** (Streamable HTTP, no login). A new Worker `tingsvad-mcp` (`mcp/`) built with the Agents SDK's `createMcpHandler` (stateless: one `McpServer` per request, no Durable Object, MCP SDK v2). Eight tools: `tingets_status`, `slaa_op_i_protokollen`, `hittegods_soeg`, `laes_gaestebogen` (read), `rejs_sag`, `stem`, `flyt_stolen` (write to the live site) and `afgoer_sagen` (always adjourns). Per-client rate limit (30/min) on a SHA-256 of IP + date; the IP never leaves the MCP Worker.
+- **`TingMcp` RPC entrypoint** in `tingsvad-ting-ai` (`worker/src/mcp-entry.js`, logic in `worker/src/features/mcp.js`), reached only through the service binding, never through the public `/api` proxy. Daily quotas for all agents together in D1 (3 guestbook cases, 60 votes, 300 stool steps, 100 AI look-ups), errors in tone with `retryAfter`, counting-works events `mcp-*`.
+- `TingRoom.mcpStem()` (take the first free seat and vote) and `ChairRoom.mcpFlyt()` / `mcpStatus()` as Durable Object RPC methods, with the same rules and rate limits as guests on WebSockets.
+- **Image round 10** (made by Jan with ChatGPT, transparent WebP): top motifs for the rune workshop, the case register and the error page; the MCP message baton as catalogue icon and figure in `#mcp`; small illustrations on the round-10 cards in the machine room (request.cf, Markdown, the error board, MCP, Realtime, Vectorize, Analytics Engine, Gudrun on GitHub). `assets/pak/r10/`.
+- Machine room: section `#mcp` with how to connect (Claude custom connector, `mcp-remote`, MCP Inspector) and the tool table; cards “The thing as an MCP server” and “Realtime SFU · planned” (da/en); the catalogue has 17 machines. `llms.txt` lists the server.
+
+### Changed
+- The guestbook's KV logic moved to `functions/_lib/sagsliste.js`, shared by `/api/sager` and the MCP entrypoint. `hittegods` search core split out as `soegKerne()`.
+
+### Setup
+- Deploy `tingsvad-ting-ai` first (new entrypoint), then `cd mcp && npm ci && npx wrangler deploy` (custom domain `mcp.tingsvad.dk` via `routes`; MX untouched).
+
+</details>
+
+## [Round 10, part 4] · Gudrun files cases on GitHub · 2026-10-27
+
+**Highlights:** Gudrun opens GitHub issues when the daily audit fails.
+
+<details><summary>Details</summary>
+
+### Added
+- **Gudrun opens GitHub issues when the daily audit fails.** A last step in `RevisionWorkflow` (`worker/src/features/gudrun-github.js`) opens one issue per day with failures, labelled `gudrun`, listing path, HTTP status, missing elements and the number of JS errors (never internal error texts). Idempotent: before opening, it lists open issues and looks for an invisible `<!-- gudrun:revision:YYYY-MM-DD -->` marker, so a retried step cannot file twice. When a later audit passes in full, Gudrun comments on and closes her open issues. GitHub errors are retried three times and never fail the audit. New counting-works events `gudrun-issue-oprettet` / `gudrun-issue-lukket`; `health.configured.github_issues`.
+- Machine room card “Gudrun files cases on GitHub” and a paragraph on the audit page (da/en).
+
+### Setup
+- Production only: var `GITHUB_REPO` and the secret `GITHUB_TOKEN` (fine-grained, Issues read/write on this repo only).
+
+</details>
+
+## [Round 10, part 3] · Free gains: Markdown, an error board and a counting works · 2026-10-27
+
+**Highlights:** Markdown for the machines · The error board (`#fejltavle`) · The counting works (Workers Analytics Engine) · Your way here (`request.cf`)
+
+<details><summary>Details</summary>
+
+### Added
+- **Markdown for the machines:** every static page answers `Accept: text/markdown` (and `/<page>/index.md`) with its `<main>` as Markdown: YAML front matter (title, description, canonical URL, language, hreflang alternates), no navigation, scripts or decoration, and an `x-markdown-tokens` header. Cloudflare's built-in *Markdown for Agents* needs the Pro plan, so the middleware negotiates itself with a dependency-free converter (`functions/_lib/markdown.js`). HTML responses now carry `Vary: Accept`, a `Link` header and a `<link rel="alternate" type="text/markdown">`. `llms.txt` has a section for agents.
+- **The error board (`#fejltavle`):** a missing page gives humans a 404 in the right language with the shared topbar, navigation and footer and links to the five pages (`404.html` holds both languages; the middleware removes the other half). Machines get structured errors by `Accept`: `application/problem+json` (RFC 9457 with `type`, `title`, `status`, `detail`, `instance`, `retryable`, suggestions), `application/json` (the site's own `{ok:false, code, message}` contract plus the problem fields) or `text/markdown` (front matter with `http_status`, `error_code`, `retryable`, `retry_after`). Everything under `/api/` answers JSON. A failure below the middleware answers 503 with `Retry-After`, never 502 (`functions/_lib/fejl.js`).
+- **The counting works (Workers Analytics Engine):** the middleware writes one data point per page view (or Markdown read, or 404), the Worker one per API call (grouped path, status class, duration, data centre) and one per event (stool moved, vote cast, the day's audit passed/failed) to the dataset `tingsvad_taelle` (`tingsvad_taelle_preview` in preview). No IP, cookie or session. `GET /api/ting-ai/taelle` reads the last 24 hours and 7 days with the new **Analytics SQL binding** (no API token) and keeps the answer for five minutes; the machine room shows tiles, an hourly chart, the data centres that answered, the busiest machines and the week's events. `health` reports `taelle` / `taelle_laes`; the architecture diagram has an Analytics Engine node.
+- **Your way here (`request.cf`):** `GET /api/kant` (a Pages Function) returns the data centre, protocol, TLS version and edge-measured round trip, and nothing else; `assets/colo.json` names the data centres. Shown as a card in the machine room next to the counting works. The proxy passes the data centre to the Worker as `x-tingsvad-colo` (stripped from incoming requests).
+- Four new cards in the machine room (request.cf, Markdown for the machines, the error board, Analytics Engine).
+
+### Changed
+- **Mobile: a fixed, compact topbar with a Menu button from the first pixel** (≤ 720 px). The five pages are in a `<details>` menu in the topbar (closes on Escape, outside click and choice); the sticky page navigation is hidden on narrow screens instead of stacking two bars. The middleware marks the current page in both.
+- **The time machines speak:** the hero slider and the fog-days slider in the archive set `aria-valuetext` (year, fog days, the entry in the minutes), so a screen reader hears more than a number.
+- **The counting works shows only its response time:** Analytics SQL reports the rows Cloudflare scans for the query (tens of millions, not our data), so the source line no longer quotes `rows_read`. The API still returns `statistik`.
+
+### Fixed
+- **The hero time machine on the front page was empty** after the minutes moved to the archive in round 9: it now fetches the entries from `/arkivet/` (`/en/archive/`) the first time it is touched (one request, not counted as a page view).
+
+### Setup
+- Worker: Wrangler ≥ 4.145 for the `[analytics]` binding (`cd worker && npm install`). The datasets are created by the first write; nothing to create by hand.
+
+</details>
+
+## [Round 10, part 2] · A catalogue, a diagram and a thriftier goose · 2026-10-27
+
+**Highlights:** The machine park is a catalogue of all 16 machines · The machine room has an architecture diagram · Gudrun's audit has a page of its own · The audit saves Browser Run minutes
+
+<details><summary>Details</summary>
+
+### Changed
+- **The machine park is a catalogue of all 16 machines** (the eight from round 6 open their panel on the page; the eight from round 9 link to their own room, marked →). A filter by Cloudflare product (Workers AI, D1, Durable Objects, Browser Run …) shows which machines use what; the choice is kept in `?produkt=` so a filtered view can be shared. Each card lists its products. The catalogue lives in one place, `assets/round10.js`; card thumbnails in `assets/pak/maskinpark/*-128.webp`.
+- **The machine room has an architecture diagram** drawn in the browser from `GET /api/ting-ai/health`: your browser → the edge → delivery → compute → data and AI, every product with its state (on, off, no meter, not answering) and the number of machines that use it, linked to the filtered machine park. The 26 colophon cards are grouped in the same layers (plus tooling and quality), with anchors `#lag-*`.
+- **Gudrun's audit has a page of its own** (`/maskinrummet/revisionen/`, `/en/machine-room/audit/`, case file 30). The machine room shows only a summary and links there; `/maskinrummet/#revisionen` is forwarded by `ankre.js`.
+- **The audit saves Browser Run minutes:** the Worker still fetches every page every morning, but hashes the HTML (SHA-256, with the selectors and the check-script version). An unchanged page reuses the latest passed browser check from within a week (`genbrugt_fra`, same screenshot) and the Workflow skips the pause; Mondays are full runs. The API reports `full`, `browserMs` and `reused`. Migration `0004_revision_genbrug.sql`. The audit covers 32 pages.
+
+</details>
+
+## [Round 10, part 1] · Tidying the ford · 2026-10-27
+
+From the UX review of 27 October: History tells, Experiences lets you do something, the Archive documents, the Machine room explains, and the front page shows today's news and sends you on.
+
+**Highlights:** Five menu items · `/oplevelser/` is an overview only · Front page · History → elsewhere
+
+<details><summary>Details</summary>
+
+### Changed
+- **Five menu items:** The ford, History, Experiences, Archive, Machine room. The machine park and the guestbook are sub-pages of Experiences (the menu marks Experiences on them, as on every other sub-page).
+- **`/oplevelser/` is an overview only**, with the machine park as the first card. Decide the case and the evidence moved to the Investigation; convening the thing moved next to the vote in the machine park; the certificate and the runes have a page of their own, **the rune workshop** (`/oplevelser/runevaerkstedet/`, `/en/experiences/rune-workshop/`).
+- **Front page:** the conflicting accounts of 980 and the family tree moved to History (after the legends); the front page keeps a short card for the family and a link to the accounts. The "one minute" entry goes straight to the ruling.
+- **History → elsewhere:** the runestone network with its status log moved to the Machine room ("the network, then and now"); "The cow, as seen by a machine" moved to the machine park, with a link from the climate section.
+- **Raven post** moved from the case file to the guestbook: both are ways in to the thing; the case file is the guest's own papers.
+- **Printable minutes** moved to `/arkivet/protokol/` and `/en/archive/minutes/` (still not indexed; Browser Run renders the PDF from there). `/protokol/` and `/en/protokol/` answer 301 to the minutes in the archive (`_redirects`).
+
+### Added
+- **One case register** in `assets/kanon.json` (`sider` and `sagsakter`) and a page for it (`/arkivet/sagsregister/`, `/en/archive/case-register/`). The duplicate numbers are gone: the machine park is case file 29 (with the cow as exhibit), the audit 30 and the emergency drills 31; raven post is a supplement to 13 and the accounts a supplement to 5. `python3 sagsregister.py` checks every page, adds missing section ids, writes both register tables and generates the anchor map in `assets/ankre.js`; `--tjek` changes nothing and fails if something is off. A new test (`specs/tingsvad/sagsregister.spec.js`) checks the served pages against the register.
+- **Old anchors** for everything that moved (`/oplevelser/#afgoer`, `#bevis`, `#moede`, `#cert-form`, `/#forkl`, `/#slaegt`, `/historien/#net-wrap`, `#ravnepost` …) are forwarded by `ankre.js`, now generated from all ids on the pages.
+- **Breadcrumbs** on every sub-page (The ford › Experiences › The rune workshop), inserted by the middleware from the page map in `kanon.json` (`sider.*.navn`), with a `BreadcrumbList` in JSON-LD. Main pages have none.
+- Gudrun's audit covers 30 pages (the rune workshop and the case register added; key elements follow the moved content). Brian's archive knows the new layout (corpus `r10a`).
+
+</details>
+
+## [Round 9, part 7] · Page tops, a fuller lost property office and a preview of its own · 2026-10-26 – 2026-10-27
+
+**Highlights:** Sub-page tops · Certificate of attendance in the case file · Lost property office · Quality tests
+
+<details><summary>Details</summary>
+
+### Added
+- **Sub-page tops** (from the header package of 27 October): the dark top now has the title on the left, a motif on the right (`assets/pak/toppe/`, WebP with alpha in 480/880 px from the PNG masters, or the two editable SVGs for the machine room and the investigation) and a thin golden river along the bottom edge. Same top in light and dark theme; only the page's own motif is loaded; the motif is hidden below 640 px; one 4 px arrival movement, none with reduced motion. Short editorial status lines (History, Experiences, Guestbook, Archive). The archive's line and the investigation's "pieces found: n of 3" come from the guest's own progress (`tingsvad.experience.v1`, no new key). The machine park is split into the eyebrow "Tingets"/"The thing's" and the h1 "Maskinpark"/"Machine park".
+- **Certificate of attendance in the case file:** the certificate (name, case number, date) is remembered in `tingsvad.cert.v1` when it is drawn, shown in the case file and included in the raven's PDF (validated and escaped server-side); the name field is prefilled from it.
+- **Lost property office:** 41 items instead of 24, each with a picture: 33 from the site's existing illustration packs and eight painted for the purpose (`assets/pak/hittegods/`: the sock, the shopping-list rune stick, the umbrella, the cat picture, the horseshoe, the phone, the cheese and the bottle of dew; WebP with alpha, 256 px). Catalogue version `h3` re-indexes.
+- **Quality tests** (`tests/`, `.github/workflows/kvalitet.yml`): Playwright in Chromium, Firefox and WebKit at 1440 px plus iPad, iPhone 13, Pixel 7 and light theme; axe-core (WCAG 2.1 A/AA) and Lighthouse CI. Every page on both languages is checked for HTTP 200, one unclipped `h1`, no horizontal scroll, the shared top bar and marked menu item, broken images, the header motif at the right widths and errors from the site's own files; old anchors, the language switch, the theme button and keyboard focus are tested too. Runs after each push to `main` or `runde-9` once Cloudflare Pages serves that commit, or by hand with any address. Read-only: nothing is submitted.
+- **Administration** (`/admin/`, behind Cloudflare Access): delete guestbook entries (only number, time and who deleted are kept in KV `slettet`, not the text; the three founding entries cannot be deleted) and approve, reject or delete raven-post letters. Two locks: Access at the edge, and the Access JWT verified again in `functions/admin/_middleware.js` and in the Worker's `admin/ravnepost` route (`functions/_lib/access.js`: RS256 against the team's certs, audience, issuer, expiry and an `ADMIN_EMAILS` allow-list). The public `/api/ting-ai/` proxy refuses `admin/*`. No browser dialogs: deleting takes two taps. `robots.txt` and `x-robots-tag` keep it out of search engines. Two new tests (33).
+- **Reusable test suite:** everything site-specific is in `tests/site.config.js` and `tests/specs/tingsvad/`; the general checks (`specs/generelt/`: layout, accessibility, keyboard focus) and Lighthouse read only the config. `site.config.eksempel.js` is a minimal config for another site, verified against playwright.dev. Web Analytics is blocked in tests so runs are not counted as visits; the language-switch check reads the server-rendered HTML instead of loading 26 pages in a browser. Machine room card "Gudrun checks the browsers too" (GitHub Actions + Playwright).
+- **Preview environment:** `[env.preview]` in both `wrangler.toml` files. Branch previews talk to a separate Worker `tingsvad-ting-ai-preview` with its own D1, KV, R2, Vectorize index and Workflows, no cron, no queue and no raven post, so testing on a branch never writes to production data. `GET /api/ting-ai/health` reports `miljoe`.
+
+### Fixed
+- **Guestbook names:** an operator-precedence slip (`name || lang ? A : B`) turned every guest's name into "Unknown party". The guestbook's Turnstile check now also accepts the preview hostname.
+- **Found by the new tests:** colour contrast in the light theme (gold text #9d6f1a reached only 3.3–3.7:1; now #7a5510 for text, a lighter gold behind dark button text, and the bright gold kept on the dark surfaces that stay dark in both themes; rust text lighter in the dark theme; moss and dimmed text darker in the light theme). Horizontal scroll on mobile on the machine room (the audit table widened the whole page) and the archive (map labels at the edge). The webmail link had no accessible name on small screens.
+- Experiences overview: at most four columns (three, two, one on smaller screens); a short last row is empty instead of a grey area.
+- The machine park no longer repeats "The thing has acquired machines. It does not help." in the first content heading.
+- Autumn leaves on sub-pages fall only inside the top, never across text, forms or buttons (and not at all with reduced motion, as before).
+- Front-page links to Brian's archive and the radio studio go straight to the machine park instead of via the anchor redirect.
+
+</details>
+
+## [Round 9, part 6] · The cauldron, raven post and the emergency drills · 2026-10-26 – 2026-10-27
+
+**Highlights:** The cauldron · The emergency drills · Raven post · Audit
+
+<details><summary>Details</summary>
+
+### Added
+- **The cauldron** (`/oplevelser/kodegryden/`, `/en/experiences/the-cauldron/`): five small JavaScript tasks with synthetic data (count the foggy days, find the loose stone, adjourn every case …). The guest's function runs in a Web Worker loaded from the site itself (`/assets/kodegryde-worker-v1.js`), which has its own narrow CSP in `_headers` (`default-src 'none'`, `'unsafe-eval'` only there); the page's own CSP is unchanged. The worker is stopped after 2 seconds. Nothing is sent to a server; progress and drafts stay in `localStorage` (`tingsvad.kodegryde.v1`).
+- **The emergency drills** (`/maskinrummet/noedoevelser/`, `/en/machine-room/emergency-drills/`): three clearly labelled simulations (`source:"simulation"`) that run the real code against fake services in the Worker's memory – the timeout wrapper around the language model, the raven exchange's queue consumer (duplicate delivery → one instance) and the voting logic (reconnect → same seat, one vote). No binding is used and nothing in production can be made to fail.
+- **Raven post**: an Email Worker (`email()` handler) for `brev@sitesite.dk` (a separate, otherwise unused domain: Email Routing is zone-wide, so the family's MX on `tingsvad.dk` is untouched). Parsed with `postal-mime`; only subject, a short excerpt (quotes, links and addresses removed) and the time are kept, the sender only as a hash for rate limiting. Private by default; shown on the case file page only if the sender wrote `[offentlig]`/`[public]` and the letter has been approved. Migration `0003_ravnepost.sql`; switched on with `RAVNEPOST_AKTIV`.
+- Lost property: editorial topic words in the index (`h2`) – first live test showed that "something to sit on" could not find the stool leg. Machine room cards for Email Workers and Web Workers + CSP. Audit covers 26 pages. Two new tests (28 in total).
+
+### Fixed
+- **Audit:** a page whose step gave up after all retries vanished from the count (27-10: 25/25 reported, `noedoevelser-en` silently missing). It is now written as failed (`registrerFejl`), and the total is always the full page list.
+- **Radio script:** a full stop after each headline, whole sentences only (no "..") and the newspaper's "Tingsvad-pointe" is left out of the broadcast. One new test (29 in total).
+- **The thing's age is computed everywhere and changes at midsummer, as the counter does:** the remaining fixed "1,046 years" in character lines (round 3, 4, 5, 6) now come from `window.tvAar()` in `site.js`: whole years since `tingSat.iso` in `kanon.json` (midsummer 980), the same rule as the front-page counter and the Worker's `aarSiden()`, which used to count calendar years and would have said 1,047 on 1 January while the counter still said 1,046 years and 6 months, and the page counters already used `data-kanon="aar"`. Ulf's editorial line and the archive corpus no longer state an age at all ("since the thing convened in 980"); corpus version `r9c` re-indexes the archive. Dated archive entries (2026) keep their number on purpose. A new test fails if a fixed age reappears in `assets/*.js` or the Worker's texts (30 tests).
+
+### Changed
+- Machine park illustrations are vignettes without a frame (max 22rem); the reclining developer is the last thing in the machine room again.
+
+</details>
+
+## [Round 9, part 5] · The shared stool and the lost property office · 2026-10-26 – 2026-10-27
+
+**Highlights:** The shared stool · The lost property office
+
+<details><summary>Details</summary>
+
+### Added
+- **The shared stool** (`/oplevelser/stolen/`, `/en/experiences/the-stool/`): one stool for the whole internet in a new Durable Object (`ChairRoom`, SQLite-backed, migration `v2`) with WebSocket Hibernation. The server owns the position on a 12 × 6 ford; clients ask for one step (`{type:'move',dx,dy}`) with arrow keys, buttons or a tap on a neighbouring square. The server validates (edges, the river, the stepping stones – the fourth one wobbles), rate-limits per session and sends a snapshot to everyone; owner ids are never revealed. Show the machinery measures the round trip of each move.
+- **The lost property office** (`/oplevelser/hittegods/`, `/en/experiences/lost-property/`): semantic search in a fixed catalogue of 24 forgotten objects (da/en) with bge-m3 embeddings in their own Vectorize namespaces (`hittegods-da/-en`), indexed lazily once per catalogue version under a D1 job lock. Results show the similarity score; every word about an object comes from the catalogue, not from a model. No guest input, private cases or puzzle solutions in the index.
+- Gudrun's audit covers the two new pages (22 in total). Three new Worker tests (26 in total).
+
+</details>
+
+## [Round 9, part 4] · The raven exchange, the case file and Gudrun's audit · 2026-10-26 – 2026-10-27
+
+**Highlights:** The case file · The raven exchange · Gudrun's audit
+
+<details><summary>Details</summary>
+
+### Added
+- **The case file** (`/oplevelser/sagsmappen/`, `/en/experiences/case-file/`): everything the visitor's browser has noted – pieces of page 2, finds, queue number, stool application and wishes, attempts to decide the case – on one page. Nothing leaves the browser until the raven is sent.
+- **The raven exchange**: order the case file as a PDF and follow a real background job. `POST /api/ting-ai/ravn` stores the order in D1 (unique per owner, kind and input hash – the same order returns the same job), puts it on the queue `tingsvad-ravn` (dead-letter `tingsvad-ravn-dlq`), and the consumer starts one Workflow instance per (job, attempt). Steps: in the queue → received → the raven is flying → the document is being written (Browser Run PDF from a fixed, fully escaped template, stored in R2, retried) → delivered. A failed job can be sent again up to three times. Private token per job (HMAC of job and owner).
+- **Gudrun's audit** in the machine room: every morning from 06:00 Cron starts one Workflow instance per date that goes through all pages in both languages, one per step with a 12-second pause (Browser Run free plan). Per page the Worker checks the HTTP status and that the middleware inserted all three partials (`x-tingsvad-dele`); a Browser Run snapshot with an injected script counts the key elements and reads JavaScript errors collected by `site.js` (`window.__tvFejl`). Screenshots in R2, results in D1, shown as a table with Gudrun's comment.
+- Illustrations for the eight new machines in `assets/pak/maskinpark/` (WebP with alpha, 600 and 1200 px, cropped to the subject).
+- Migration `0002_runde9.sql` (`ravn_jobs`, `revisioner`, `revision_sider`); machine room cards for Queues and Workflows + Browser Run; six new Worker tests (23 in total).
+
+</details>
+
+## [Round 9, part 3] · Show the machinery · 2026-10-26 – 2026-10-27
+
+**Highlights:** Show the machinery
+
+<details><summary>Details</summary>
+
+### Added
+- **Show the machinery** in every panel of the machine park: the products behind it, the actual call (method and path, never tokens), the status, the response time measured in the browser, the Worker's own timings per service, the time of day and links to the source files on GitHub. The last five calls of the open panel are listed.
+- `Server-Timing` from the Worker: selected bindings (D1, Workers AI, R2, KV, Vectorize, Browser Run) are wrapped in a small proxy (`worker/src/lib/timing.js`) that times every asynchronous call, e.g. `d1;dur=4.1;desc="3 calls", ai;dur=812.0, total;dur=830.2`. D1 batches still receive the real statements. One new Worker test.
+- Source labels gain *Stored result* (`x-tingsvad-cache: hit` – the newspaper, the radio and finished forge images come from storage), *Repeated reply* (idempotent replay) and *Simulation* (for the emergency drills to come).
+- Machine room: three new cards – Pages Functions + HTMLRewriter, Server-Timing, One canon.
+
+### Fixed
+- The Pages proxy answered 502 when the Worker was unreachable; Cloudflare replaces 502 with a plain-text page. It now answers 503 JSON with `retryAfter`.
+- Docs: Queues has been available on Workers Free since February 2026 (README, worker/README, wrangler.toml).
+
+</details>
+
+## [Round 9, part 2] · One site, several pages · 2026-10-26 – 2026-10-27
+
+**Highlights:** Sub-pages on the same domain, in Danish and English: History, Experiences · Shared top bar, navigation and footer from partials/, inserted by a Pages Functions middle · assets/ankre.js forwards old links such as /#gaestebog, /#paafund-radio or /#sag-980-0007 
+
+<details><summary>Details</summary>
+
+### Added
+- Sub-pages on the same domain, in Danish and English: History, Experiences (with its own pages for the Investigation, the thing's machine park and the guestbook), the Archive and the Machine room. The front page keeps the painting, the three ways in, today's fog forecast and Brian, the radio rerun, the family, an overview of the other pages and the FAQ.
+- Shared top bar, navigation and footer from `partials/`, inserted by a Pages Functions middleware with HTMLRewriter – still no build step. The middleware fills in the language switch from each page's `hreflang` links, marks the current page with `aria-current` and sets the security headers on HTML (`_headers` does not apply to Functions responses). `_routes.json` keeps `/assets/*` and other static files out of Functions.
+- `assets/ankre.js` forwards old links such as `/#gaestebog`, `/#paafund-radio` or `/#sag-980-0007` to the sub-page where the element now lives; the list is generated from every `id` in the pages.
+- Every page has its own title, description, canonical, hreflang pair, Open Graph and JSON-LD `WebPage`; `sitemap.xml` lists all 16 pages with alternates; `llms.txt` lists the pages.
+
+### Changed
+- The navigation bar links to pages instead of sections and stays visible across the whole page. The stepping-stone progress dots are gone.
+- Shared cases (`/sag/980-xxxx`) forward to the guestbook page. Brian's archive describes the new pages (corpus re-indexed).
+- Service worker cache version bumped (`tingsvad-v4`); `bump.sh` updates every page.
+
+</details>
+
+## [Round 9, part 1] · One canon, fewer contradictions · 2026-10-26 – 2026-10-27
+
+**Highlights:** assets/kanon.json: one source for the universe's dates and definitions · Newspaper number guard: sentences containing numbers that are not in FACTS · The three rulings are now "We are standing here"
+
+<details><summary>Details</summary>
+
+### Added
+- `assets/kanon.json`: one source for the universe's dates and definitions (the thing convened in 980, the three rulings, the date of the latest ruling, foggy days, summer). The hero counters, the footer, the fact boxes and every "1,046 years" in the page text read it (`data-kanon`), and the Worker bundles the same file (`worker/src/lib/kanon.js`) for the newspaper's FACTS block. `bump.sh` includes it in the asset hash.
+- Newspaper number guard: sentences containing numbers that are not in FACTS (e.g. "1046 hours and 32 minutes since 980", "Day 1046") are removed before publishing; if a piece ends up empty, the edition is rejected and Cron retries the next hour. The radio script is built from the cleaned edition. Three new Worker tests.
+
+### Changed
+- The three rulings are now "We are standing here" (1572), women's right to vote at the thing (§ 9, 5 June 1915, the same day the Danish constitution gave women the vote) and the domain (1990s), so the latest ruling falls in the 1990s, as the hero counter says. Minutes, bylaws, version history, the family board, the dictionary and the fact box agree; the 2026 move to Cloudflare is *noted*, not passed.
+- *Eight new contrivances* is now **The thing's machine park** (section, kicker, intro, colophon, Brian's archive, llms.txt, README). Anchors `#paafund-*` are unchanged; the archive corpus version is bumped so Vectorize re-indexes.
+- Theme button reads **Light / Dark**; "fog" now only means the fog effect.
+- Ragnhild's categorical protest is her own line, in her voice; the fact box carries the documentation with the strength of the sources ("0 of 7: historically inaccurate, according to Ragnhild").
+- The visitor counter's day follows Europe/Copenhagen, like the newspaper and the radio.
+
+</details>
+
+## [Round 8] · Editing pass (after an outside review) · October 2026
+
+**Highlights:** Three ways in right under the front page: I have one minute · The machine room · Theme button has a help text
+
+<details><summary>Details</summary>
+
+### Added
+- Three ways in right under the front page: *I have one minute* (decide the cow case), *I want to investigate* (find page 2), *I want to meet the machines* (open the courtroom).
+- The machine room (colophon) is folded by default behind *Open the machine room*; `#maskinrummet` opens it.
+- Theme button has a help text ("Switch to dark theme (Fog)") so it is not mistaken for the fog button.
+
+### Changed
+- Newspaper: the code now supplies every figure (years since 980, cases decided, foggy days) and the model is told never to invent numbers, times or calculations; every piece ends with a dry punchline and the ad ends with a bureaucratic detail. Prompt version bumped.
+- Radio texts lost their build-speak ("the script and the audio are the same edition", "made once a day"); now: *Reruns are due to a lack of developments in the case.* The redaction note is one line.
+- The old Tingsvad Radio in case file 10 is now labelled *RERUN* and points to the studio for today's broadcast with a voice, so there is one live expectation.
+- The page-wide fog is about a third lighter; *Lift the fog* sits clearly on top of it.
+- Up/down arrows are guarded against being mounted twice.
+
+### Fixed
+- Consistency: the notes no longer claim the dictionary is true (only the meaning of *ting* and *vad* is); the hero counter says "days since the thing last decided a case" (bylaw changes are not cases); the network caption and the fact box agree that one of the five clients is the backup; the KV card no longer says "no cookies" next to a card that describes the session cookie.
+
+</details>
+
+## [Round 7] · More Cloudflare · October 2026
+
+**Highlights:** AI Gateway tingsvad in front of every Workers AI call · Workers rate-limiting bindings · Turnstile on the guestbook and the stool application; tokens are validated server-side.
+
+<details><summary>Details</summary>
+
+### Added
+- AI Gateway `tingsvad` in front of every Workers AI call (logs off for the guests' sake; authenticated through the binding).
+- Workers rate-limiting bindings (`RL`, `RL_STRICT`) replacing D1 counters.
+- Turnstile on the guestbook and the stool application; tokens are validated server-side.
+- Vectorize: Brian's archive as a vector index (bge-m3), lazily indexed with a job lock in D1.
+- Browser Run: real og-images for shared cases and the minutes as an A4 PDF, cached in R2.
+- Images binding normalises uploads in the image evidence; uploads enabled.
+- HSTS, Cloudflare Fonts, DNSSEC (DS record at Punktum.dk), extended CSP.
+- Radio: the English broadcast is read aloud by Workers AI (Deepgram Aura-2, "orion"); the Danish edition is script-only with a pointer. The raven in the studio talks while the audio plays.
+- The stone button *Summon the fog* at the fog forecast.
+- Always-visible scrollbar and up/down arrows on the right (desktop).
+- Colophon *How the ford is built* in case file 24: 18 cards on the platform, incl. DNS, DDoS/WAF and analytics.
+- License: MIT for code, CC BY 4.0 for content (`LICENSE.md`, footer, `rel=license`, llms.txt).
+- SEO/LLM: descriptive titles and descriptions, `license`/`author`/`about` in JSON-LD, minutes pages in the sitemap, `/api/` excluded in robots.txt.
+
+### Fixed
+- Vision returned 502 through the service binding (the Worker fetched from its own zone) → the Pages proxy attaches the image as multipart.
+- Vision described in broken Danish → describes in English, the text model translates.
+- PDF: `networkidle0` never went idle (beacon/Turnstile) → `load`; Browser Run requires lowercase `a4`.
+- Layout: sticky only for figures with their own column, small marks no longer stretched, empty certificate box hidden, rune stick constrained, scroll stones in the margin, fact boxes side by side (subgrid).
+- "Gråtand" explained as the thing's edition of Bluetooth.
+
+</details>
+
+## [Round 6] · Eight new contrivances (C01–C08) · October 2026
+
+**Highlights:** New Worker tingsvad-ting-ai behind /api/ting-ai/ via service binding: D1, R2, Durable Obje · Panels: AI courtroom, The Great Vote · Shared API contract, HMAC session cookie, daily quotas with leases, idempotency keys, sche
+
+<details><summary>Details</summary>
+
+### Added
+- New Worker `tingsvad-ting-ai` behind `/api/ting-ai/*` via service binding: D1, R2, Durable Object (`TingRoom`, WebSocket Hibernation), Workflow (`ChairCaseWorkflow`), Cron, Workers AI (Llama 3.3 70B in JSON mode, Llama 3.2 Vision, FLUX.1 schnell).
+- Panels: AI courtroom, The Great Vote (seven seats), Tingsvad Tidende (daily paper), Present your evidence, Make a fake historical find, The bureaucracy works on (a case over several days), Brian's archive (hints in three levels), Radio with a voice.
+- Shared API contract, HMAC session cookie, daily quotas with leases, idempotency keys, schema validation of all AI text, editorial fallbacks labelled as such.
+
+</details>
+
+## [Round 5] · The living thing-site · October 2026
+
+**Highlights:** Case file 9 · Supplement · The Investigation: redacted documents, turn the shield, excavat · Question the witness, runic stick with plane, Gråtand pairing · Hero background without figures so the parallax layers no longer double.
+
+<details><summary>Details</summary>
+
+### Added
+- Case file 9 · Supplement · The Investigation: redacted documents, turn the shield, excavation, the missing page 2, notice board, queue ticket, fog camera, museum, seasons, stool configurator, expert panel, emergency plan, imprecise measurements, search in the fog (F01–F15).
+- Question the witness, runic stick with plane, Gråtand pairing (H01–H03).
+- Hero background without figures so the parallax layers no longer double.
+
+</details>
+
+## [Round 4] · After review · October 2026
+
+**Highlights:** Sticky section navigation with three bands: Experience · Try it · The archive · Conflicting accounts, meeting summons, network status, returning-visitor greeting, evidenc · The image pack: evidence images, portraits, map, seals, stamps, rune stones.
+
+<details><summary>Details</summary>
+
+### Added
+- Sticky section navigation with three bands: Experience · Try it · The archive. Case files renumbered 1–24.
+- Conflicting accounts, meeting summons, network status, returning-visitor greeting, evidence, three new legends, "What we actually know" boxes with sources.
+- The image pack: evidence images, portraits, map, seals, stamps, rune stones.
+
+</details>
+
+## [Round 3] · Everything alive · October 2026
+
+**Highlights:** Parallax hero, time machine 980–2026, day/night light, scroll stones, the network lives, g
+
+<details><summary>Details</summary>
+
+### Added
+- Parallax hero, time machine 980–2026, day/night light, scroll stones, the network lives, generative audio (river and wind), cursor fog, "Decide the case" (always adjourns), Konami code, shareable cases (`/sag/980-0007`), radio and horoscope, certificate, Younger Futhark transliterator, visitor counter, service worker and manifest, printable minutes.
+
+</details>
+
+## [Round 2] · Outside review · October 2026
+
+A review pass by ChatGPT of the first edition. No code of its own: its findings were taken in round 3 (and the rest in the editing pass of round 8), which is why there is no separate entry.
+
+## [Round 1] · First edition · October 2026
+
+**Highlights:** Front page in Danish and English, five paintings, minutes with Denmark and AI history, fam · SEO layer: sitemap, robots, JSON-LD, llms.txt, security headers, 404 page.
+
+<details><summary>Details</summary>
+
+### Added
+- Front page in Danish and English, five paintings, minutes with Denmark and AI history, family tree, Gudrun's ledger, guestbook on Cloudflare KV, fog forecast.
+- SEO layer: sitemap, robots, JSON-LD, llms.txt, security headers, 404 page.
+
+</details>
+

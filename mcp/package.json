@@ -1,0 +1,19 @@
+{
+  "name": "tingsvad-mcp",
+  "private": true,
+  "type": "module",
+  "description": "The thing at the ford as an MCP server (mcp.tingsvad.dk). Thin MCP layer; the logic lives in tingsvad-ting-ai (entrypoint TingMcp).",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "agents": "0.31.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "wrangler": "^4.154.0"
+  }
+}

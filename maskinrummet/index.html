@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maskinrummet · Tingsvad</title>
+<meta name="description" content="Maskinrummet på tingsvad.dk: hvordan sitet er bygget på Cloudflare – Workers med Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize og mere.">
+<meta property="og:title" content="Maskinrummet · Tingsvad">
+<meta property="og:description" content="Sådan er vadestedet bygget. Kolofon, ikke fiktion.">
+<meta property="og:image" content="https://tingsvad.dk/assets/og/maskinrummet.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Maskinrummet – Sådan er vadestedet bygget. Kolofon, ikke fiktion.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tingsvad.dk/maskinrummet/">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#111417">
+<meta name="view-transition" content="same-origin">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.da">
+  <link rel="canonical" href="https://tingsvad.dk/maskinrummet/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://tingsvad.dk/maskinrummet/#page", "url": "https://tingsvad.dk/maskinrummet/", "name": "Maskinrummet · Tingsvad", "description": "Maskinrummet på tingsvad.dk: hvordan sitet er bygget på Cloudflare – Workers med Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize og mere.", "inLanguage": "da", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "genre": "Satire", "license": "https://creativecommons.org/licenses/by/4.0/"}]}
+</script>
+<link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/">
+<link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/">
+<link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/fav-ko-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-ko-512.png">
+<link rel="apple-touch-icon" href="/assets/fav-ko-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=88083686">
+<link rel="stylesheet" href="/assets/forside.css?v=88083686">
+<link rel="stylesheet" href="/assets/undersider.css?v=88083686">
+<link rel="stylesheet" href="/assets/infrakort.css?v=88083686">
+</head>
+<body data-side="maskinrummet" class="r12m">
+<header class="r12-top" id="top">
+  <div class="r12-top-in gutter">
+    <a class="r12-logo" href="/" aria-label="Tingsvad – til forsiden">
+      <img class="r12-logo-ikon" src="/assets/pak/grafik/logo-oekser-48.webp" srcset="/assets/pak/grafik/logo-oekser-48.webp 1x, /assets/pak/grafik/logo-oekser-96.webp 2x" alt="" width="48" height="48">
+      <span>TINGSVAD<small>.dk</small></span>
+    </a>
+    <nav class="r12-nav" aria-label="Sider">
+      <a href="/">Vadestedet</a>
+      <a href="/historien/">Historien</a>
+      <a href="/oplevelser/">Oplevelser</a>
+      <a href="/arkivet/">Arkivet</a>
+    </nav>
+    <div data-tv-del="topbar"></div>
+  </div>
+</header>
+
+<nav class="r12s-krumme" aria-label="Du er her">
+  <div class="r12s-krumme-in gutter">
+    <ol><li><a href="/">Vadestedet</a></li><li aria-current="page">Maskinrummet</li></ol>
+    <a class="r12s-tilbage" href="/#kortet"><span aria-hidden="true">←</span> Tilbage til kortet</a>
+  </div>
+</nav>
+
+<header class="side-hoved side-hoved-maleri">
+  <picture class="side-hoved-bg"><img src="/assets/pak/toppe/serverfarm-1400.webp" srcset="/assets/pak/toppe/serverfarm-900.webp 900w, /assets/pak/toppe/serverfarm-1400.webp 1400w, /assets/pak/toppe/serverfarm-2048.webp 2048w" sizes="100vw" alt="Maleri: en vikingesmed tilslutter tovkabler til udskårne serverskabe under et mosbevokset tag ved åen, med vandhjul, runesten med lysende skærme og en ravn." width="2048" height="768" fetchpriority="high"></picture>
+  <div class="side-hoved-indre uden-motiv gutter">
+    <div class="side-hoved-tekst">
+      <div class="runes" aria-hidden="true">ᛏᛁᚾᚴᛋᚢᛅᚦ</div>
+      <h1>Maskinrummet</h1>
+      <p class="praemis">Sådan er vadestedet bygget. Kolofon, ikke fiktion.</p>
+    </div>
+  </div>
+  <img class="side-aa" src="/assets/pak/toppe/aa-linje.svg" alt="" width="1440" height="48">
+</header>
+
+<main class="col gutter">
+  <section id="maskinrum-side">
+    <div class="txt r6-intro" id="maskinrummet">
+      <h3 class="maskinrum-h">Sådan er vadestedet bygget</h3>
+      <p class="lead">For de IT-kyndige: tinget kører på Cloudflares platform, fra DNS til kunstig intelligens, uden en eneste server, som nogen skal holde øje med. Det passer tinget fint. Det har aldrig holdt øje med noget. Siden er dermed også en åben demo af, hvad man kan bygge på Cloudflare Workers og resten af platformen – med kildekoden frit tilgængelig.</p>
+      <p class="note">Kolofon, ikke fiktion. Alt herunder er, hvad sitet faktisk bruger. Kildekoden ligger på <a href="https://github.com/wi24rd-com/tingsvad-website" rel="noopener">GitHub</a>.</p>
+    </div>
+    <div class="txt">
+      <h3 class="maskinrum-h" id="arkitektur-h">Arkitekturen, som den svarer lige nu</h3>
+      <p>Diagrammet tegnes af din browser ud fra Workerens <code>health</code>-svar: lagene fra din browser til modellerne, hvert produkt, om bindingen er tændt, og hvor mange af tingets seksten maskiner der bruger det.</p>
+    </div>
+    <div class="ik-indgang"><p><b>Se det hele på ét kort</b>Infrastrukturkortet viser, hvilket datacenter der svarede dig, hvor databasen og de to Durable Objects bor, og målte svartider for hver binding.</p><a class="knap" href="/maskinrummet/kortet/">Åbn infrastrukturkortet <span aria-hidden="true">→</span></a></div>
+    <div class="ik-indgang"><p><b>Værnet, Crawlerne, Hastigheden og Danmark lige nu</b>Hvad Cloudflare holdt ude, hvem der kom for at læse, hvor hurtigt siderne er hos rigtige gæster, og hvordan det ser ud for resten af Danmark. Talt hver time fra Cloudflares egne tal.</p><span class="vg-indgang-knapper"><a class="knap" href="/maskinrummet/vaernet/">Værnet <span aria-hidden="true">→</span></a> <a class="knap sek" href="/maskinrummet/crawlerne/">Crawlerne</a> <a class="knap sek" href="/maskinrummet/hastigheden/">Hastigheden</a> <a class="knap sek" href="/maskinrummet/danmark/">Danmark lige nu</a> <a class="knap sek" href="/maskinrummet/arkivskabet/">Arkivskabet</a> <a class="knap sek" href="/maskinrummet/doeren/">Tingets dør</a></span></div>
+    <div id="arkitektur" role="region" aria-labelledby="arkitektur-h"><noscript><p class="note">Diagrammet kræver JavaScript. Kortene herunder står der stadig.</p></noscript></div>
+    <div class="maskinrum-lag" id="maskinrum-gitter">
+      <div class="mr-lag" id="lag-kant">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 1 af 7 · 8 kort</p>
+            <h3>Kanten</h3>
+            <p class="mr-lag-kort">Navn, værn og adgang foran alt andet.</p>
+            <p>Før en eneste linje af tingets kode kører, har Cloudflares net allerede slået navnet op, valgt det nærmeste datacenter, krypteret forbindelsen og sorteret angreb og robotter fra. Kanten er alt det, der sker i de første millisekunder, tæt på dig.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-kant-kort" data-aaben="Vis de 8 kort" data-luk="Fold sammen">Vis de 8 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-kant-kort" hidden>
+        <article><b>DNS og domæne</b><h3>Navnet bor på Cloudflares navneservere</h3><p>tingsvad.dk har været familiens siden 90'erne. I dag svarer Cloudflares anycast-DNS (<code>sid</code> og <code>val</code>) på navnet fra hundredvis af byer på én gang, så opslaget sker tæt på den, der spørger. Zonen er signeret med DNSSEC (ECDSA P-256), og DS-posten ligger hos Punktum.dk, så en validerende resolver kan afvise forfalskede svar. Trafikken til sitet proxies gennem Cloudflare, så de rigtige IP-adresser bag Workerne aldrig vises.</p></article>
+        <article><b>Netværk og sikkerhed</b><h3>HTTP/3, HSTS, CSP og ingen tredjeparter</h3><p>Alt serveres over HTTP/3 fra Cloudflares net med HSTS. Content-Security-Policy tillader kun sitets egne scripts og Turnstile; AI-tekst escapes altid og bliver aldrig HTML. Sessioner er en signeret, HttpOnly-cookie uden personoplysninger. Web Analytics tæller uden cookies.</p></article>
+        <article><b>DDoS, WAF og analyse</b><h3>Et værn, der er tændt, før nogen beder om det</h3><p>Cloudflares DDoS-beskyttelse står foran alt trafik uden opsætning, og det forvaltede WAF-regelsæt stopper kendte angrebsmønstre, før de når Workerne. <a href="/maskinrummet/vaernet/">Værnet</a> viser hver time, hvad det har stoppet, og <a href="/maskinrummet/crawlerne/">Crawlerne</a>, hvilke bots der kom forbi. Web Analytics tæller besøg med et lille script fra Cloudflares eget domæne, uden cookies, fingerprinting eller tredjeparter. Tingets egen besøgstæller nederst på siden er en daghash i KV (se kortet om Workers KV) og ved intet om, hvem du er. Network Error Logging (<code>NEL</code>) rapporterer forbindelsesfejl tilbage til Cloudflare, så sitet kan se, når noget ikke når frem.</p></article>
+        <article><b>Rate Limiting + Turnstile</b><h3>Én stemme ad gangen, og helst fra et menneske</h3><p>Workers' indbyggede rate limiting-binding tæller kald pr. session og endpoint i Cloudflares eget net. Gæstebogen og stolansøgningen beskyttes af Turnstile, en usynlig bot-kontrol uden billedgåder; tokenet valideres server-side og kan kun bruges én gang.</p></article>
+        <article><b>request.cf</b><h3>Kanten ved, hvor den står</h3><p>Hver forespørgsel får et <code>cf</code>-objekt med fra Cloudflare: datacenter, protokol, TLS-version, målt tur-retur-tid og meget mere. En lille rute i site-Workeren, <code>/api/kant</code>, læser fire af felterne og sender dem tilbage til dig, så du kan se, hvilket af Cloudflares datacentre der svarede (<a href="#vejen">din vej hertil</a>). IP, by, land og udbyder står også i objektet; dem læser tinget ikke, og intet gemmes.</p></article>
+        <article><b>Workers Cache</b><h3>Avisen trykkes én gang og læses mange</h3><p>Dagens avis, radio, revision og dagbøgerne er ens for alle, så de caches foran Workeren med <code>Cache-Control: public</code>, et <code>Cache-Tag</code> og en ETag ud fra indholdet. Næste gæst får svaret fra kantens cache uden at Workeren kører; bagefter genvalideres med <code>If-None-Match</code> og et tomt 304. Når Cron har trykt en ny udgave, kalder Workeren <code>ctx.cache.invalidate({tags})</code>. Under »Vis maskineriet« står, om svaret kom fra cachen (HIT) eller fra Workeren.</p></article>
+        <article><b>Web Crypto · ML-DSA-65</b><h3>Et bevis, der holder mod en kvantecomputer</h3><p><a href="/oplevelser/runevaerkstedet/#fremmoede">Beviset for fremmøde</a> underskrives nu af Workeren med ML-DSA-65 (FIPS 204), som Workers' Web Crypto har bag flaget <code>webcrypto_modern_algorithms</code>. Underskriften er 3.309 bytes, den offentlige nøgle ligger åbent på <code>/api/ting-ai/bevis/noegle</code>, og siden kan selv vise, at et ændret navn får tjekket til at fejle. Sagen om koen er stadig udsat.</p></article>
+        <article><b>Secrets Store</b><h3>Nøglerne i ét skab</h3><p>GitHub-tokenet, Realtime-tokenet, webhook-hemmeligheden og bevisets private nøgle kan ligge i kontoens fælles Secrets Store i stedet for som hemmeligheder på hver Worker. Koden spørger først skabet (<code>env.X_STORE.get()</code>) og falder tilbage til den gamle Worker-secret, så skiftet kan ske én nøgle ad gangen. Jan sætter nøglerne; de står aldrig i repoet.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-levering">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 2 af 7 · 5 kort</p>
+            <h3>Levering</h3>
+            <p class="mr-lag-kort">Sitet selv: statiske filer og en Worker, der kun vågner, når der er brug for den.</p>
+            <p>Siderne er almindelige filer, der sendes direkte fra kanten. Kun når en side skal have topbjælke, sprog eller et API-svar, vågner site-Workeren, gør sit arbejde i samme request og lægger sig til at sove igen.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-levering-kort" data-aaben="Vis de 5 kort" data-luk="Fold sammen">Vis de 5 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-levering-kort" hidden>
+        <article><b>Workers Static Assets</b><h3>Statisk site uden byggetrin</h3><p>Hele sitet er én Worker, <code>tingsvad-site</code>, med filerne som Static Assets. Hver push til <code>main</code> bliver til en ny udgave på det globale net via Workers Builds. Ingen build: HTML, CSS og JavaScript ligger i repoet, som de serveres. Billeder, scripts og stylesheets sendes direkte fra kanten uden at vække Workeren, og de koster ingenting. <code>_headers</code> sætter Content-Security-Policy, Permissions-Policy og cache-regler; <code>site-worker/wrangler.toml</code> holder bindingerne.</p></article>
+        <article><b>run_worker_first</b><h3>Serverlogik ved siden af filerne</h3><p>En liste af mønstre bestemmer, hvornår Workeren skal svare før filerne: HTML-siderne, <code>/api/*</code>, <code>/admin/*</code> og <code>/sag/*</code>, men ikke <code>/assets/*</code>. En lille router uden afhængigheder (<code>site-worker/index.js</code>) sender gæstebogen (<code>/api/sager</code>), tællerne og de delbare sager (<code>/sag/980-0007</code> med link-preview) videre til de samme små moduler som før og henter resten fra filerne gennem <code>env.ASSETS</code>. Det hele sker i samme request, i det datacenter der er tættest på dig.</p></article>
+        <article><b>HTMLRewriter</b><h3>Én navigation, ingen byggetrin</h3><p>Siderne er almindelige HTML-filer med pladsholdere. En middleware (<code>functions/_lib/side.js</code>) streamer hver side gennem HTMLRewriter og sætter topbar, navigation og footer ind fra <code>/partials/</code>, udfylder sprogskiftet ud fra sidens <code>hreflang</code> og markerer den side, du står på. <code>run_worker_first</code> holder billeder og scripts uden om Workeren, og fordi <code>_headers</code> kun gælder for svar direkte fra filerne, sætter middlewaren selv CSP og HSTS på HTML. Gamle links som <code>/#gaestebog</code> sendes videre af et lille script til den underside, hvor elementet nu bor.</p></article>
+        <article><b>Content negotiation</b><h3>Markdown til maskinerne</h3><p>Beder en klient om <code>Accept: text/markdown</code>, eller føjer den <code>index.md</code> til en sides adresse, svarer middlewaren med sidens indhold som Markdown: titel, beskrivelse, kanonisk adresse og sprogversioner som YAML-frontmatter, derefter teksten uden navigation, scripts og pynt, og headeren <code>x-markdown-tokens</code> med et skøn over længden. Cloudflares indbyggede <i>Markdown for Agents</i> kræver Pro-planen; tinget er på Free og gør det selv med en lille parser uden afhængigheder (<code>functions/_lib/markdown.js</code>). Browsere sender aldrig <code>text/markdown</code> og får HTML som altid; svaret bærer <code>Vary: Accept</code>, så ingen cache blander de to sammen.</p></article>
+        <article><b>Fejltavlen</b><h3>Fejl, som begge slags gæster kan læse</h3><p>En side, der ikke findes, giver mennesker tingets 404-side på det rigtige sprog med links til de fem sider. Maskiner, der beder om <code>application/problem+json</code>, får et RFC 9457-svar med <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code>, <code>retryable</code> og forslag; <code>application/json</code> giver sitets egen fejlkontrakt, og <code>text/markdown</code> giver frontmatter med <code>http_status</code> og <code>retryable</code> efter samme mønster som Cloudflares egne fejlsider. Alt under <code>/api/</code> svarer altid JSON. Fejler noget under middlewaren, svarer den 503 med <code>Retry-After</code>, aldrig 502.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-beregning">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 3 af 7 · 10 kort</p>
+            <h3>Beregning</h3>
+            <p class="mr-lag-kort">Tingets maskiner i en Worker uden egen adresse.</p>
+            <p>Alt, der kræver mere end at sende en fil, sker i maskin-Workeren bag en service binding: afstemninger, ansøgninger, avistryk og ravnepost. Her bor de lange processer, der skal kunne sove, vågne og fortsætte uden at miste tråden.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-beregning-kort" data-aaben="Vis de 10 kort" data-luk="Fold sammen">Vis de 10 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-beregning-kort" hidden>
+        <article><b>Workers + Service Binding</b><h3>Tingets maskiner bag <code>/api/ting-ai/</code></h3><p>Tingets maskinpark bor i en selvstændig Worker. Site-Workeren kalder den gennem en service binding, altså et direkte kald mellem to Workers uden at røre det offentlige net. Maskin-Workeren har ingen egen adresse.</p></article>
+        <article><b>Fra Pages til Workers</b><h3>Flyttedagen</h3><p>Fra runde 1 til 10 boede sitet på Cloudflare Pages. Pages udgav hele repoet, så også <code>worker/wrangler.toml</code> og testene kunne hentes fra tingsvad.dk. I runde 11 flyttede sitet til Workers Static Assets: en <code>.assetsignore</code> holder alt andet end sitet ude, så kun det, gæsterne skal se, bliver udgivet. Middlewaren fra <code>functions/</code> blev ikke skrevet om, men flyttet ind i delte moduler, som både Pages og Workeren kunne køre, mens flytningen stod på. Hver branch får nu en Worker Preview med egne bindinger, egen KV og egen maskin-Worker, så en test aldrig skriver i tingets rigtige protokol. Flytningen blev testet ved at sammenligne alle sider på begge sprog med det, Pages leverede, byte for byte. Kun skrifterne og analysescriptet afveg, og det er zonens egne tilføjelser.</p></article>
+        <article><b>Durable Objects</b><h3>Én sandhed om syv pladser</h3><p>Den Store Afstemning er ét Durable Object pr. vadested med WebSocket Hibernation: alle forbindelser taler med samme instans, pladser tildeles atomisk, og objektet sover mellem beskederne uden at miste runden. En reconnect giver samme plads, ikke en ny stemme. Den samme teknik bærer <a href="/oplevelser/stolen/">den fælles stol</a>: én stol for hele internettet, hvor serveren ejer positionen og rate-limiter hver gæst.</p></article>
+        <article><b>Workflows</b><h3>Bureaukratiet sover vedvarende</h3><p>En stolansøgning starter en Workflow-instans, der sover et minut, to timer og et døgn mellem sine trin. Den kører, mens din browser er lukket, og hvert trin er idempotent: et gentaget trin flytter aldrig sagen to skridt frem.</p></article>
+        <article><b>Workflows + Browser Run</b><h3>Bilag og revision, trin for trin</h3><p>Ravnecentralens Workflow går fra <i>modtaget</i> over <i>ravnen flyver</i> til <i>bilaget skrives</i> (en PDF fra en fast, escapet skabelon i Browser Run, lagt i R2) og <i>leveret</i>; hvert trin er en idempotent overgang i D1, og skrivningen genforsøges. Revisionen er en anden Workflow, der hver morgen tager én side ad gangen med pause imellem, så den holder sig inden for Browser Runs gratis kvote.</p></article>
+        <article><b>Cron Triggers</b><h3>Avisen trykkes én gang i døgnet</h3><p>En timeplan i UTC med dato-guard i Europe/Copenhagen, så sommertid ikke giver to udgaver. En joblås i D1 sikrer, at to samtidige triggers stadig kun trykker én avis pr. sprog. Sidevisninger genererer aldrig noget.</p></article>
+        <article><b>Queues</b><h3>Ravnens postsæk</h3><p>Bestillinger til <a href="/oplevelser/sagsmappen/">Ravnecentralen</a> lægges i køen <code>tingsvad-ravn</code>. Køen leverer mindst én gang, med genforsøg og en dead-letter-kø; fordi hver Workflow-instans har et fast navn (<code>ravn-&lt;job&gt;-&lt;forsøg&gt;</code>), gør en dobbeltlevering ingen skade. Køen er gratis på Workers Free.</p></article>
+        <article><b>Email Workers</b><h3>Ravnepost på sit eget domæne</h3><p>Email Routing gælder en hel zone, så ravnen fik sit eget gamle domæne: på <code>sitesite.dk</code> afleverer Cloudflare Email Routing breve til <code>brev@</code> direkte til Workerens <code>email()</code>-handler. Den parser brevet med <code>postal-mime</code> og gemmer kun emne, et kort uddrag og tidspunktet; afsenderen bliver til en hash, adresser og links fjernes fra uddraget. Intet videresendes, intet besvares, og et brev vises kun, hvis afsenderen selv har bedt om det, og det er godkendt.</p></article>
+        <article><b>Agents SDK + Workers RPC</b><h3>Tinget som MCP-server</h3><p>En lille Worker på <code>mcp.tingsvad.dk</code> taler Model Context Protocol med <code>createMcpHandler</code> fra Agents SDK: ét nyt <code>McpServer</code> pr. kald, ingen tilstand og ingen Durable Object. Værktøjerne kalder tingets Worker via en service binding til et navngivet RPC-entrypoint (<code>TingMcp</code>), som kører kvoter i D1 og taler direkte med afstemningens og stolens Durable Objects. Den offentlige <code>/api</code>-proxy rammer kun Workerens <code>fetch()</code> og kan ikke nå entrypointet. <a href="#mcp">Forbind din assistent</a>.</p></article>
+        <article><b>Realtime SFU + Durable Objects</b><h3>Radioen sender live</h3><p>På <a href="/oplevelser/maskinparken/radio/">radioens side</a> kan man lytte live, sammen med alle andre. Et Durable Object laver dagens engelske udsendelse som rå lyd (Aura-2, 48 kHz) i R2 og beder Realtime SFU om en WebSocket-adapter; SFU'en ringer tilbage til objektet, der sender lyden i realtid som små protobuf-pakker. Hver lytter abonnerer på samme spor over WebRTC og hører det samme sted i udsendelsen. Kun lytning: sitets Permissions-Policy blokerer mikrofonen. Realtime er gratis op til 1.000 GB udgående trafik om måneden.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-data">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 4 af 7 · 6 kort</p>
+            <h3>Data</h3>
+            <p class="mr-lag-kort">Hvor tinget husker, så godt det kan.</p>
+            <p>Tingets hukommelse er delt efter, hvad den skal huske: hurtige tællere i KV, sager og kvoter i en SQL-database, filer i R2 og betydning i et vektorindeks. Intet af det gemmer, hvem du er.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-data-kort" data-aaben="Vis de 6 kort" data-luk="Fold sammen">Vis de 6 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-data-kort" hidden>
+        <article><b>Workers KV</b><h3>Gæstebog og tællere</h3><p>Et nøgle-værdi-lager med global replikering holder de rejste sager, forsøgene på at afgøre sagen og dagens besøgende, det sidste som daghashes, der udløber efter to døgn. Ingen cookies til det; sessionen til maskinparken er den eneste cookie, og den rummer intet om personen.</p></article>
+        <article><b>D1</b><h3>SQLite på kanten</h3><p>Avisudgaver, sager, kvoter, idempotency-nøgler og rate limits ligger i en D1-database i Vesteuropa. Reservationer har en lease, så et nedbrud midt i et kald ikke låser dagens bevilling for evigt.</p></article>
+        <article><b>R2</b><h3>Mediefiler uden udgående gebyr</h3><p>Opdigtede fund og radioens lydfiler gemmes i en R2-bucket under en nøgle af valg, sprog, promptversion og model. Samme kombination hentes derfor kun én gang fra modellen; alle gæster deler filen.</p></article>
+        <article><b>Vectorize</b><h3>Mímirs arkiv som vektorindeks</h3><p>Det redaktionelle korpus (figurer, sagsakter, de virkelige fakta med kilder) indekseres som embeddings fra bge-m3. Mímir finder de nærmeste uddrag til et spørgsmål og må kun citere dem. Gådens løsninger ligger ikke i indekset; de vælges stadig af serveren efter spoiler-niveau. <a href="/oplevelser/hittegods/">Hittegodskontoret</a> har sit eget namespace med et fast katalog, så svarene altid kommer fra kataloget og aldrig fra modellen.</p></article>
+        <article><b>Analytics Engine</b><h3>Tingets tælleværk</h3><p>Middlewaren skriver ét datapunkt pr. side, Workeren ét pr. maskinkald og ét pr. hændelse (en flyttet stol, en afgivet stemme, dagens revision) til datasættet <code>tingsvad_taelle</code>. Et datapunkt er en art, et navn, et sprog, et datacenter og to tal: ingen IP, ingen cookie, ingen session. Skrivningen blokerer ikke svaret. Workeren læser tallene med Analytics SQL-bindingen uden API-token og gemmer svaret i fem minutter. Ved stor trafik tager Analytics Engine stikprøver og vægter tallene tilbage; ved tingets trafik er de stort set eksakte.</p></article>
+        <article><b>Durable Objects · SQL</b><h3>Stolen fører dagbog</h3><p>Stolen og afstemningen er Durable Objects med SQLite-lager, og nu bruger de det: hver flytning, stemme og afsluttet runde bliver en række i objektets egen tabel (<code>ctx.storage.sql</code>), med ugedag og time i dansk tid. <a href="/oplevelser/stolen/">Stolen</a> og <a href="/oplevelser/maskinparken/afstemningen/">afstemningen</a> viser statistikken og den SQL, der lavede den. Kun tidspunkt og art, aldrig hvem. Rækker ældre end et halvt år ryddes.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-ai">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 5 af 7 · 5 kort</p>
+            <h3>AI og browsere på kanten</h3>
+            <p class="mr-lag-kort">Modeller og en headless browser, alle bag bindings.</p>
+            <p>Sprogmodeller, billedmodeller og en rigtig browser kører i Cloudflares eget net og kaldes gennem bindings uden API-nøgler i koden. Hvert kald har en døgnkvote, og svarene valideres, før nogen ser dem.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-ai-kort" data-aaben="Vis de 5 kort" data-luk="Fold sammen">Vis de 5 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-ai-kort" hidden>
+        <article><b>Workers AI</b><h3>Tre modeller, ét budget</h3><p>Retssal, Mímir, avis og proveniens: Llama 3.3 70B med JSON-mode, så svar valideres mod et skema, før de vises. Billedbeviset: Llama 3.2 Vision beskriver, tekstmodellen oversætter. Bevisværkstedet: FLUX.1 schnell. Døgnkvoter reserveres i databasen, <em>før</em> modellen kaldes.</p></article>
+        <article><b>AI Gateway</b><h3>Én port foran alle modeller</h3><p>Hvert AI-kald går gennem AI Gateway, der logger model, varighed og tokens, cacher identiske kald (samme prøvebillede beskrives kun én gang) og kan sætte sit eget loft. Sitets egne døgnkvoter gælder stadig; gatewayen er sikkerhedsnettet udenom.</p></article>
+        <article><b>Browser Run + Images</b><h3>En browser på kanten</h3><p>Link-previews af en delt sag (<code>/sag/980-0007</code>) tegnes som et rigtigt billede af en headless browser og gemmes i R2. Protokollen kan hentes som PDF fra samme browser. Images-bindingen normaliserer uploads i billedbeviset: orientering, metadata og størrelse, før modellen ser filen.</p></article>
+        <article><b>AI Search</b><h3>Spørg arkivet</h3><p>Det færdige modstykke til det håndbyggede Vectorize-arkiv: Cloudflare AI Search med indbygget lager. Workeren opretter selv to instanser (dansk og engelsk) via en namespace-binding og lægger én gang i døgnet sitets Markdown-udgaver ind, men kun de sider, hvis SHA-256 har ændret sig. <a href="/arkivet/#arkiv-spoerg">Spørg arkivet</a> søger hybridt (vektor og nøgleord), og Mímir svarer med tekstmodellen kun ud fra de fundne uddrag og linker til kilderne. AI Search faktureres fra november 2026 med 1.000 forespørgsler om måneden inkluderet, så tinget har en hård døgnkvote på 25.</p></article>
+        <article><b>Web Search API</b><h3>Udefra i Tingsvad Tidende</h3><p>Når avisen trykkes, kan Workeren hente et par rigtige, harmløse overskrifter med <code>env.AI.websearch</code> gennem AI Gateway og lade sprogmodellen kommentere dem i tingets tone. Overskrift, kilde og link kommer fra søgningen, aldrig fra modellen, og kun glædelige nyheder kommer med: en ordliste sorterer alt alvorligt fra, før modellen ser noget, og modellen skal selv godkende hver nyhed som rent positiv. Søgningerne betales med kredit på AI Gateway, og Workeren søger højst to gange i døgnet (<code>WEBSEARCH_ENABLED</code>).</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-browser">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 6 af 7 · 2 kort</p>
+            <h3>Din browser</h3>
+            <p class="mr-lag-kort">Det, der aldrig forlader din maskine.</p>
+            <p>Noget af tinget kører slet ikke på en server. Kodegryden, lydene, udgravningen og dine fund lever i din egen browser under en streng CSP og sendes aldrig nogen steder hen.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-browser-kort" data-aaben="Vis de 2 kort" data-luk="Fold sammen">Vis de 2 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-browser-kort" hidden>
+        <article><b>Web Workers + CSP</b><h3>Gæstens kode i en lukket gryde</h3><p>Sitets CSP tillader ikke <code>eval</code>. <a href="/oplevelser/kodegryden/">Kodegryden</a> kører derfor gæstens funktion i en Web Worker fra en fil på sitet selv, som har sin egen, smalle CSP i <code>_headers</code>: <code>default-src 'none'</code> (intet netværk) og <code>'unsafe-eval'</code> kun dér. Hovedsiden stopper workeren efter to sekunder. Intet sendes til tinget – det er ærligt mærket »kører i din browser«.</p></article>
+        <article><b>Uden for Cloudflare</b><h3>Det, browseren selv klarer</h3><p>Service worker til offline og »føj til hjemmeskærm«, Web Audio til åen og vinden, canvas til udgravning og certifikat, Intl-API til dansk dato og årstid, localStorage til dine fund.</p></article>
+        </div>
+      </div>
+      <div class="mr-lag" id="lag-vaerktoej">
+        <div class="mr-lag-hoved">
+          <div class="mr-lag-tekst">
+            <p class="mr-lag-over">Lag 7 af 7 · 5 kort</p>
+            <h3>Værktøj og kvalitet</h3>
+            <p class="mr-lag-kort">Det, der holder resten ærligt.</p>
+            <p>Målinger, faste tal og automatiske tests sørger for, at det, siden påstår om sig selv, også passer. Hver morgen går Gudrun siderne igennem, og fejl bliver til sager på GitHub.</p>
+          </div>
+          <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-vaerktoej-kort" data-aaben="Vis de 5 kort" data-luk="Fold sammen">Vis de 5 kort</button>
+        </div>
+        <div class="maskinrum" id="lag-vaerktoej-kort" hidden>
+        <article><b>Server-Timing</b><h3>Vis maskineriet</h3><p>Hvert panel i <a href="/oplevelser/maskinparken/">maskinparken</a> kan folde sit maskineri ud: produkterne bag, det faktiske kald, svartiden målt i din browser og Workerens egne målinger af D1, Workers AI, R2, KV og Vectorize, sendt som en <code>Server-Timing</code>-header. Bindings pakkes ind i en lille proxy (<code>worker/src/lib/timing.js</code>), så målingen sker ét sted. Gemte resultater mærkes <i>Gemt resultat</i>, så det altid er tydeligt, om noget er live.</p></article>
+        <article><b>Én kanon</b><h3>Datoer og afgørelser ét sted</h3><p><code>assets/kanon.json</code> rummer universets faste tal: tinget sat i 980, de tre afgørelser og den seneste i 90'erne, tågedage og sommer. Siden læser filen, og Wrangler bundler den samme fil ind i Workeren ved deploy, så avisens FAKTA og forsidens tællere ikke kan glide fra hinanden. En talvagt fjerner sætninger med tal, modellen selv har fundet på.</p></article>
+        <article><b>GitHub Actions + Playwright</b><h3>Gudrun tjekker også browserne</h3><p>Efter hver udgivelse åbner en testsuite alle sider på begge sprog i de tre browsermotorer (Chromium, Firefox og WebKit, der driver Safari) og som iPhone, iPad og Pixel, i lyst og mørkt tema. Den tjekker, at ingen side ruller vandret, at der er præcis én overskrift, at billeder og egne filer loader uden fejl, og kører tilgængelighedstjekket axe-core og Lighthouse. Første kørsel fandt for svag kontrast i lyst tema, en side der var 148 px for bred på mobil og et link uden navn til skærmlæsere; alle tre er rettet. Testene læser kun; de sender intet. <a href="https://github.com/wi24rd-com/tingsvad-website/tree/main/tests">Testene</a> og <a href="https://github.com/wi24rd-com/tingsvad-website/actions/workflows/kvalitet.yml">kørslerne</a> er offentlige, og den generelle del kan genbruges på andre sites.</p></article>
+        <article><b>Workflows + GitHub REST</b><h3>Gudrun fører sag på GitHub</h3><p>Når <a href="/maskinrummet/revisionen/">revisionen</a> har fejl, er dens sidste trin at åbne ét issue pr. dag i repoet med de fejlede sider: sti, HTTP-status, manglende elementer og antal JavaScript-fejl, aldrig interne fejltekster. Før hun opretter, lister hun de åbne issues og leder efter en usynlig datomarkør, så et genforsøgt trin ikke giver dobbelte sager. Består en senere revision helt, kommenterer og lukker hun selv. Tokenet er fint-scopet (kun Issues på ét repo) og ligger som Worker-secret. Fejler GitHub, vælter det ikke revisionen. <a href="https://github.com/wi24rd-com/tingsvad-website/issues?q=label%3Agudrun">Se Gudruns issues</a>.</p></article>
+        <article><b>Workers Issues + Traces</b><h3>Fejl i drift går også til Gudrun</h3><p>Alle tre Workers har Workers Issues og Traces slået til: kørselsfejl samles og grupperes, og en del af kaldene spores hele vejen gennem bindingerne. En automation sender nye fejl som webhook til <code>/api/ting-ai/gudrun/issues</code>; Gudrun tjekker hemmeligheden, renser teksten for alt, der ligner nøgler, og samler dagens fejl i ét issue på GitHub, højst 20 om dagen.</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Runde 10 · Din vej hertil: request.cf og tælleværket -->
+  <section id="vejen">
+    <div class="txt">
+      <h2>Din vej hertil</h2>
+      <p>To små målinger, begge ægte: hvor på Cloudflares net siden kom fra, og hvad tinget har talt det seneste døgn. Ingen af dem ved, hvem du er.</p>
+    </div>
+    <div class="r10-vej">
+      <div class="r10-boks" id="kant-kort" aria-live="polite"><noscript><p class="note">Kortet kræver JavaScript. <code>GET /api/kant</code> virker uden.</p></noscript></div>
+      <div class="r10-boks r10-boks-bred" id="taelle" aria-live="polite"><noscript><p class="note">Tælleværket kræver JavaScript. <code>GET /api/ting-ai/taelle</code> virker uden.</p></noscript></div>
+    </div>
+    <div class="txt" id="fejltavle">
+      <h3>Til maskinerne</h3>
+      <p>Hver side findes også som Markdown, og tingets fejl svarer i et format, en maskine kan læse. Prøv selv:</p>
+      <pre tabindex="0" aria-label="Eksempler med curl"><code>curl -H "Accept: text/markdown" https://tingsvad.dk/maskinrummet/
+curl https://tingsvad.dk/historien/index.md
+curl -H "Accept: application/problem+json" https://tingsvad.dk/findes-ikke/</code></pre>
+      <p class="note">Metoden står på kortene <a href="#lag-levering">Markdown til maskinerne</a> og <a href="#lag-levering">Fejltavlen</a> i maskinrummet. En agent kan også begynde med <a href="/llms.txt">llms.txt</a>.</p>
+    </div>
+  </section>
+
+  <!-- Runde 10 · Tinget som MCP-server -->
+  <section id="mcp">
+    <div class="split">
+      <div class="txt">
+        <h2>Tinget som MCP-server</h2>
+        <p class="lead">Din AI-assistent kan forbinde sig direkte til tinget. Adressen er <code>https://mcp.tingsvad.dk/mcp</code>, og der skal ikke logges ind. Assistenten kan slå op i protokollen, lede i hittegodskontoret og læse gæstebogen. Hvis du beder den om det, kan den også rejse en sag, stemme i Den Store Afstemning og flytte den fælles stol, mens gæsterne på sitet ser det ske.</p>
+        <p>Serveren er en lille Worker for sig, bygget med Cloudflares Agents SDK (<code>createMcpHandler</code>, Streamable HTTP). Den har ingen tilstand mellem kaldene. Al logik, alle kvoter og al data ligger i tingets egen Worker og nås via en service binding til et RPC-entrypoint, som den offentlige <code>/api</code>-proxy ikke kan nå. Hver klient genkendes kun på et SHA-256-fingeraftryk af IP-adresse og dato, så aftrykket skifter hvert døgn, og IP-adressen forlader aldrig MCP-Workeren.</p>
+        <h3>Sådan forbinder du</h3>
+        <p><b>Claude:</b> Indstillinger → Connectors → <i>Add custom connector</i>, og indsæt adressen ovenfor. <b>Andre klienter</b>, der kun taler lokalt (stdio), kan bruge en bro: <code>npx mcp-remote https://mcp.tingsvad.dk/mcp</code>. <b>Afprøv i browseren</b> med MCP Inspector: <code>npx @modelcontextprotocol/inspector</code>, vælg <i>Streamable HTTP</i> og indsæt adressen.</p>
+      </div>
+      <figure class="r9-fig"><img src="/assets/pak/r10/mcp-600.webp" srcset="/assets/pak/r10/mcp-600.webp 600w, /assets/pak/maskinpark/mcp-1200.webp 1200w" sizes="(max-width: 900px) 90vw, 36vw" width="600" height="600" alt="Illustration: en udskåret budstikke af egetræ på to stenstøtter; tre lædersnore fører beskeden videre til tre små runesten med ravgult lys." loading="lazy"></figure>
+    </div>
+    <div class="protokol mcp-tabel" tabindex="0" role="region" aria-label="Værktøjerne på tingets MCP-server">
+      <table>
+        <thead><tr><th>Værktøj</th><th>Gør</th><th>Grænse</th></tr></thead>
+        <tbody>
+          <tr><td>tingets_status</td><td>Tingets alder, seneste revision, stolens plads og den nyeste sag.</td><td>Læser</td></tr>
+          <tr><td>slaa_op_i_protokollen</td><td>Semantisk opslag i arkivet. Svarer med ordrette uddrag og kilde.</td><td>Læser · 100 AI-opslag i døgnet i alt</td></tr>
+          <tr><td>spoerg_arkivet</td><td>Mímir svarer ud fra hele sitet (AI Search) med kildelinks.</td><td>Læser · deler døgnkvoten på 25 med gæsterne</td></tr>
+          <tr><td>hittegods_soeg</td><td>Finder de nærmeste genstande i hittegodskataloget.</td><td>Læser · samme pulje</td></tr>
+          <tr><td>laes_gaestebogen</td><td>De nyeste sager i gæstebogen.</td><td>Læser</td></tr>
+          <tr><td>rejs_sag</td><td>Rejser en sag i gæstebogen, mærket »· MCP«.</td><td>Skriver · 3 sager i døgnet for alle agenter tilsammen</td></tr>
+          <tr><td>stem</td><td>Tager en ledig plads i afstemningen og stemmer ja, nej eller eventuelt.</td><td>Skriver · én stemme pr. runde</td></tr>
+          <tr><td>flyt_stolen</td><td>Flytter den fælles stol 1–3 skridt.</td><td>Skriver · 300 skridt i døgnet i alt</td></tr>
+          <tr><td>afgoer_sagen</td><td>Beder tinget afgøre sagen om koen.</td><td>Udsætter altid</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Alle kald er begrænset til 30 i minuttet pr. klient, og der er ingen adgang til administration. Rammer en grænse, svarer tinget i tone med et <code>retryAfter</code>. Koden ligger i <a href="https://github.com/wi24rd-com/tingsvad-website/tree/main/mcp">mcp/</a> og <a href="https://github.com/wi24rd-com/tingsvad-website/blob/main/worker/src/features/mcp.js">worker/src/features/mcp.js</a>.</p>
+  </section>
+
+  <!-- 6 · Nettet -->
+
+  <section id="revision-kort">
+    <div class="r10-rev">
+      <div class="txt">
+        <h2>Gudruns revision</h2>
+        <p>Hver morgen gennemgår Gudrun alle sider på begge sprog. Her står kun resultatet; tabellen, billederne og metoden står på <a href="/maskinrummet/revisionen/">revisionens egen side</a>.</p>
+        <div id="revision-resume" aria-live="polite"></div>
+      </div>
+      <figure class="r9-fig"><img src="/assets/pak/maskinpark/revisionen-600.webp" width="600" height="473" alt="Illustration: Gudrun, en hvid gås, med lup over en regnskabsbog." loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="maskinrum-afslutning">
+    <p class="note maskinrum-slut">Tinget har bemærket, at alt dette kunne have været en enkelt tekstfil. Bemærkningen er ført til protokols og udsat.<br><a href="https://github.com/wi24rd-com/tingsvad-website" rel="noopener">Kildekoden på GitHub</a> · MIT for kode, CC BY 4.0 for indhold</p>
+    <figure class="udvikleren">
+      <img src="/assets/pak/web/udvikleren-900.webp" srcset="/assets/pak/web/udvikleren-900.webp 900w, /assets/pak/web/udvikleren-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 56rem" alt="Maleri: en viking med hætte ligger på siden i græsset og kigger på en bærbar af træ med GitHubs og Cloudflares mærker på låget." width="1600" height="533" loading="lazy">
+      <figcaption>Koden ligger på GitHub. Siden ligger hos Cloudflare. Udvikleren ligger ned.</figcaption>
+    </figure>
+  </section>
+</main>
+
+<div data-tv-del="footer"></div>
+
+<script src="/assets/site.js?v=88083686"></script>
+<script src="/assets/round3.js?v=88083686" defer></script>
+<script src="/assets/round4.js?v=88083686" defer></script>
+<script src="/assets/round5-tekst.js?v=88083686" defer></script>
+<script src="/assets/round5.js?v=88083686" defer></script>
+<script src="/assets/round6-tekst.js?v=88083686" defer></script>
+<script src="/assets/kaede.js?v=88083686" defer></script>
+<script src="/assets/round6.js?v=88083686" defer></script>
+<script src="/assets/round9-tekst.js?v=88083686" defer></script>
+<script src="/assets/round9.js?v=88083686" defer></script>
+<script src="/assets/round10.js?v=88083686" defer></script>
+<script src="/assets/ankre.js?v=88083686" defer></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "_": "Cloudflare-datacentre (IATA-kode → by) til request.cf-kortet og tælleværket i maskinrummet. Ukendte koder vises blot som koden.",
+  "CPH": ["København", "Copenhagen"], "AAL": ["Aalborg", "Aalborg"], "BLL": ["Billund", "Billund"],
+  "ARN": ["Stockholm", "Stockholm"], "GOT": ["Göteborg", "Gothenburg"], "OSL": ["Oslo", "Oslo"], "HEL": ["Helsinki", "Helsinki"], "KEF": ["Reykjavík", "Reykjavík"],
+  "HAM": ["Hamborg", "Hamburg"], "FRA": ["Frankfurt", "Frankfurt"], "BER": ["Berlin", "Berlin"], "TXL": ["Berlin", "Berlin"], "DUS": ["Düsseldorf", "Düsseldorf"], "MUC": ["München", "Munich"], "STR": ["Stuttgart", "Stuttgart"],
+  "AMS": ["Amsterdam", "Amsterdam"], "BRU": ["Bruxelles", "Brussels"], "LUX": ["Luxembourg", "Luxembourg"],
+  "LHR": ["London", "London"], "MAN": ["Manchester", "Manchester"], "EDI": ["Edinburgh", "Edinburgh"], "DUB": ["Dublin", "Dublin"],
+  "CDG": ["Paris", "Paris"], "MRS": ["Marseille", "Marseille"], "LYS": ["Lyon", "Lyon"],
+  "MAD": ["Madrid", "Madrid"], "BCN": ["Barcelona", "Barcelona"], "LIS": ["Lissabon", "Lisbon"],
+  "MXP": ["Milano", "Milan"], "FCO": ["Rom", "Rome"], "ZRH": ["Zürich", "Zurich"], "GVA": ["Genève", "Geneva"], "VIE": ["Wien", "Vienna"],
+  "PRG": ["Prag", "Prague"], "WAW": ["Warszawa", "Warsaw"], "BUD": ["Budapest", "Budapest"], "OTP": ["Bukarest", "Bucharest"], "SOF": ["Sofia", "Sofia"],
+  "ATH": ["Athen", "Athens"], "IST": ["Istanbul", "Istanbul"], "KBP": ["Kyiv", "Kyiv"], "RIX": ["Riga", "Riga"], "TLL": ["Tallinn", "Tallinn"], "VNO": ["Vilnius", "Vilnius"],
+  "IAD": ["Ashburn", "Ashburn"], "EWR": ["Newark", "Newark"], "BOS": ["Boston", "Boston"], "ORD": ["Chicago", "Chicago"], "DFW": ["Dallas", "Dallas"], "ATL": ["Atlanta", "Atlanta"], "MIA": ["Miami", "Miami"],
+  "DEN": ["Denver", "Denver"], "LAX": ["Los Angeles", "Los Angeles"], "SJC": ["San Jose", "San Jose"], "SEA": ["Seattle", "Seattle"],
+  "YYZ": ["Toronto", "Toronto"], "YVR": ["Vancouver", "Vancouver"], "YUL": ["Montréal", "Montreal"], "GRU": ["São Paulo", "São Paulo"], "EZE": ["Buenos Aires", "Buenos Aires"],
+  "NRT": ["Tokyo", "Tokyo"], "KIX": ["Osaka", "Osaka"], "ICN": ["Seoul", "Seoul"], "HKG": ["Hongkong", "Hong Kong"], "SIN": ["Singapore", "Singapore"],
+  "SYD": ["Sydney", "Sydney"], "MEL": ["Melbourne", "Melbourne"], "AKL": ["Auckland", "Auckland"], "BOM": ["Mumbai", "Mumbai"], "DEL": ["New Delhi", "New Delhi"],
+  "DXB": ["Dubai", "Dubai"], "TLV": ["Tel Aviv", "Tel Aviv"], "JNB": ["Johannesburg", "Johannesburg"], "CPT": ["Cape Town", "Cape Town"], "LOS": ["Lagos", "Lagos"]
+}

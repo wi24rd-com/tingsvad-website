@@ -1,0 +1,98 @@
+/* tingsvad.dk — Infrastrukturkortet (runde 12). Mørkt kontrolrum i begge temaer: kortet og kæden står på en sort tavle,
+   så lysende prikker og ledninger kan ses. Status: grøn = målt nu, rav = tændt, grå = ikke tændt, rød = svarede ikke. */
+.ik { --tavle: #0a0f13; --tavle2: #111a20; --land: #1b2731; --landkant: #2d3d49; --net: #4f6270; --kendt: #8aa0ad; --guld: #e6bd68; --live: #5fd38a; --konf: #e6bd68; --fra: #5c666d; --fejl: #ef7a62; --tekst: #e8ece9; --tekst2: #9fb0ba; }
+.ik { margin-top: .4rem; }
+.ik-bjaelke { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1.2rem; margin-bottom: .9rem; }
+.ik-status { margin: 0; font-family: var(--mono); font-size: .85rem; letter-spacing: .04em; color: var(--mist-dim); }
+.ik-status::before { content: ""; display: inline-block; width: .55rem; height: .55rem; border-radius: 50%; background: #5fd38a; margin-right: .5rem; box-shadow: 0 0 0 3px rgba(95,211,138,.2); vertical-align: .05em; }
+.ik[aria-busy="true"] .ik-status::before { background: #e6bd68; box-shadow: 0 0 0 3px rgba(230,189,104,.2); }
+.ik-knapper { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.ik-auto { display: inline-flex; align-items: center; gap: .45rem; font-size: .9rem; color: var(--mist-dim); cursor: pointer; }
+.ik-eksempel, .ik-advarsel { margin: 0 0 .9rem; padding: .6rem .9rem; border-left: 3px solid var(--dawn); background: color-mix(in srgb, var(--dawn) 10%, transparent); font-size: .92rem; }
+
+.ik-kortramme { position: relative; border-radius: 16px; overflow: hidden; background: var(--tavle); border: 1px solid #22313b; box-shadow: 0 30px 60px -40px rgba(0,0,0,.9); color-scheme: dark; }
+.ik-kort { display: block; width: 100%; height: auto; aspect-ratio: 1000 / 385; }
+.ik-hav { fill: var(--tavle); }
+.ik-gitter line { stroke: #16222a; }
+.ik-land { fill: var(--land); stroke: var(--landkant); }
+.ik-net { fill: var(--net); }
+.ik-kendt { fill: var(--kendt); }
+.ik-besog { fill: rgba(230,189,104,.28); stroke: rgba(230,189,104,.75); stroke-width: .35; }
+.ik-bue { fill: none; stroke-linecap: round; animation: ik-flyd 1.6s linear infinite; }
+.ik-bue-d1 { stroke: #7cc4ff; }
+.ik-bue-do { stroke: #c79bff; }
+.ik-d1 { fill: #7cc4ff; stroke: #0a0f13; stroke-width: .4; }
+.ik-do { fill: #c79bff; stroke: #0a0f13; stroke-width: .4; }
+.ik-du { fill: #ffd36b; }
+.ik-du-ring { fill: none; stroke: #ffd36b; stroke-width: .6; transform-box: fill-box; transform-origin: center; animation: ik-puls 2.2s ease-out infinite; }
+.ik-etiket { font-family: var(--mono); font-weight: 600; fill: var(--tekst); paint-order: stroke; stroke: var(--tavle); stroke-linejoin: round; pointer-events: none; }
+.ik-et-du { fill: #ffd36b; }
+.ik-et-d1 { fill: #9fd4ff; }
+.ik-et-do { fill: #dcc2ff; }
+@keyframes ik-flyd { to { stroke-dashoffset: -16; } }
+@keyframes ik-puls { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(2.4); opacity: 0; } }
+.ik-zoom { position: absolute; z-index: 2; top: .8rem; left: .8rem; display: inline-flex; border-radius: 999px; overflow: hidden; border: 1px solid #2d3d49; background: rgba(10,15,19,.85); }
+.ik-zoom button { font: 600 .8rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--tekst2); background: none; border: 0; padding: .55rem .9rem; cursor: pointer; min-height: 2.2rem; }
+.ik-zoom button[aria-pressed="true"] { background: #e6bd68; color: #1a1205; }
+.ik-zoom button:focus-visible { outline: 2px solid #e6bd68; outline-offset: -2px; }
+.ik-legende { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: 0; padding: .7rem 1rem .9rem; list-style: none; border-top: 1px solid #1b2731; font: .78rem/1.3 var(--mono); color: var(--tekst2); background: var(--tavle2); }
+.ik-legende li { display: inline-flex; align-items: center; gap: .45rem; }
+.ik-legende i { display: inline-block; width: .7rem; height: .7rem; border-radius: 50%; }
+.ik-leg-net { background: var(--kendt); width: .45rem !important; height: .45rem !important; }
+.ik-leg-besog { background: rgba(230,189,104,.28); border: 1px solid rgba(230,189,104,.75); }
+.ik-leg-du { background: #ffd36b; box-shadow: 0 0 0 3px rgba(255,211,107,.25); }
+.ik-leg-d1 { background: #7cc4ff; border-radius: 2px !important; }
+.ik-leg-do { background: #c79bff; border-radius: 1px !important; transform: rotate(45deg) scale(.8); }
+.ik-leg-bue { width: 1.4rem !important; height: 0 !important; border-radius: 0 !important; border-top: 2px dashed #7cc4ff; }
+
+.ik-kaede-rul { margin-top: 1.4rem; overflow-x: auto; border-radius: 16px; background: var(--tavle); border: 1px solid #22313b; color-scheme: dark; }
+.ik-kaede { display: block; min-width: 940px; width: 100%; height: auto; }
+.ik-node rect { fill: var(--tavle2); stroke: #2a3944; stroke-width: 1.2; }
+.ik-node.ik-live rect { stroke: rgba(95,211,138,.65); }
+.ik-node.ik-konf rect { stroke: rgba(230,189,104,.45); }
+.ik-node.ik-fejl rect { stroke: rgba(239,122,98,.7); }
+.ik-node.ik-fra, .ik-node.ik-ukendt { opacity: .55; }
+.ik-lys { fill: var(--fra); }
+.ik-live .ik-lys { fill: var(--live); filter: drop-shadow(0 0 4px rgba(95,211,138,.9)); }
+.ik-konf .ik-lys { fill: var(--konf); }
+.ik-fejl .ik-lys { fill: var(--fejl); }
+.ik-nt { font: 700 13px var(--mono); fill: var(--tekst); }
+.ik-nl { font: 11.5px var(--mono); fill: var(--tekst2); }
+.ik-led { fill: none; stroke-width: 1.6; stroke: #2a3944; }
+.ik-led-live { stroke: rgba(95,211,138,.75); stroke-dasharray: 5 5; animation: ik-flyd 1.2s linear infinite; }
+.ik-led-konf { stroke: rgba(230,189,104,.45); }
+.ik-led-fejl { stroke: rgba(239,122,98,.6); stroke-dasharray: 2 4; }
+.ik-ll { font: 11px var(--mono); fill: var(--tekst2); letter-spacing: .04em; }
+.ik-stille .ik-bue, .ik-stille .ik-led-live, .ik-stille .ik-du-ring { animation: none; }
+@media (prefers-reduced-motion: reduce) { .ik-bue, .ik-led-live, .ik-du-ring { animation: none; } }
+
+.ik-tabel-rul { margin-top: 1.4rem; overflow-x: auto; }
+.ik-tabel { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.ik-tabel th, .ik-tabel td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.ik-tabel thead th { font: 600 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mist-dim); }
+.ik-tabel td:nth-child(3) { font-family: var(--mono); white-space: nowrap; }
+.ik-pille { display: inline-flex; align-items: center; gap: .35rem; font: 600 .75rem var(--mono); white-space: nowrap; }
+.ik-pille::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: #5c666d; }
+.ik-pille.ik-live::before { background: #3fb46c; }
+.ik-pille.ik-konf::before { background: #c8963c; }
+.ik-pille.ik-fejl::before { background: #d4583f; }
+.ik-noter { margin-top: 1.8rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem 2rem; }
+.ik-noter h3 { margin: 0 0 .3rem; font-size: 1.05rem; }
+.ik-noter p { margin: 0; font-size: .95rem; color: var(--mist-dim); }
+.ik-indgang { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem 1.4rem; margin: 1.2rem 0; padding: 1rem 1.2rem; border-radius: 14px; border: 1px solid rgba(217,164,65,.45); background: linear-gradient(120deg, rgba(217,164,65,.12), rgba(217,164,65,.02)); }
+.ik-indgang p { margin: 0; max-width: 46rem; }
+.ik-indgang b { display: block; font-size: 1.1rem; }
+@media print { .ik-zoom, .ik-knapper { display: none; } .ik-kortramme, .ik-kaede-rul { break-inside: avoid; } }
+@media (max-width: 720px) {
+  #ik-kort { overflow-x: auto; overscroll-behavior-x: contain; }
+  .ik-kort { min-width: 780px; }
+  .ik-zoom { position: sticky; left: .6rem; margin: .6rem 0 -2.8rem .6rem; }
+}
+
+/* ── Kæden i »Vis maskineriet« (kaede.js): samme tavle, mindre format ── */
+.ik-mini { margin: .6rem 0 1rem; }
+.ik-mini .ik-kaede-rul { margin-top: 0; border-radius: 12px; }
+.ik-kaede-mini { min-width: 760px; }
+.ik-teknik { margin: .6rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; font-size: .9rem; }
+.ik-teknik span { font: .75rem var(--mono); padding: .2rem .5rem; border: 1px solid var(--rule); border-radius: 6px; color: var(--mist-dim); }
+.ik-indgang .vg-indgang-knapper { display: flex; flex-wrap: wrap; gap: .6rem; }
