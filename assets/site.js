@@ -447,3 +447,101 @@
     if (n === 3) document.querySelectorAll('[data-tv-side2]').forEach(el => { el.textContent = el.getAttribute('data-tv-side2'); });
   })();
 })();
+
+/* ── Lyd fra vadestedet (runde 12): naturens lydbillede, tegnet med Web Audio – ingen lydfiler, intet hentes.
+   Åen, vind i bladene, fugle (solsort, mejse, bogfinke, en sjælden gøg), en ko langt væk, Gudruns kvak og Mímirs suk.
+   Om natten (22–5 dansk tid) synger fårekyllinger, og en natugle kalder. Tågen dæmper det hele.
+   Valget huskes på tværs af sider: browsere tillader først lyd efter et klik, så næste side starter ved første klik eller tast. ── */
+(function () {
+  'use strict';
+  const knap = document.getElementById('lyd');
+  if (!knap) return;
+  const NOEGLE = 'tingsvad.lyd';
+  const gem = v => { try { localStorage.setItem(NOEGLE, v ? '1' : '0'); } catch (e) { } };
+  const huskes = () => { try { return localStorage.getItem(NOEGLE) === '1'; } catch (e) { return false; } };
+  const nat = () => { const t = +new Intl.DateTimeFormat('da-DK', { hour: 'numeric', hour12: false, timeZone: 'Europe/Copenhagen' }).format(new Date()); return t >= 22 || t < 5; };
+  const r = (a, b) => a + Math.random() * (b - a);
+  let ctx = null, master = null, rum = null, timere = [], kilder = [];
+
+  function stoej(sek, farve) { // 'brun' (åen) eller 'lyserød' (vinden)
+    const b = ctx.createBuffer(1, ctx.sampleRate * sek, ctx.sampleRate), d = b.getChannelData(0);
+    let s = 0, b0 = 0, b1 = 0, b2 = 0;
+    for (let i = 0; i < d.length; i++) {
+      const w = Math.random() * 2 - 1;
+      if (farve === 'brun') { s = (s + .02 * w) / 1.02; d[i] = s * 3.5; }
+      else { b0 = .99765 * b0 + w * .099; b1 = .963 * b1 + w * .2965; b2 = .57 * b2 + w * 1.0526; d[i] = (b0 + b1 + b2 + w * .1848) * .11; }
+    }
+    return b;
+  }
+  function loop(buf, filter, freq, q, niveau, lfoHz, lfoDybde) {
+    const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true;
+    const f = ctx.createBiquadFilter(); f.type = filter; f.frequency.value = freq; f.Q.value = q;
+    const g = ctx.createGain(); g.gain.value = niveau;
+    const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = lfoHz; lg.gain.value = lfoDybde; lfo.connect(lg); lg.connect(g.gain);
+    s.connect(f); f.connect(g); g.connect(master); s.start(); lfo.start(); kilder.push(s, lfo);
+  }
+  function efterklang() { // et lille skovrum: kort, blød efterklang til fuglene
+    const c = ctx.createConvolver(), n = ctx.sampleRate * 1.6, b = ctx.createBuffer(2, n, ctx.sampleRate);
+    for (let k = 0; k < 2; k++) { const d = b.getChannelData(k); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3); }
+    c.buffer = b; const g = ctx.createGain(); g.gain.value = .35; c.connect(g); g.connect(master); return c;
+  }
+  // én tone: frekvensforløb [hz…] over dur sekunder, med blød start og slut, placeret i rummet
+  function tone(t, dur, frek, { type = 'sine', vol = .05, pan = 0, vibrato = 0 } = {}) {
+    const o = ctx.createOscillator(), g = ctx.createGain(), p = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    o.type = type; o.frequency.setValueAtTime(frek[0], t);
+    frek.slice(1).forEach((f, i) => o.frequency.exponentialRampToValueAtTime(f, t + dur * (i + 1) / (frek.length - 1)));
+    if (vibrato) { const v = ctx.createOscillator(), vg = ctx.createGain(); v.frequency.value = r(18, 32); vg.gain.value = vibrato; v.connect(vg); vg.connect(o.frequency); v.start(t); v.stop(t + dur + .05); }
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + Math.min(.02, dur / 4)); g.gain.setValueAtTime(vol, t + dur * .7); g.gain.linearRampToValueAtTime(0, t + dur);
+    o.connect(g); let ud = g; if (p) { p.pan.value = pan; g.connect(p); ud = p; }
+    ud.connect(master); ud.connect(rum); o.start(t); o.stop(t + dur + .05);
+  }
+  const FUGLE = {
+    solsort(t) { const pan = r(-.8, .8); let x = t; const n = 4 + Math.floor(r(0, 4)); for (let i = 0; i < n; i++) { const f = r(1500, 2600), d = r(.12, .28); tone(x, d, [f, f * r(.85, 1.25), f * r(.9, 1.1)], { vol: .09, pan, vibrato: r(10, 40) }); x += d + r(.03, .09); } },
+    mejse(t) { const pan = r(-.9, .9); for (let i = 0; i < 3 + Math.floor(r(0, 3)); i++) { tone(t + i * .22, .07, [r(5200, 6200), 4600], { vol: .05, pan }); tone(t + i * .22 + .09, .1, [3400, 3100], { vol: .045, pan }); } },
+    bogfinke(t) { const pan = r(-.7, .7); let x = t; for (let i = 0; i < 7; i++) { const f = 4200 - i * 220; tone(x, .055, [f, f * .92], { vol: .05, pan }); x += .075 - i * .004; } tone(x + .04, .32, [3600, 2400, 2900], { vol: .065, pan, vibrato: 60 }); },
+    goeg(t) { const pan = r(-.4, .4); [0, 1.6].forEach(s => { tone(t + s, .28, [700, 690], { vol: .06, pan }); tone(t + s + .34, .38, [560, 550], { vol: .06, pan }); }); },
+    ko(t) { const o = ctx.createOscillator(), g = ctx.createGain(), f = ctx.createBiquadFilter(); o.type = 'sawtooth'; o.frequency.setValueAtTime(120, t); o.frequency.linearRampToValueAtTime(150, t + .5); o.frequency.linearRampToValueAtTime(95, t + 1.6); f.type = 'lowpass'; f.frequency.value = 520; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.028, t + .3); g.gain.linearRampToValueAtTime(0, t + 1.7); o.connect(f); f.connect(g); g.connect(master); g.connect(rum); o.start(t); o.stop(t + 1.8); },
+    ugle(t) { const pan = r(-.6, .6); tone(t, .45, [420, 400], { vol: .03, pan }); tone(t + .9, .25, [430, 410], { vol: .022, pan }); tone(t + 1.25, .7, [440, 380], { vol: .03, pan, vibrato: 8 }); },
+  };
+  function kvak() { if (!ctx) return; const t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain(), f = ctx.createBiquadFilter(); o.type = 'sawtooth'; o.frequency.setValueAtTime(420, t); o.frequency.exponentialRampToValueAtTime(260, t + .18); f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = 2; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.08, t + .02); g.gain.exponentialRampToValueAtTime(.001, t + .22); o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t + .25); }
+  function plan(fn, fra, til) { const k = () => { if (!ctx) return; fn(); timere.push(setTimeout(k, r(fra, til) * 1000)); }; timere.push(setTimeout(k, r(fra, til) * 500)); }
+  function maal() { return document.body.classList.contains('i-taage') ? .35 : .75; }
+
+  function start() {
+    if (ctx) return;
+    try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination); rum = efterklang();
+    loop(stoej(4, 'brun'), 'lowpass', 650, .7, .16, .11, .04);          // åen over stenene
+    loop(stoej(5, 'lyserød'), 'bandpass', 1800, .5, .09, .045, .07);    // vind i bladene, i vindstød
+    if (nat()) {
+      plan(() => { const t = ctx.currentTime; for (let i = 0; i < 3; i++) tone(t + i * .055, .035, [4600, 4550], { vol: .012, pan: r(-.9, .9) }); }, .6, 1.6); // fårekyllinger
+      plan(() => FUGLE.ugle(ctx.currentTime), 18, 40);
+    } else {
+      plan(() => FUGLE.solsort(ctx.currentTime), 3, 8);
+      plan(() => FUGLE.mejse(ctx.currentTime), 6, 16);
+      plan(() => FUGLE.bogfinke(ctx.currentTime), 8, 20);
+      plan(() => FUGLE.goeg(ctx.currentTime), 45, 110);
+      plan(() => FUGLE.ko(ctx.currentTime), 50, 120);
+    }
+    plan(kvak, 25, 60);
+    master.gain.linearRampToValueAtTime(maal(), ctx.currentTime + 2.5);
+    window.tingsvadKvak = kvak;
+  }
+  function stop() {
+    if (!ctx) return;
+    const c = ctx, m = master; ctx = null; timere.forEach(clearTimeout); timere = []; kilder = []; window.tingsvadKvak = null;
+    try { m.gain.cancelScheduledValues(c.currentTime); m.gain.setValueAtTime(m.gain.value, c.currentTime); m.gain.linearRampToValueAtTime(0, c.currentTime + 1); } catch (e) { }
+    setTimeout(() => { try { c.close(); } catch (e) { } }, 1200);
+  }
+  const vis = on => knap.setAttribute('aria-pressed', String(on));
+  knap.addEventListener('click', () => { const on = knap.getAttribute('aria-pressed') !== 'true'; vis(on); gem(on); if (on) start(); else stop(); });
+  // husket fra en anden side: knappen står tændt, og lyden starter ved gæstens første klik eller tast (browserens regel)
+  if (huskes()) {
+    vis(true);
+    const vaek = e => { if (e && e.target && e.target.closest && e.target.closest('#lyd')) return; removeEventListener('pointerdown', vaek, true); removeEventListener('keydown', vaek, true); if (knap.getAttribute('aria-pressed') === 'true') start(); };
+    addEventListener('pointerdown', vaek, true); addEventListener('keydown', vaek, true);
+  }
+  new MutationObserver(() => { if (ctx) master.gain.linearRampToValueAtTime(maal(), ctx.currentTime + 1.5); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  addEventListener('pagehide', stop);
+  const gk = document.getElementById('gudrun-knap'); if (gk) gk.addEventListener('click', () => { if (ctx) kvak(); });
+})();

@@ -104,32 +104,7 @@
     if (!reduce) { let tur = 0; const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { const t = setInterval(() => { if (!document.body.contains(netSvg)) return clearInterval(t); send([0, 2, 3, 4, 5][tur++ % 5]); }, 4200); send(0); io.disconnect(); } }, { threshold: .4 }); io.observe(netSvg); }
   }
 
-  /* ── 5. Lyd fra vadestedet ── */
-  const lydKnap = $('#lyd');
-  if (lydKnap) {
-    let ctx = null, master = null, noder = [];
-    function start() {
-      ctx = new (window.AudioContext || window.webkitAudioContext)(); master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
-      // Å: brun støj → lavpas med langsom modulation
-      const buf = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate), d = buf.getChannelData(0); let last = 0; for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; d[i] = (last + .02 * w) / 1.02; last = d[i]; d[i] *= 3.5; }
-      const aa = ctx.createBufferSource(); aa.buffer = buf; aa.loop = true; const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900; const lfo = ctx.createOscillator(); lfo.frequency.value = .11; const lg = ctx.createGain(); lg.gain.value = 300; lfo.connect(lg); lg.connect(lp.frequency); const ag = ctx.createGain(); ag.gain.value = .5; aa.connect(lp); lp.connect(ag); ag.connect(master); aa.start(); lfo.start();
-      // Vind: hvid støj → båndpas der vandrer
-      const wb = ctx.createBuffer(1, ctx.sampleRate * 3, ctx.sampleRate), wd = wb.getChannelData(0); for (let i = 0; i < wd.length; i++) wd[i] = Math.random() * 2 - 1;
-      const ws = ctx.createBufferSource(); ws.buffer = wb; ws.loop = true; const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 400; bp.Q.value = .6; const wl = ctx.createOscillator(); wl.frequency.value = .05; const wg2 = ctx.createGain(); wg2.gain.value = 250; wl.connect(wg2); wg2.connect(bp.frequency); const wg = ctx.createGain(); wg.gain.value = .12; ws.connect(bp); bp.connect(wg); wg.connect(master); ws.start(); wl.start();
-      noder = [aa, lfo, ws, wl];
-      master.gain.linearRampToValueAtTime(document.body.classList.contains('i-taage') ? .35 : .7, ctx.currentTime + 2);
-      // Gudrun og Mímir
-      const kvak = () => { if (!ctx) return; const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'sawtooth'; o.frequency.setValueAtTime(420, ctx.currentTime); o.frequency.exponentialRampToValueAtTime(260, ctx.currentTime + .18); const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1400; g.gain.setValueAtTime(0, ctx.currentTime); g.gain.linearRampToValueAtTime(.12, ctx.currentTime + .03); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .25); o.connect(f); f.connect(g); g.connect(master); o.start(); o.stop(ctx.currentTime + .3); };
-      const suk = () => { if (!ctx) return; const s = ctx.createBufferSource(); s.buffer = wb; const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.setValueAtTime(700, ctx.currentTime); f.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 1.6); f.Q.value = 1.2; const g = ctx.createGain(); g.gain.setValueAtTime(0, ctx.currentTime); g.gain.linearRampToValueAtTime(.18, ctx.currentTime + .5); g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8); s.connect(f); f.connect(g); g.connect(master); s.start(); s.stop(ctx.currentTime + 2); };
-      const tilf = () => { if (!ctx) return; (Math.random() < .5 ? kvak : suk)(); setTimeout(tilf, 9000 + Math.random() * 16000); }; setTimeout(tilf, 5000);
-      window.tingsvadKvak = kvak;
-    }
-    function stop() { if (!ctx) return; master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1); const c = ctx; setTimeout(() => { try { c.close(); } catch (e) {} }, 1300); ctx = null; window.tingsvadKvak = null; }
-    lydKnap.addEventListener('click', () => { const on = lydKnap.getAttribute('aria-pressed') !== 'true'; lydKnap.setAttribute('aria-pressed', String(on)); if (on) start(); else stop(); });
-    // tågen dæmper lyden
-    new MutationObserver(() => { if (ctx) master.gain.linearRampToValueAtTime(document.body.classList.contains('i-taage') ? .3 : .7, ctx.currentTime + 1.5); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    const gk = $('#gudrun-knap'); if (gk) gk.addEventListener('click', () => { if (window.tingsvadKvak) window.tingsvadKvak(); });
-  }
+  /* ── 5. Lyd fra vadestedet: flyttet til site.js (runde 12), så knappen virker på alle sider ── */
 
   /* ── 6. Cursor-tåge ── */
   if (!reduce && matchMedia('(hover: hover)').matches) {
