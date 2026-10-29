@@ -262,11 +262,11 @@ body.r12 h1 { line-height: .95; }
 /* ── Ro omkring indholdet (runde 12, efter gennemgang) ── */
 /* Årstidens blade og frost holder sig til maleriet øverst og er få */
 .r12-hero .aarstid-lag, .r12s-hero .aarstid-lag { position: absolute; inset: 0; z-index: 1; }
-.r12-hero .aarstid-lag-efteraar i, .r12s-hero .aarstid-lag-efteraar i { top: -14%; opacity: .7; }
-.r12-hero .aarstid-lag-efteraar i:nth-child(n+4) { display: none; }
+.r12-hero .aarstid-lag-efteraar i, .r12s-hero .aarstid-lag-efteraar i { top: -14%; opacity: .92; }
+.r12-hero .aarstid-lag-efteraar i:nth-child(n+11) { display: none; }
 .r12s-hero .aarstid-lag { left: 58%; }
-.r12s-hero .aarstid-lag-efteraar i:nth-child(n+3) { display: none; }
-@media (max-width: 760px) { .r12-hero .aarstid-lag, .r12s-hero .aarstid-lag { display: none; } }
+.r12s-hero .aarstid-lag-efteraar i:nth-child(n+7) { display: none; }
+@media (max-width: 760px) { .r12-hero .aarstid-lag-efteraar i:nth-child(n+5), .r12s-hero .aarstid-lag-efteraar i:nth-child(n+4) { display: none; } }
 /* Op/ned-knapperne: små og dæmpede i yderkanten, så de ikke ligger på indholdet; på mobil scroller man selv */
 .r12 .rul { right: max(.5rem, env(safe-area-inset-right, 0px)); top: auto; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); transform: none; gap: .3rem; }
 .r12 .rul button { width: 2.2rem; height: 2.2rem; opacity: .55; background: rgba(20,42,30,.75); border-color: rgba(230,189,104,.45); color: #e6bd68; box-shadow: none; }
