@@ -232,7 +232,7 @@ Planer og priser ændrer sig. Tjek altid [Cloudflares dokumentation](https://dev
 - **Plan:** Free.
 
 ### Cloudflare Access
-- **Bruges til:** `/admin/*` kan kun åbnes af familien efter login.
+- **Bruges til:** `/admin/*` kan kun åbnes af tingets administrator efter login.
 - **Sådan:** Zero Trust → Access → Applications → Self-hosted, sti `tingsvad.dk/admin`. Workeren tjekker JWT'en (`ACCESS_TEAM_DOMAIN`, `ACCESS_AUD`).
 - **Plan:** Free op til 50 brugere.
 
