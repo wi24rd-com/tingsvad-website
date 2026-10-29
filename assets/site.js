@@ -510,6 +510,8 @@
   function start() {
     if (ctx) return;
     try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    if (ctx.state === 'suspended') ctx.resume().catch(() => { });
+    ctx.onstatechange = () => opdaterVisning();
     master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination); rum = efterklang();
     loop(stoej(4, 'brun'), 'lowpass', 650, .7, .16, .11, .04);          // åen over stenene
     loop(stoej(5, 'lyserød'), 'bandpass', 1800, .5, .09, .045, .07);    // vind i bladene, i vindstød
@@ -533,13 +535,32 @@
     try { m.gain.cancelScheduledValues(c.currentTime); m.gain.setValueAtTime(m.gain.value, c.currentTime); m.gain.linearRampToValueAtTime(0, c.currentTime + 1); } catch (e) { }
     setTimeout(() => { try { c.close(); } catch (e) { } }, 1200);
   }
-  const vis = on => knap.setAttribute('aria-pressed', String(on));
-  knap.addEventListener('click', () => { const on = knap.getAttribute('aria-pressed') !== 'true'; vis(on); gem(on); if (on) start(); else stop(); });
-  // husket fra en anden side: knappen står tændt, og lyden starter ved gæstens første klik eller tast (browserens regel)
+  // Knappen viser, hvad der faktisk sker: tændt og spiller, tændt men venter på browserens tilladelse, eller slukket
+  const DA = document.documentElement.lang !== 'en', LBL = knap.getAttribute('aria-label') || '';
+  function opdaterVisning() {
+    const on = knap.getAttribute('aria-pressed') === 'true', venter = on && (!ctx || ctx.state !== 'running');
+    knap.classList.toggle('lyd-venter', venter);
+    knap.setAttribute('aria-label', venter ? LBL + (DA ? ' (starter, når du klikker et sted på siden)' : ' (starts when you click anywhere on the page)') : LBL);
+    knap.title = venter ? (DA ? 'Lyden starter, når du klikker et sted på siden' : 'The sound starts when you click anywhere on the page') : '';
+  }
+  const vis = on => { knap.setAttribute('aria-pressed', String(on)); opdaterVisning(); };
+  knap.addEventListener('click', () => {
+    const tændt = knap.getAttribute('aria-pressed') === 'true';
+    if (tændt && (!ctx || ctx.state !== 'running')) { if (!ctx) start(); else ctx.resume().catch(() => { }); setTimeout(opdaterVisning, 150); return; } // venter → start, ikke sluk
+    vis(!tændt); gem(!tændt); if (!tændt) start(); else stop();
+  });
+  // Husket fra en anden side: prøv at starte med det samme (Chrome tillader det ofte på sider, hvor lyd er brugt før).
+  // Ellers venter knappen synligt, og lyden starter ved gæstens første klik, tryk eller tast.
   if (huskes()) {
-    vis(true);
-    const vaek = e => { if (e && e.target && e.target.closest && e.target.closest('#lyd')) return; removeEventListener('pointerdown', vaek, true); removeEventListener('keydown', vaek, true); if (knap.getAttribute('aria-pressed') === 'true') start(); };
-    addEventListener('pointerdown', vaek, true); addEventListener('keydown', vaek, true);
+    vis(true); start(); setTimeout(opdaterVisning, 400);
+    const vaek = e => {
+      if (e && e.target && e.target.closest && e.target.closest('#lyd')) return;
+      if (knap.getAttribute('aria-pressed') !== 'true') return fjern();
+      if (!ctx) start(); else if (ctx.state !== 'running') ctx.resume().catch(() => { });
+      setTimeout(() => { opdaterVisning(); if (ctx && ctx.state === 'running') fjern(); }, 150);
+    };
+    const fjern = () => ['pointerdown', 'pointerup', 'keydown', 'touchend', 'click'].forEach(t => removeEventListener(t, vaek, true));
+    ['pointerdown', 'pointerup', 'keydown', 'touchend', 'click'].forEach(t => addEventListener(t, vaek, true));
   }
   new MutationObserver(() => { if (ctx) master.gain.linearRampToValueAtTime(maal(), ctx.currentTime + 1.5); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   addEventListener('pagehide', stop);

@@ -1619,3 +1619,9 @@ footer .licens { margin-top: 1.8rem; padding-top: 1.4rem; border-top: 1px solid 
 .r6-arkiv-udgave[aria-current="page"] time::before { content: "● "; }
 .r6-arkiv-udgave[aria-current="page"] span { font-weight: 700; }
 @media (max-width: 560px) { .r6-arkiv-udgave { grid-template-columns: 1fr; } }
+
+/* Lydknappen venter på browserens tilladelse (efter sideskift): svagere, og prikken blinker langsomt */
+.topbar [aria-pressed="true"].lyd-venter { color: inherit; background: rgba(217,164,65,.06); }
+.topbar [aria-pressed="true"].lyd-venter::after { opacity: .55; animation: lyd-venter 1.6s ease-in-out infinite; }
+@keyframes lyd-venter { 50% { opacity: .15; } }
+@media (prefers-reduced-motion: reduce) { .topbar [aria-pressed="true"].lyd-venter::after { animation: none; } }
