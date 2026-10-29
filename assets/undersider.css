@@ -233,10 +233,10 @@ body.r12s {
 #protokol { display: flow-root; }
 .r12s-sager img.r12s-sag-fri { object-fit: contain; border: 0; background: none; }
 .r12s-afslut-maleri { background: #12251a; }
-.r12s-afslut-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
+.r12s-afslut-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 8%; } /* forankret foroven: kragens hoved sidder helt oppe i maleriet */
 .r12s-afslut-maleri::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(270deg, rgba(8,16,10,.78) 0%, rgba(8,16,10,.55) 35%, rgba(8,16,10,0) 62%); }
-.r12s-afslut-maleri .r12s-afslut-in { position: relative; z-index: 2; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: clamp(18rem, 30vw, 27rem); }
+.r12s-afslut-maleri .r12s-afslut-in { position: relative; z-index: 2; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: clamp(18rem, 33.4vw, 31rem); } /* tæt på maleriets 3:1, så næsten intet skæres væk */
 .r12s-afslut-maleri .r12s-afslut-tekst { grid-column: 2; text-shadow: 0 2px 14px rgba(0,0,0,.6); }
 @media (max-width: 760px) {
   .r12s-afslut-bg img { position: static; display: block; aspect-ratio: 2 / 1; height: auto; object-position: 12% 50%; }
