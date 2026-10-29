@@ -10,13 +10,13 @@ import { ok, ApiError, langOf } from '../lib/http.js';
 import { cphDateKey } from '../lib/dates.js';
 import { browserAction } from '../lib/budget.js';
 
-const FÆLLES = { nav: '#sidenav a[aria-current]', footer: 'footer', indhold: 'main section' };
+const FÆLLES = { nav: '.r12-nav a', footer: 'footer', indhold: 'main section' }; // runde 12: topbjælken afløste sidemenuen
 export const SIDER = [
-  ['forside', '/', '/en/', { hero: '#hero', indgange: '.indgange' }],
-  ['historien', '/historien/', '/en/history/', { personer: '#personer-sektion', slaegt: '#slaegt .tavle li' }],
-  ['oplevelser', '/oplevelser/', '/en/experiences/', { oversigt: '.indgange.oversigt a' }],
+  ['forside', '/', '/en/', { hero: '#hero', kort: '#kortet', steder: '#steder a' }],
+  ['historien', '/historien/', '/en/history/', { personer: '#personer-sektion', slaegt: '#slaegt .tavle li', nettet: '#net-svg' }],
+  ['oplevelser', '/oplevelser/', '/en/experiences/', { oversigt: '.r12s-oplev-gitter a' }],
   ['undersoegelsen', '/oplevelser/undersoegelsen/', '/en/experiences/investigation/', { afgoer: '#afgoer-knap', faner: '#r5-faner button' }],
-  ['maskinparken', '/oplevelser/maskinparken/', '/en/experiences/machine-park/', { kort: '#r6-kort button', moede: '#moede-form' }],
+  ['maskinparken', '/oplevelser/maskinparken/', '/en/experiences/machine-park/', { kort: '#r6-kort a', moede: '#moede-form' }],
   ['gaestebog', '/oplevelser/gaestebog/', '/en/experiences/guestbook/', { formular: '#gb-form' }],
   ['runevaerkstedet', '/oplevelser/runevaerkstedet/', '/en/experiences/rune-workshop/', { bevis: '#cert-form', runer: '#rune-ind' }],
   ['sagsmappen', '/oplevelser/sagsmappen/', '/en/experiences/case-file/', { mappe: '#sagsmappe' }],
@@ -25,7 +25,7 @@ export const SIDER = [
   ['kodegryden', '/oplevelser/kodegryden/', '/en/experiences/the-cauldron/', { opgaver: '#kg-faner button' }],
   ['arkivet', '/arkivet/', '/en/archive/', { protokol: '.protokol table', spoerg: '#arkiv-form' }],
   ['sagsregister', '/arkivet/sagsregister/', '/en/archive/case-register/', { register: '.sagsregister tbody tr' }],
-  ['maskinrummet', '/maskinrummet/', '/en/machine-room/', { kort: '#maskinrum-gitter article', nettet: '#net-svg', arkitektur: '#arkitektur' }],
+  ['maskinrummet', '/maskinrummet/', '/en/machine-room/', { kort: '#maskinrum-gitter article', arkitektur: '#arkitektur' }],
   ['revisionen', '/maskinrummet/revisionen/', '/en/machine-room/audit/', { tabel: '#revisionen-ind' }],
   ['noedoevelser', '/maskinrummet/noedoevelser/', '/en/machine-room/emergency-drills/', { oevelser: '[data-oev]' }],
 ];
