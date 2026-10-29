@@ -1,0 +1,9 @@
+# Content Signals (contentsignals.org): søgning, svar i AI-assistenter og AI-træning er alle tilladt.
+# Teksterne er CC BY 4.0 – kreditér tingsvad.dk. Se https://tingsvad.dk/llms.txt
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+Sitemap: https://tingsvad.dk/sitemap.xml

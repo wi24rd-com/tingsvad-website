@@ -1,0 +1,29 @@
+# Workers Static Assets (runde 11): kun sitet udgives. Samme syntaks som .gitignore.
+# _headers og _redirects må IKKE stå her – de læses af Workers som konfiguration for de statiske svar.
+.git
+.github/
+.wrangler/
+.gitignore
+.assetsignore
+.DS_Store
+Thumbs.db
+node_modules/
+worker/
+/mcp/
+tests/
+.claude/
+docs/
+functions/
+site-worker/
+byggepakke/
+Tingsvad-*/
+*.zip
+*.md
+*.py
+*.sh
+*.toml
+LICENSE
+_routes.json
+package.json
+package-lock.json
+.dev.vars

@@ -1,0 +1,380 @@
+# tingsvad-ting-ai — Worker bag /api/ting-ai/* på tingsvad.dk.
+# Pages-projektet kalder denne Worker via service binding TING_AI (functions/api/ting-ai/[[path]].js).
+# Ressource-ID'er herunder er PLADSHOLDERE: udfyld med de faktiske ID'er fra kontoen (se README.md).
+name = "tingsvad-ting-ai"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat", "webcrypto_modern_algorithms"] # runde 12: ML-DSA til det kvantesikre fremmødebevis
+workers_dev = false
+
+[observability]
+enabled = true
+
+# Runde 12: Workers Issues (fejl grupperes og kan sendes videre, fx til Gudruns webhook) og Traces (hvert kald som spor).
+# Workers Paid: højst 10 sekunders CPU pr. kald (standard er 30 s), så en fejl i en løkke ikke kan æde månedens CPU-tid.
+# AI-, D1-, R2- og browserkald venter på I/O og tæller ikke som CPU.
+[limits]
+cpu_ms = 10000
+
+[observability.issues]
+enabled = true
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 0.2
+
+# Runde 12: Workers Cache foran Workeren. Kun svar med "Cache-Control: public" caches (avis, radio, revision, dagbøger,
+# bevisnøglen; se lib/kantcache.js). Bemærk: med cache slået til tæller alle kald som almindelige requests, også
+# service binding-kaldene fra site-Workeren.
+[cache]
+enabled = true
+
+[vars]
+SITE_ORIGIN = "https://tingsvad.dk"
+TEXT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+VISION_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct"
+IMAGE_MODEL = "@cf/black-forest-labs/flux-1-schnell"
+TTS_PROVIDER = "workers-ai"      # none | external | workers-ai (workers-ai er kun engelsk: aura-2-en; dansk udgave får kun manuskript)
+TTS_MODEL = "@cf/deepgram/aura-2-en"
+TTS_VOICE = "orion"              # aura-2-en speaker (fx luna, orion, draco, thalia)
+# Runde 12: live-radio via Realtime SFU. Udfyld app-ID'et fra Realtime → SFU i dashboardet; app-tokenet lægges som
+# Worker-secret REALTIME_SFU_TOKEN (eller i Secrets Store, se nederst). Tomt = live-radioen er slået fra.
+REALTIME_SFU_APP_ID = "dd3cbf1e704b941350030fed009c8582"
+# Runde 12: udlandsrubrikken i Tidende (Web Search API via AI Gateway). Kræver AI Gateway-kredit; "true" slår den til.
+WEBSEARCH_ENABLED = "true"
+CF_ZONE_ID = "60583aa0c81d7cb7d851282dcb992610"   # runde 12: zonen tingsvad.dk (Værnet og Crawlerne); tokenet CF_ANALYTICS_TOKEN er en secret
+CF_ACCOUNT_ID = "9eac15bef5e1e5e3363fb05474c4ce6a"   # runde 12: Hastigheden (Web Analytics på konto-niveau); tokenet skal have Account Analytics Read og Radar Read
+RUM_SITE_TAG = "d4ee4aac0ab14e37b70b89983ae69727"   # Web Analytics-sitet for tingsvad.dk (JS snippet); beacon-tokenet står i site-workerens WEB_ANALYTICS_TOKEN
+SPEECH_PER_DAY = "150"   # Tal din sag: døgnloft for Whisper-kald for hele sitet
+PROMPT_VERSION = "2026-10-26b"
+# Døgnkvoter for hele sitet (driftseksempler, ingen prisgaranti)
+QUOTA_TEXT_PER_DAY = "50"
+QUOTA_IMAGE_PER_DAY = "5"
+QUOTA_AUDIO_PER_DAY = "2"
+QUOTA_EDITION_TEXT_PER_DAY = "6"  # reserveret budget til dagsavis (2 sprog × få forsøg)
+BROWSER_PER_DAY = "120"           # nødbremse: Browser Run-kald pr. døgn for hele sitet (Workers Paid fakturerer ud over 10 timer/md.)
+EMBED_PER_DAY = "400"             # nødbremse: embedding-kald pr. døgn (hittegods og arkivet)
+RATE_PER_MINUTE = "8"             # pr. session/IP pr. endpoint
+CASE_DELAYS_SECONDS = "60,7200,86400"  # Modtaget→Afventer kontrol→Sendt tilbage→Stol muligvis ledig
+ROUND_SECONDS = "30"
+VISION_UPLOAD_ENABLED = "true"    # upload kræver IMAGES-bindingen (normalisering) – ellers sendes den verificerede fil uændret
+NEWS_CRON_ENABLED = "true"
+AI_GATEWAY_ID = "tingsvad"        # AI Gateway (logs, cache, rate limits). Opret gatewayen "tingsvad" i dashboardet: AI → AI Gateway. Tom streng = direkte kald.
+TURNSTILE_HOSTNAMES = "tingsvad.dk,www.tingsvad.dk"  # Turnstile: tokens accepteres kun fra disse værter (secret: TURNSTILE_SECRET)
+EMBED_MODEL = "@cf/baai/bge-m3"   # 1024 dimensioner; skal passe til Vectorize-indeksets dimensions
+OG_VERSION = "1"
+TAELLE_DATASET = "tingsvad_taelle"
+RAVNEPOST_AKTIV = "true"          # Email Routing på sitesite.dk: regel brev@sitesite.dk → denne Worker
+ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"   # Cloudflare Access (Zero Trust-organisationen »t-sec«)
+ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"   # Access-applikationen »Tingsvad administration« (/admin)
+ADMIN_EMAILS = "jan@tingsvad.dk,jan.tingsvad@gmail.com"
+ARKIV_INSTANS = "tingsvad-arkiv"   # AI Search-instanser tingsvad-arkiv-da/-en (oprettes af Workeren selv)
+ARKIV_PER_DAY = "25"             # Spørg arkivet: hård døgnkvote (AI Search: 1.000 semantiske forespørgsler/md. inkluderet)
+GITHUB_REPO = "wi24rd-com/tingsvad-website"   # Gudruns issues ved fejlet revision (secret: GITHUB_TOKEN, kun Issues: write på dette repo)
+
+[ai]
+binding = "AI"
+
+# Spørg arkivet (runde 10, 4b): AI Search-namespace; Workeren opretter selv instanserne og uploader sitets Markdown
+[[ai_search_namespaces]]
+binding = "AI_SEARCH"
+namespace = "default"
+
+# Rate limiting (pr. Cloudflare-lokation, 60 s vindue). Erstatter D1-tællere, når bindingen findes.
+[[ratelimits]]
+name = "RL"
+namespace_id = "1001"
+  [ratelimits.simple]
+  limit = 8
+  period = 60
+
+[[ratelimits]]
+name = "RL_STRICT"
+namespace_id = "1002"
+  [ratelimits.simple]
+  limit = 3
+  period = 60
+
+# Images: normalisering af uploads i C04 (orientering, metadata, nedskalering). Gratis op til 5.000 unikke transformationer/md.
+[images]
+binding = "IMAGES"
+
+# Browser Run: og-billeder pr. sag og protokollen som PDF (Quick Actions, ingen puppeteer-afhængighed).
+[browser]
+binding = "BROWSER"
+
+# Tingets tælleværk (runde 10): Workers Analytics Engine. Workeren skriver API-kald og hændelser; Pages-middlewaren skriver
+# sidevisninger til samme datasæt. Datasættet oprettes ved første skrivning. Læses med Analytics SQL-bindingen (kræver Wrangler ≥ 4.145).
+[[analytics_engine_datasets]]
+binding = "TAEL"
+dataset = "tingsvad_taelle"
+
+[analytics]
+binding = "ANALYTICS_SQL"
+
+# Vectorize: Mímirs arkiv. Opret: npx wrangler vectorize create tingsvad-kanon --dimensions=1024 --metric=cosine
+[[vectorize]]
+binding = "VECTORS"
+index_name = "tingsvad-kanon"
+
+# Gæstebogens KV (læses til og-billeder for /sag/:nr). Samme namespace som Pages-projektet.
+[[kv_namespaces]]
+binding = "SAGER"
+id = "5ad65c88ab174c29b7bd72cce99880e3"
+
+# Queues (også på Workers Free siden feb. 2026: 10.000 operationer/dag, 24 t opbevaring): asynkron billedgenerering i C05. Opret: npx wrangler queues create tingsvad-forge
+# og fjern derefter kommentartegnene. Uden kø kører genereringen synkront i requesten.
+# [[queues.producers]]
+# binding = "FORGE_QUEUE"
+# queue = "tingsvad-forge"
+# [[queues.consumers]]
+# queue = "tingsvad-forge"
+# max_batch_size = 1
+# max_retries = 2
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tingsvad-ting-ai"
+database_id = "455ec27a-c11a-4d70-9f4a-9cb2f12e2a92"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "tingsvad-ting-ai-media"
+
+[[durable_objects.bindings]]
+name = "TING_ROOM"
+class_name = "TingRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TingRoom"]
+
+# Den fælles stol (runde 9): ny SQLite-baseret Durable Object-klasse.
+[[durable_objects.bindings]]
+name = "CHAIR_ROOM"
+class_name = "ChairRoom"
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["ChairRoom"]
+
+# Live-radio (runde 12): én Durable Object ejer udsendelsen og sender lyden til Realtime SFU.
+[[durable_objects.bindings]]
+name = "RADIO_STATION"
+class_name = "RadioStation"
+
+[[migrations]]
+tag = "v3"
+new_sqlite_classes = ["RadioStation"]
+
+# Det europæiske arkivskab (runde 12): samme klasse bruges både i et navnerum låst til EU (EU_SKAB.jurisdiction("eu")) og uden lås.
+[[durable_objects.bindings]]
+name = "EU_SKAB"
+class_name = "EuSkab"
+
+[[migrations]]
+tag = "v4"
+new_sqlite_classes = ["EuSkab"]
+
+# De tre andre lagre i skabet skal oprettes med jurisdiktion EU, før de kan bindes (jurisdiktionen kan kun sættes ved oprettelsen):
+#   npx wrangler d1 create tingsvad-eu-skab --jurisdiction=eu
+#   npx wrangler kv namespace create tingsvad-eu-skab --jurisdiction=eu
+#   npx wrangler r2 bucket create tingsvad-eu-skab --jurisdiction=eu
+[[d1_databases]]
+binding = "EU_DB"
+database_name = "tingsvad-eu-skab"
+database_id = "b61cb869-288d-4286-937f-86913570d763"   # oprettet med --jurisdiction=eu (region EEUR)
+
+[[kv_namespaces]]
+binding = "EU_KV"
+id = "02bbc7118d9840358209d2e84bdb9355"   # oprettet med --jurisdiction=eu
+
+[[r2_buckets]]
+binding = "EU_R2"
+bucket_name = "tingsvad-eu-skab"
+jurisdiction = "eu"
+
+[[workflows]]
+name = "tingsvad-chair-cases"
+binding = "CHAIR_CASES"
+class_name = "ChairCaseWorkflow"
+
+# Ravnecentralen (runde 9): bestillinger går gennem en kø til en Workflow-instans pr. bilag.
+# Opret én gang: npx wrangler queues create tingsvad-ravn && npx wrangler queues create tingsvad-ravn-dlq
+[[queues.producers]]
+binding = "RAVN_QUEUE"
+queue = "tingsvad-ravn"
+[[queues.consumers]]
+queue = "tingsvad-ravn"
+max_batch_size = 5
+max_batch_timeout = 2
+max_retries = 3
+dead_letter_queue = "tingsvad-ravn-dlq"
+
+[[workflows]]
+name = "tingsvad-ravn"
+binding = "RAVN"
+class_name = "RavnWorkflow"
+
+# Revisionen (runde 9): Gudruns daglige gennemgang af alle sider (startes af Cron, én instans pr. dato).
+[[workflows]]
+name = "tingsvad-revision"
+binding = "REVISION"
+class_name = "RevisionWorkflow"
+
+[triggers]
+crons = ["17 * * * *"]   # hver time (UTC); dato-guard i Europe/Copenhagen sikrer én udgave pr. dag og sprog
+
+# Secrets (sæt med `wrangler secret put NAVN`; aldrig i denne fil):
+#   SESSION_SECRET   – HMAC-nøgle til sessionscookie og capability-tokens (påkrævet i drift)
+#   TURNSTILE_SECRET – Turnstile secret key (sitekey lægges i Pages som TURNSTILE_SITEKEY)
+#   GITHUB_TOKEN     – fint-scopet GitHub-token: kun Issues (read and write) på wi24rd-com/tingsvad-website. Kun produktion.
+#   TTS_API_KEY      – kun hvis TTS_PROVIDER = "external"
+#   TTS_ENDPOINT     – kun hvis TTS_PROVIDER = "external" (fuld URL til provider-endpoint)
+#   REALTIME_SFU_TOKEN    – runde 12: app-tokenet til Realtime SFU-appen (live-radio). Kun når REALTIME_SFU_APP_ID er udfyldt.
+#   GUDRUN_WEBHOOK_SECRET – runde 12: den hemmelighed, Workers Issues-automationen sender i headeren cf-webhook-auth.
+#   CF_ANALYTICS_TOKEN    – runde 12: API-token med kun Zone → Analytics → Read for tingsvad.dk (Værnet og Crawlerne).
+#   BEVIS_NOEGLE          – runde 12 (valgfri): privat ML-DSA-65-nøgle som JWK. Uden den laves en nøgle første gang og gemmes i KV.
+#
+# Secrets Store (runde 12): hver af hemmelighederne ovenfor kan i stedet ligge i kontoens fælles Secrets Store. Opret
+# butikken og hemmeligheden (scope "workers"), og fjern så kommentartegnene i blokken herunder med jeres store_id.
+# Koden læser <NAVN>_STORE først og falder tilbage til Worker-secret'en <NAVN> (worker/src/lib/hemmelighed.js).
+#   npx wrangler secrets-store store list --remote
+#   npx wrangler secrets-store secret create <STORE_ID> --name GITHUB_TOKEN --scopes workers --remote
+#
+# [[secrets_store_secrets]]
+# binding = "GITHUB_TOKEN_STORE"
+# store_id = "<STORE_ID>"
+# secret_name = "GITHUB_TOKEN"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Preview-miljø (runde 9): en separat Worker `tingsvad-ting-ai-preview`, som site-Workerens Worker Previews
+# (<branch>-tingsvad-site.jan-9ea.workers.dev, runde 11) kalder via [[previews.services]] i site-worker/wrangler.toml – og i
+# overgangsugen også Pages-previews (<branch>.tingsvad-website.pages.dev) via rod-wrangler.tomls [env.preview]. Egne D1/KV/R2/Vectorize/Workflows, så test på en branch aldrig skriver i produktionens
+# data. Bindinger og vars arves ikke af et miljø i Wrangler og står derfor alle herunder. Ingen Cron (ingen avis/revision af sig selv),
+# ingen Queue (Ravnecentralen kører direkte gennem Workflows), ingen Ravnepost.
+# Deploy: npx wrangler deploy --env preview · Migrationer: npx wrangler d1 migrations apply tingsvad-ting-ai-preview --remote --env preview
+[env.preview]
+name = "tingsvad-ting-ai-preview"
+workers_dev = false
+
+[env.preview.triggers]
+crons = []
+
+[env.preview.vars]
+SITE_ORIGIN = "https://runde-9-tingsvad-site.jan-9ea.workers.dev"
+TEXT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+VISION_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct"
+IMAGE_MODEL = "@cf/black-forest-labs/flux-1-schnell"
+TTS_PROVIDER = "workers-ai"
+TTS_MODEL = "@cf/deepgram/aura-2-en"
+TTS_VOICE = "orion"
+PROMPT_VERSION = "2026-10-26b"
+QUOTA_TEXT_PER_DAY = "20"
+QUOTA_IMAGE_PER_DAY = "3"
+QUOTA_AUDIO_PER_DAY = "1"
+QUOTA_EDITION_TEXT_PER_DAY = "4"
+BROWSER_PER_DAY = "40"
+EMBED_PER_DAY = "150"
+RATE_PER_MINUTE = "8"
+CASE_DELAYS_SECONDS = "30,120,300"   # kortere i preview, så stolsagens trin kan ses
+ROUND_SECONDS = "30"
+VISION_UPLOAD_ENABLED = "true"
+NEWS_CRON_ENABLED = "false"
+AI_GATEWAY_ID = "tingsvad"
+REALTIME_SFU_APP_ID = "dd3cbf1e704b941350030fed009c8582"
+WEBSEARCH_ENABLED = "true"
+CF_ZONE_ID = "60583aa0c81d7cb7d851282dcb992610"   # runde 12: zonen tingsvad.dk (Værnet og Crawlerne); tokenet CF_ANALYTICS_TOKEN er en secret
+CF_ACCOUNT_ID = "9eac15bef5e1e5e3363fb05474c4ce6a"   # runde 12: Hastigheden (Web Analytics på konto-niveau); tokenet skal have Account Analytics Read og Radar Read
+RUM_SITE_TAG = "d4ee4aac0ab14e37b70b89983ae69727"   # Web Analytics-sitet for tingsvad.dk (JS snippet); beacon-tokenet står i site-workerens WEB_ANALYTICS_TOKEN
+SPEECH_PER_DAY = "150"   # Tal din sag: døgnloft for Whisper-kald for hele sitet
+TURNSTILE_HOSTNAMES = "runde-9-tingsvad-site.jan-9ea.workers.dev,runde-9.tingsvad-website.pages.dev,tingsvad-website.pages.dev"
+EMBED_MODEL = "@cf/baai/bge-m3"
+OG_VERSION = "1"
+TAELLE_DATASET = "tingsvad_taelle_preview"
+RAVNEPOST_AKTIV = "false"
+ARKIV_INSTANS = "tingsvad-arkiv-preview"
+ARKIV_PER_DAY = "10"
+MILJOE = "preview"
+ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"   # Cloudflare Access (Zero Trust-organisationen »t-sec«)
+ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"   # Access-applikationen »Tingsvad administration« (/admin)
+ADMIN_EMAILS = "jan@tingsvad.dk,jan.tingsvad@gmail.com"
+
+[env.preview.ai]
+binding = "AI"
+
+[[env.preview.ai_search_namespaces]]
+binding = "AI_SEARCH"
+namespace = "default"
+
+[[env.preview.ratelimits]]
+name = "RL"
+namespace_id = "2001"
+  [env.preview.ratelimits.simple]
+  limit = 8
+  period = 60
+
+[[env.preview.ratelimits]]
+name = "RL_STRICT"
+namespace_id = "2002"
+  [env.preview.ratelimits.simple]
+  limit = 3
+  period = 60
+
+[env.preview.images]
+binding = "IMAGES"
+
+[env.preview.browser]
+binding = "BROWSER"
+
+[[env.preview.analytics_engine_datasets]]
+binding = "TAEL"
+dataset = "tingsvad_taelle_preview"
+
+[env.preview.analytics]
+binding = "ANALYTICS_SQL"
+
+[[env.preview.vectorize]]
+binding = "VECTORS"
+index_name = "tingsvad-kanon-preview"
+
+[[env.preview.kv_namespaces]]
+binding = "SAGER"
+id = "0ddd7bb5238d4f2d9a5b6ba5becc448c"   # tingsvad-sager-preview
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "tingsvad-ting-ai-preview"
+database_id = "40ddf948-a18c-4dbc-95e8-8142ff574109"
+
+[[env.preview.r2_buckets]]
+binding = "MEDIA"
+bucket_name = "tingsvad-ting-ai-media-preview"
+
+[[env.preview.durable_objects.bindings]]
+name = "TING_ROOM"
+class_name = "TingRoom"
+
+[[env.preview.durable_objects.bindings]]
+name = "CHAIR_ROOM"
+class_name = "ChairRoom"
+
+[[env.preview.durable_objects.bindings]]
+name = "RADIO_STATION"
+class_name = "RadioStation"
+
+[[env.preview.workflows]]
+name = "tingsvad-chair-cases-preview"
+binding = "CHAIR_CASES"
+class_name = "ChairCaseWorkflow"
+
+[[env.preview.workflows]]
+name = "tingsvad-ravn-preview"
+binding = "RAVN"
+class_name = "RavnWorkflow"
+
+[[env.preview.workflows]]
+name = "tingsvad-revision-preview"
+binding = "REVISION"
+class_name = "RevisionWorkflow"

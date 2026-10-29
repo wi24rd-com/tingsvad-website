@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/assets/*", "/partials/*", "/sw.js", "/manifest.webmanifest", "/robots.txt", "/sitemap.xml", "/llms.txt", "/favicon.ico", "/arkivet/protokol/*", "/en/archive/minutes/*", "/protokol/*", "/en/protokol/*"]
+}

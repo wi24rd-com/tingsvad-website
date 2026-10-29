@@ -1,0 +1,40 @@
+# tingsvad-mcp – tinget som MCP-server (runde 10, trin 4a). Kun Worker-custom domain mcp.tingsvad.dk; MX på tingsvad.dk røres aldrig.
+# Deploy: cd mcp && npm ci && npx wrangler deploy   (kræver at tingsvad-ting-ai med entrypoint TingMcp er deployet først)
+name = "tingsvad-mcp"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+routes = [{ pattern = "mcp.tingsvad.dk", custom_domain = true }]
+
+[observability]
+enabled = true
+
+# Runde 12: Workers Issues (fejl grupperes og kan sendes videre) og Traces.
+# Workers Paid: CPU-loft pr. kald (standard 30 s), så en løbsk løkke ikke koster.
+[limits]
+cpu_ms = 2000
+
+[observability.issues]
+enabled = true
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 0.2
+
+[vars]
+MCP_HOSTNAMES = "mcp.tingsvad.dk"
+
+# Logikken: tingsvad-ting-ai's RPC-entrypoint TingMcp (kan ikke nås fra den offentlige /api-proxy)
+[[services]]
+binding = "TING"
+service = "tingsvad-ting-ai"
+entrypoint = "TingMcp"
+
+# Rate limiting pr. klient (SHA-256 af IP + dato), pr. Cloudflare-lokation, 60 s vindue
+[[ratelimits]]
+name = "MCP_RL"
+namespace_id = "1003"
+  [ratelimits.simple]
+  limit = 30
+  period = 60

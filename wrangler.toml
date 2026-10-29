@@ -1,0 +1,47 @@
+# Cloudflare Pages-konfiguration for tingsvad.dk (bindinger styres herfra, ikke i dashboardet).
+# Når denne fil findes, erstatter den dashboardets bindinger — derfor står KV SAGER også her.
+name = "tingsvad-website"
+pages_build_output_dir = "."
+compatibility_date = "2026-10-01"
+
+[vars]
+# Turnstile-widgetens offentlige sitekey (Turnstile → Add widget, hostname tingsvad.dk). Tom = ingen widget, formularerne virker uden.
+# Hemmeligheden TURNSTILE_SECRET sættes som secret under Pages → Settings → Variables and secrets (og i Workeren med wrangler secret put).
+TURNSTILE_SITEKEY = "0x4AAAAAAFmMzNKAUzZnti2H"
+ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"   # Cloudflare Access (Zero Trust-organisationen »t-sec«)
+ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"   # Access-applikationen »Tingsvad administration« (/admin)
+ADMIN_EMAILS = "jan@tingsvad.dk,jan.tingsvad@gmail.com"
+
+[[kv_namespaces]]
+binding = "SAGER"
+id = "5ad65c88ab174c29b7bd72cce99880e3"
+
+# Tingets tælleværk (runde 10): middlewaren skriver én sidevisning pr. HTML-side til samme Analytics Engine-datasæt som Workeren.
+[[analytics_engine_datasets]]
+binding = "TAEL"
+dataset = "tingsvad_taelle"
+
+# Worker-laget bag /api/ting-ai/* (se worker/README.md)
+[[services]]
+binding = "TING_AI"
+service = "tingsvad-ting-ai"
+
+# Preview-deploys (alle andre branches end main): egen KV og egen Worker, så test aldrig skriver i produktionens data.
+# Bindinger og vars arves ikke og står derfor fuldt ud. Pages-secret TURNSTILE_SECRET sættes separat for Preview-miljøet.
+[env.preview.vars]
+TURNSTILE_SITEKEY = "0x4AAAAAAFmMzNKAUzZnti2H"
+ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"   # Cloudflare Access (Zero Trust-organisationen »t-sec«)
+ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"   # Access-applikationen »Tingsvad administration« (/admin)
+ADMIN_EMAILS = "jan@tingsvad.dk,jan.tingsvad@gmail.com"
+
+[[env.preview.kv_namespaces]]
+binding = "SAGER"
+id = "0ddd7bb5238d4f2d9a5b6ba5becc448c"   # tingsvad-sager-preview
+
+[[env.preview.analytics_engine_datasets]]
+binding = "TAEL"
+dataset = "tingsvad_taelle_preview"
+
+[[env.preview.services]]
+binding = "TING_AI"
+service = "tingsvad-ting-ai-preview"

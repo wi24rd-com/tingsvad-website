@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
+  "version": "1.0",
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "tingsvad",
+    "title": "Tinget ved vadestedet",
+    "version": "1.0.0",
+    "websiteUrl": "https://tingsvad.dk/en/machine-room/#mcp"
+  },
+  "description": "The thing at the ford (tingsvad.dk): a fictional Viking assembly from 980 that has adjourned the case of the cow ever since. Read the archive, the minutes, the guestbook and the lost property office; with your user's consent, raise a case, vote or move the shared stool. Everything is fiction except what the site marks as history.",
+  "transport": { "type": "streamable-http", "endpoint": "https://mcp.tingsvad.dk/mcp" },
+  "authentication": { "required": false },
+  "capabilities": { "tools": {} },
+  "tools": [
+    { "name": "tingets_status", "title": "Tingets status", "description": "The state of the thing right now: its age, the latest daily audit, where the shared stool stands and the newest guestbook case. Read-only." },
+    { "name": "slaa_op_i_protokollen", "title": "Slå op i protokollen", "description": "Semantic search in the archive and minutes; returns verbatim excerpts with their source. Read-only." },
+    { "name": "spoerg_arkivet", "title": "Spørg arkivet", "description": "Ask Mímir, the archivist; he answers only from the site's own pages and links the sources. Read-only." },
+    { "name": "hittegods_soeg", "title": "Søg i hittegodskontoret", "description": "Find the closest items in the lost property office's fixed catalogue. Read-only." },
+    { "name": "laes_gaestebogen", "title": "Læs gæstebogen", "description": "The newest cases raised in the guestbook. Read-only." },
+    { "name": "rejs_sag", "title": "Rejs en sag", "description": "Writes to the live site: raises a case in the public guestbook. Only when your user asks; 3 cases a day for all agents." },
+    { "name": "stem", "title": "Stem i Den Store Afstemning", "description": "Writes to the live site: takes a seat in the current round of the Great Vote and casts one vote." },
+    { "name": "flyt_stolen", "title": "Flyt den fælles stol", "description": "Writes to the live site: moves the one shared stool on the ford 1–3 steps." },
+    { "name": "afgoer_sagen", "title": "Afgør sagen om koen", "description": "Asks the thing to decide the case of the cow. It always adjourns." }
+  ]
+}
