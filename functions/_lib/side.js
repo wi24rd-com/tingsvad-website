@@ -122,6 +122,8 @@ export async function sideMiddleware(ctx) {
     .on('link[rel="alternate"][hreflang]', { element(el) { const h = el.getAttribute('hreflang'), href = el.getAttribute('href'); if ((h === 'da' || h === 'en') && href) { try { alt[h] = new URL(href).pathname; } catch {} } } })
     .on('body', { element(el) {
       side = el.getAttribute('data-side') || '';
+      // Skip-link (runde 13, WCAG 2.4.1): første fokuserbare element på hver side, før logo og menu.
+      el.prepend(`<a class="spring-til" href="#indhold">${lang === 'en' ? 'Skip to content' : 'Spring til indhold'}</a>`, { html: true });
       // Web Analytics (runde 11): Pages indsatte beaconen selv; site-Workeren gør det kun, når WEB_ANALYTICS_TOKEN er sat
       // (produktion – ikke previews og ikke Pages, så den aldrig kommer to gange). Tokenet er offentligt og står i HTML'en.
       if (!fejlside && /^[a-f0-9]{32}$/.test(String(env.WEB_ANALYTICS_TOKEN || ''))) el.append(`<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${env.WEB_ANALYTICS_TOKEN}"}'></script>`, { html: true });
