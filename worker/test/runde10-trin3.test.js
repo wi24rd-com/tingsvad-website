@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { naegl, htmlTilMarkdown } from '../../functions/_lib/markdown.js';
 import { fejlFormat, struktureretFejl, fejlData } from '../../functions/_lib/fejl.js';
-import { tael, apiNavn, statusKlasse } from '../src/lib/tael.js';
+import { tael, apiNavn, statusKlasse } from '../../shared/tael.js';
 import { formTaelle, sql, getTaelle } from '../src/features/taelle.js';
 
 const rod = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

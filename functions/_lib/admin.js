@@ -1,7 +1,7 @@
 // /admin/* (delt af Pages Functions og site-Workeren) – alt her kræver en gyldig Cloudflare Access-login (se functions/_lib/access.js).
 // Access står foran på Cloudflares kant; denne kontrol sikrer, at intet slipper igennem, hvis Access-applikationen
 // mangler eller er sat forkert op (fx på en preview-adresse).
-import { verificerAccess } from './access.js';
+import { verificerAccess } from '../../shared/access.js';
 
 /** ctx = { request, env, data, next } – Pages' ctx eller site-Workerens egen. */
 export async function adminVagt(ctx) {

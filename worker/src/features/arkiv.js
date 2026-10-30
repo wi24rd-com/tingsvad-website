@@ -13,7 +13,7 @@ import { cphDateKey, cphHour } from '../lib/dates.js';
 import { sha256Hex } from '../lib/crypto.js';
 import { search as vectorizeSoeg, archiveEnabled } from '../lib/archive.js';
 import { revisionsliste } from './revision.js';
-import { tael } from '../lib/tael.js';
+import { tael } from '../../../shared/tael.js';
 
 export const arkivEnabled = env => !!(env.AI_SEARCH && typeof env.AI_SEARCH.get === 'function');
 export const instansNavn = (env, lang) => `${env.ARKIV_INSTANS || 'tingsvad-arkiv'}-${lang === 'en' ? 'en' : 'da'}`;

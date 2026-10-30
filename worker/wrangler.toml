@@ -1,5 +1,5 @@
 # tingsvad-ting-ai — Worker bag /api/ting-ai/* på tingsvad.dk.
-# Pages-projektet kalder denne Worker via service binding TING_AI (functions/api/ting-ai/[[path]].js).
+# Site-Workeren kalder denne Worker via service binding TING_AI (functions/api/ting-ai/[[path]].js og functions/_lib/ting.js).
 # Ressource-ID'er herunder er PLADSHOLDERE: udfyld med de faktiske ID'er fra kontoen (se README.md).
 name = "tingsvad-ting-ai"
 main = "src/index.js"
@@ -110,7 +110,7 @@ binding = "IMAGES"
 [browser]
 binding = "BROWSER"
 
-# Tingets tælleværk (runde 10): Workers Analytics Engine. Workeren skriver API-kald og hændelser; Pages-middlewaren skriver
+# Tingets tælleværk (runde 10): Workers Analytics Engine. Workeren skriver API-kald og hændelser; site-Workerens middleware skriver
 # sidevisninger til samme datasæt. Datasættet oprettes ved første skrivning. Læses med Analytics SQL-bindingen (kræver Wrangler ≥ 4.145).
 [[analytics_engine_datasets]]
 binding = "TAEL"
@@ -124,7 +124,11 @@ binding = "ANALYTICS_SQL"
 binding = "VECTORS"
 index_name = "tingsvad-kanon"
 
-# Gæstebogens KV (læses til og-billeder for /sag/:nr). Samme namespace som Pages-projektet.
+# KV SAGER: takt for MCP-sager og engangsimport af den gamle gæstebogsliste (runde 13: gæstebogen bor i D1). Samme namespace som site-Workeren.
+# Runde 13: Workers' eget versions-id og tidspunkt til release-feltet i /api/kant og health (shared/release.js).
+[version_metadata]
+binding = "CF_VERSION_METADATA"
+
 [[kv_namespaces]]
 binding = "SAGER"
 id = "5ad65c88ab174c29b7bd72cce99880e3"
@@ -234,7 +238,7 @@ crons = ["17 * * * *"]   # hver time (UTC); dato-guard i Europe/Copenhagen sikre
 
 # Secrets (sæt med `wrangler secret put NAVN`; aldrig i denne fil):
 #   SESSION_SECRET   – HMAC-nøgle til sessionscookie og capability-tokens (påkrævet i drift)
-#   TURNSTILE_SECRET – Turnstile secret key (sitekey lægges i Pages som TURNSTILE_SITEKEY)
+#   TURNSTILE_SECRET – Turnstile secret key (sitekey ligger i site-worker/wrangler.toml som TURNSTILE_SITEKEY)
 #   GITHUB_TOKEN     – fint-scopet GitHub-token: kun Issues (read and write) på wi24rd-com/tingsvad-website. Kun produktion.
 #   TTS_API_KEY      – kun hvis TTS_PROVIDER = "external"
 #   TTS_ENDPOINT     – kun hvis TTS_PROVIDER = "external" (fuld URL til provider-endpoint)
@@ -257,8 +261,8 @@ crons = ["17 * * * *"]   # hver time (UTC); dato-guard i Europe/Copenhagen sikre
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Preview-miljø (runde 9): en separat Worker `tingsvad-ting-ai-preview`, som site-Workerens Worker Previews
-# (<branch>-tingsvad-site.<workers.dev-subdomæne>.workers.dev, runde 11) kalder via [[previews.services]] i site-worker/wrangler.toml – og i
-# overgangsugen også Pages-previews (<branch>.tingsvad-website.pages.dev) via rod-wrangler.tomls [env.preview]. Egne D1/KV/R2/Vectorize/Workflows, så test på en branch aldrig skriver i produktionens
+# (<branch>-tingsvad-site.<workers.dev-subdomæne>.workers.dev, runde 11) kalder via [[previews.services]] i site-worker/wrangler.toml.
+# Egne D1/KV/R2/Vectorize/Workflows, så test på en branch aldrig skriver i produktionens
 # data. Bindinger og vars arves ikke af et miljø i Wrangler og står derfor alle herunder. Ingen Cron (ingen avis/revision af sig selv),
 # ingen Queue (Ravnecentralen kører direkte gennem Workflows), ingen Ravnepost.
 # Deploy: npx wrangler deploy --env preview · Migrationer: npx wrangler d1 migrations apply tingsvad-ting-ai-preview --remote --env preview
@@ -349,6 +353,10 @@ binding = "ANALYTICS_SQL"
 [[env.preview.vectorize]]
 binding = "VECTORS"
 index_name = "tingsvad-kanon-preview"
+
+# Runde 13: Workers' eget versions-id og tidspunkt til release-feltet i /api/kant og health (shared/release.js).
+[env.preview.version_metadata]
+binding = "CF_VERSION_METADATA"
 
 [[env.preview.kv_namespaces]]
 binding = "SAGER"

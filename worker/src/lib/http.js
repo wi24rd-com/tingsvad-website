@@ -1,21 +1,8 @@
 // Fælles API-kontrakt under /api/ting-ai/
 // succes: {ok:true, source:"ai"|"editorial"|"demo"|"server", requestId, data}  (server = ægte tilstand uden AI, fx sager og afstemning)
-// fejl:   {ok:false, code, message, retryAfter?}
-export const requestId = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)).replace(/-/g, '').slice(0, 16);
-
-const HEADERS = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' };
-
-export function ok(data, source = 'ai', status = 200, extra = {}) {
-  return new Response(JSON.stringify({ ok: true, source, requestId: requestId(), data }), { status, headers: { ...HEADERS, ...extra } });
-}
-export function fail(code, message, status = 400, extra = {}) {
-  const body = { ok: false, code, message };
-  if (extra.retryAfter) body.retryAfter = extra.retryAfter;
-  const headers = { ...HEADERS };
-  if (extra.retryAfter) headers['retry-after'] = String(extra.retryAfter);
-  if (extra.setCookie) headers['set-cookie'] = extra.setCookie;
-  return new Response(JSON.stringify(body), { status, headers });
-}
+// fejl:   {ok:false, code, message, requestId, retryAfter?}   – defineret ét sted: shared/svar.js
+import { requestId, ok, fail } from '../../../shared/svar.js'; // runde 13 (AP7): samme kontrakt som site-Workerens /api/*
+export { requestId, ok, fail };
 export class ApiError extends Error {
   constructor(code, message, status = 400, retryAfter) { super(message); this.code = code; this.status = status; this.retryAfter = retryAfter; }
 }

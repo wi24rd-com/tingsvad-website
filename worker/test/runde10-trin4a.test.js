@@ -53,7 +53,7 @@ test('rejsSag: marked as MCP, one per client per 2 minutes, three per day for al
   assert.equal((await m.rejsSag({ klient: K3, sag: 'Tredje sag.' })).ok, true);
   const fjerde = await m.rejsSag({ klient: K4, sag: 'Fjerde sag.' });
   assert.equal(fjerde.code, 'quota'); assert.ok(fjerde.retryAfter > 0);
-  assert.equal(JSON.parse(e.SAGER.m.get('liste')).length, MCP_KVOTER.sag);
+  assert.equal((await e.DB.prepare('SELECT count(*) AS n FROM gaestebog').first()).n, MCP_KVOTER.sag); // runde 13: D1, ikke KV
   assert.equal((await m.rejsSag({ klient: K4, sag: 'x' })).code, 'bad_request');
 });
 

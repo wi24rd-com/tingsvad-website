@@ -15,6 +15,7 @@ tests/
 docs/
 functions/
 site-worker/
+shared/
 byggepakke/
 Tingsvad-*/
 *.zip
@@ -23,7 +24,6 @@ Tingsvad-*/
 *.sh
 *.toml
 LICENSE
-_routes.json
 package.json
 package-lock.json
 .dev.vars

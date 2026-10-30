@@ -2,7 +2,7 @@
 // zone-bredt, så ravneposten bor på det gamle, ellers ubrugte domæne sitesite.dk (regel brev@ → denne Worker). Ingen videresendelse, intet autosvar, ingen afsenderadresse gemt.
 import PostalMime from 'postal-mime';
 import { ok, langOf, ApiError, readJson } from '../lib/http.js';
-import { verificerAccess } from '../../../functions/_lib/access.js';
+import { verificerAccess } from '../../../shared/access.js';
 import { sha256Hex, randomId } from '../lib/crypto.js';
 import { tilBrev } from '../lib/ravnepostlogic.js';
 

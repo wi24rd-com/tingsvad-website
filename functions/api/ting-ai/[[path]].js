@@ -14,8 +14,10 @@ export async function onRequest({ request, env }) {
     const url = new URL(request.url);
     // Admin-ruterne nås kun fra /admin/* (bag Cloudflare Access), aldrig gennem den offentlige proxy.
     if (url.pathname.startsWith('/api/ting-ai/admin')) return json({ ok: false, code: 'not_found', message: 'no' }, 404);
-    // Kun proxyen må sætte x-gallery-id og x-tingsvad-colo; fjern dem fra alt indkommende.
-    const headers = new Headers(request.headers); headers.delete('x-gallery-id'); headers.delete('x-tingsvad-colo');
+    // intern/* (gæstebog, tællere, besøgende i D1) kaldes kun af site-Workeren selv (functions/_lib/ting.js) – aldrig udefra.
+    if (url.pathname.startsWith('/api/ting-ai/intern')) return json({ ok: false, code: 'not_found', message: 'no' }, 404);
+    // Kun proxyen må sætte x-gallery-id, x-tingsvad-colo og x-tingsvad-intern; fjern dem fra alt indkommende.
+    const headers = new Headers(request.headers); headers.delete('x-gallery-id'); headers.delete('x-tingsvad-colo'); headers.delete('x-tingsvad-intern');
     if (request.cf && /^[A-Z]{3}$/.test(request.cf.colo || '')) headers.set('x-tingsvad-colo', request.cf.colo); // til tælleværket; service binding-kaldet har ikke selv request.cf
     if (url.pathname === '/api/ting-ai/vision' && request.method === 'POST' && (request.headers.get('content-type') || '').includes('application/json')) {
       let body = null; try { body = await request.clone().json(); } catch (e) { }

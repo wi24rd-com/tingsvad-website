@@ -1,5 +1,5 @@
-// Sikkerheds- og cacheheaders til HTML, der går gennem functions/_middleware.js.
-// _headers gælder kun statiske filer, ikke svar fra Pages Functions; derfor står de samme værdier også her.
+// Sikkerheds- og cacheheaders til HTML, der går gennem side-middlewaren (functions/_lib/side.js).
+// _headers gælder kun de statiske filer, ikke svar fra Worker-koden; derfor står de samme værdier også her.
 // Ændres CSP'en, skal den rettes begge steder (_headers, /* og denne fil).
 export const SIKKERHED = {
   'Strict-Transport-Security': 'max-age=31536000',

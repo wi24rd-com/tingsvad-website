@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeDb } from './d1mock.js';
 import { adminAviser, getNewsArkiv } from '../src/features/news.js';
-import { _nulstilCache } from '../../functions/_lib/access.js';
+import { _nulstilCache } from '../../shared/access.js';
 import { ApiError } from '../src/lib/http.js';
 
 const b64u = b => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');

@@ -5,7 +5,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 export async function onRequestGet(ctx) {
   const nr = ctx.params.nr;
   let sag = null;
-  try { const r = await hentSager(ctx); const liste = await r.json(); sag = liste.find(s => s.nr === nr) || null; } catch (e) {}
+  try { const r = await hentSager(ctx); const j = await r.json(); sag = ((j && j.data && j.data.sager) || []).find(s => s.nr === nr) || null; } catch (e) {} // runde 13: svarkontrakten {ok, data:{sager}}
   const titel = sag ? `Sag ${sag.nr} · ${sag.navn} · Udsat` : `Sag ${nr} · Tingsvad`;
   const besk = sag ? sag.sag : 'Sagen findes ikke i protokollen. Den er muligvis udsat.';
   const url = `https://tingsvad.dk/oplevelser/gaestebog/#sag-${encodeURIComponent(nr)}`; // gæstebogen er en underside fra runde 9

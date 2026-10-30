@@ -31,10 +31,10 @@
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-ko-512.png">
 <link rel="apple-touch-icon" href="/assets/fav-ko-180.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=e55b11d4">
-<link rel="stylesheet" href="/assets/forside.css?v=e55b11d4">
-<link rel="stylesheet" href="/assets/undersider.css?v=e55b11d4">
-<link rel="stylesheet" href="/assets/infrakort.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/site.css?v=8c5736e5">
+<link rel="stylesheet" href="/assets/forside.css?v=8c5736e5">
+<link rel="stylesheet" href="/assets/undersider.css?v=8c5736e5">
+<link rel="stylesheet" href="/assets/infrakort.css?v=8c5736e5">
 </head>
 <body data-side="maskinrummet" class="r12m">
 <header class="r12-top" id="top">
@@ -160,8 +160,8 @@
           <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-data-kort" data-aaben="Vis de 6 kort" data-luk="Fold sammen">Vis de 6 kort</button>
         </div>
         <div class="maskinrum" id="lag-data-kort" hidden>
-        <article><b>Workers KV</b><h3>Gæstebog og tællere</h3><p>Et nøgle-værdi-lager med global replikering holder de rejste sager, forsøgene på at afgøre sagen og dagens besøgende, det sidste som daghashes, der udløber efter to døgn. Ingen cookies til det; sessionen til maskinparken er den eneste cookie, og den rummer intet om personen.</p></article>
-        <article><b>D1</b><h3>SQLite på kanten</h3><p>Avisudgaver, sager, kvoter, idempotency-nøgler og rate limits ligger i en D1-database i Vesteuropa. Reservationer har en lease, så et nedbrud midt i et kald ikke låser dagens bevilling for evigt.</p></article>
+        <article><b>Workers KV</b><h3>Takt og færdige overblik</h3><p>Et nøgle-værdi-lager med global replikering holder de små, selvudløbende ting: én sag pr. gæst pr. to minutter, ét tryk pr. minut på afgør-knappen, og de færdige overblik til Værnet, Crawlerne, Hastigheden og Danmark. Gæstebogen selv flyttede til D1 i runde 13, fordi to samtidige gæster kunne få samme sagsnummer i KV.</p></article>
+        <article><b>D1</b><h3>SQLite på kanten</h3><p>Avisudgaver, gæstebogens sager (nummeret gives af databasen, så to gæster aldrig får det samme), afgørelsestælleren, dagens besøgende som daghashes der slettes efter to døgn, stolens sager, kvoter, idempotency-nøgler og rate limits ligger i en D1-database i Vesteuropa. Reservationer har en lease, så et nedbrud midt i et kald ikke låser dagens bevilling for evigt.</p></article>
         <article><b>R2</b><h3>Mediefiler uden udgående gebyr</h3><p>Opdigtede fund og radioens lydfiler gemmes i en R2-bucket under en nøgle af valg, sprog, promptversion og model. Samme kombination hentes derfor kun én gang fra modellen; alle gæster deler filen.</p></article>
         <article><b>Vectorize</b><h3>Mímirs arkiv som vektorindeks</h3><p>Det redaktionelle korpus (figurer, sagsakter, de virkelige fakta med kilder) indekseres som embeddings fra bge-m3. Mímir finder de nærmeste uddrag til et spørgsmål og må kun citere dem. Gådens løsninger ligger ikke i indekset; de vælges stadig af serveren efter spoiler-niveau. <a href="/oplevelser/hittegods/">Hittegodskontoret</a> har sit eget namespace med et fast katalog, så svarene altid kommer fra kataloget og aldrig fra modellen.</p></article>
         <article><b>Analytics Engine</b><h3>Tingets tælleværk</h3><p>Middlewaren skriver ét datapunkt pr. side, Workeren ét pr. maskinkald og ét pr. hændelse (en flyttet stol, en afgivet stemme, dagens revision) til datasættet <code>tingsvad_taelle</code>. Et datapunkt er en art, et navn, et sprog, et datacenter og to tal: ingen cookie, ingen session; IP-adressen bruges kun til en saltet hash for rate limits og besøgstælling (udløber efter to døgn) og gemmes aldrig i klartekst. Skrivningen blokerer ikke svaret. Workeren læser tallene med Analytics SQL-bindingen uden API-token og gemmer svaret i fem minutter. Ved stor trafik tager Analytics Engine stikprøver og vægter tallene tilbage; ved tingets trafik er de stort set eksakte.</p></article>
@@ -297,17 +297,17 @@ curl -H »Accept: application/problem+json« https://tingsvad.dk/findes-ikke/</c
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=e55b11d4"></script>
-<script src="/assets/round3.js?v=e55b11d4" defer></script>
-<script src="/assets/round4.js?v=e55b11d4" defer></script>
-<script src="/assets/round5-tekst.js?v=e55b11d4" defer></script>
-<script src="/assets/round5.js?v=e55b11d4" defer></script>
-<script src="/assets/round6-tekst.js?v=e55b11d4" defer></script>
-<script src="/assets/kaede.js?v=e55b11d4" defer></script>
-<script src="/assets/round6.js?v=e55b11d4" defer></script>
-<script src="/assets/round9-tekst.js?v=e55b11d4" defer></script>
-<script src="/assets/round9.js?v=e55b11d4" defer></script>
-<script src="/assets/round10.js?v=e55b11d4" defer></script>
-<script src="/assets/ankre.js?v=e55b11d4" defer></script>
+<script src="/assets/site.js?v=8c5736e5"></script>
+<script src="/assets/round3.js?v=8c5736e5" defer></script>
+<script src="/assets/round4.js?v=8c5736e5" defer></script>
+<script src="/assets/round5-tekst.js?v=8c5736e5" defer></script>
+<script src="/assets/round5.js?v=8c5736e5" defer></script>
+<script src="/assets/round6-tekst.js?v=8c5736e5" defer></script>
+<script src="/assets/kaede.js?v=8c5736e5" defer></script>
+<script src="/assets/round6.js?v=8c5736e5" defer></script>
+<script src="/assets/round9-tekst.js?v=8c5736e5" defer></script>
+<script src="/assets/round9.js?v=8c5736e5" defer></script>
+<script src="/assets/round10.js?v=8c5736e5" defer></script>
+<script src="/assets/ankre.js?v=8c5736e5" defer></script>
 </body>
 </html>

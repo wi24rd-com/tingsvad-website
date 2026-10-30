@@ -431,7 +431,7 @@
   if (sagAeldre) sagAeldre.addEventListener('click', () => { side++; visSager(); gbList.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); });
   async function hentSager() {
     if (!gbList) return;
-    try { const r = await fetch('/api/sager'); if (!r.ok) throw 0; visSager(await r.json()); }
+    try { const r = await fetch('/api/sager'); if (!r.ok) throw 0; const j = await r.json(); visSager(j.data ? j.data.sager : j); }
     catch (e) { gbList.innerHTML = `<li class="sager-tom">${T.gbFejl}</li>`; }
   }
   hentSager().then(() => { if (location.hash.startsWith('#sag-')) { const nr = decodeURIComponent(location.hash.slice(5)); const i = alleSager.findIndex(s => s.nr === nr); if (i >= 0) { side = Math.floor(i / PR_SIDE); visSager(); } } });
@@ -443,7 +443,7 @@
     try {
       const r = await fetch('/api/sager', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ navn, sag, hp: fd.get('website') || '', turnstile: await (gbTs.ready ? gbTs.ready(10000) : gbTs.token()) }) });
       gbTs.reset();
-      if (!r.ok) throw 0; const ny = await r.json();
+      if (!r.ok) throw 0; const j = await r.json(); const ny = j.data || j;
       gbStatus.textContent = T.gbSendt.replace('{nr}', ny.nr); gbForm.reset(); hentSager();
     } catch (err) { gbStatus.textContent = T.gbFejl; }
     gbForm.querySelector('button').disabled = false;

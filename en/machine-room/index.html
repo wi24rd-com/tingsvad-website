@@ -31,10 +31,10 @@
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-brian-512.png">
 <link rel="apple-touch-icon" href="/assets/fav-brian-180.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=e55b11d4">
-<link rel="stylesheet" href="/assets/forside.css?v=e55b11d4">
-<link rel="stylesheet" href="/assets/undersider.css?v=e55b11d4">
-<link rel="stylesheet" href="/assets/infrakort.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/site.css?v=8c5736e5">
+<link rel="stylesheet" href="/assets/forside.css?v=8c5736e5">
+<link rel="stylesheet" href="/assets/undersider.css?v=8c5736e5">
+<link rel="stylesheet" href="/assets/infrakort.css?v=8c5736e5">
 </head>
 <body data-side="maskinrummet" class="r12m">
 <header class="r12-top" id="top">
@@ -160,8 +160,8 @@
           <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-data-kort" data-aaben="Show the 6 cards" data-luk="Show less">Show the 6 cards</button>
         </div>
         <div class="maskinrum" id="lag-data-kort" hidden>
-        <article><b>Workers KV</b><h3>Guestbook and counters</h3><p>A globally replicated key-value store holds the cases raised, the attempts to decide the case and today’s visitors, the last as daily hashes that expire after two days. No cookies for that; the session for the machine park is the only cookie, and it holds nothing about the person.</p></article>
-        <article><b>D1</b><h3>SQLite at the edge</h3><p>Newspaper editions, cases, quotas, idempotency keys and rate limits live in a D1 database in Western Europe. Reservations carry a lease, so a crash mid-call never locks the day’s allowance forever.</p></article>
+        <article><b>Workers KV</b><h3>Pacing and finished overviews</h3><p>A globally replicated key-value store holds the small, self-expiring things: one case per guest per two minutes, one press per minute on the decide button, and the finished overviews for the Defences, the Crawlers, the Speed and Denmark. The guestbook itself moved to D1 in round 13, because two guests at once could get the same case number in KV.</p></article>
+        <article><b>D1</b><h3>SQLite at the edge</h3><p>Newspaper editions, the guestbook’s cases (the database hands out the number, so two guests never get the same one), the decide counter, today’s visitors as daily hashes deleted after two days, the stool’s cases, quotas, idempotency keys and rate limits live in a D1 database in Western Europe. Reservations carry a lease, so a crash mid-call never locks the day’s allowance forever.</p></article>
         <article><b>R2</b><h3>Media without egress fees</h3><p>Fictional finds and the radio’s audio files are stored in an R2 bucket under a key of choices, language, prompt version and model. The same combination is therefore fetched from the model only once; every guest shares the file.</p></article>
         <article><b>Vectorize</b><h3>Mímir’s archive as a vector index</h3><p>The editorial corpus (characters, case files, the real facts with sources) is indexed as embeddings from bge-m3. Mímir finds the nearest excerpts to a question and may only quote them. The puzzle’s solutions are not in the index; the server still selects them by spoiler level. The <a href="/en/experiences/lost-property/">lost property office</a> has its own namespace with a fixed catalogue, so the answers always come from the catalogue and never from the model.</p></article>
         <article><b>Analytics Engine</b><h3>The thing’s counting works</h3><p>The middleware writes one data point per page, the Worker one per machine call and one per event (a moved stool, a vote cast, the day’s audit) to the dataset <code>tingsvad_taelle</code>. A data point is a kind, a name, a language, a data centre and two numbers: no cookie, no session; the IP address is used only for a salted hash for rate limits and the visitor count (expires after two days) and is never stored in clear. Writing does not hold up the response. The Worker reads the numbers with the Analytics SQL binding, without an API token, and keeps the answer for five minutes. Under heavy traffic Analytics Engine samples and weights the numbers back; at the thing’s traffic they are practically exact.</p></article>
@@ -297,18 +297,18 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/en/does-not-exist
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=e55b11d4"></script>
-<script src="/assets/round3.js?v=e55b11d4" defer></script>
-<script src="/assets/round4.js?v=e55b11d4" defer></script>
-<script src="/assets/round5-tekst.js?v=e55b11d4" defer></script>
-<script src="/assets/round5.js?v=e55b11d4" defer></script>
-<script src="/assets/round6-tekst.js?v=e55b11d4" defer></script>
-<script src="/assets/kaede.js?v=e55b11d4" defer></script>
-<script src="/assets/round6.js?v=e55b11d4" defer></script>
-<script src="/assets/round9-tekst.js?v=e55b11d4" defer></script>
-<script src="/assets/round9.js?v=e55b11d4" defer></script>
-<script src="/assets/round10.js?v=e55b11d4" defer></script>
-<script src="/assets/ankre.js?v=e55b11d4" defer></script>
+<script src="/assets/site.js?v=8c5736e5"></script>
+<script src="/assets/round3.js?v=8c5736e5" defer></script>
+<script src="/assets/round4.js?v=8c5736e5" defer></script>
+<script src="/assets/round5-tekst.js?v=8c5736e5" defer></script>
+<script src="/assets/round5.js?v=8c5736e5" defer></script>
+<script src="/assets/round6-tekst.js?v=8c5736e5" defer></script>
+<script src="/assets/kaede.js?v=8c5736e5" defer></script>
+<script src="/assets/round6.js?v=8c5736e5" defer></script>
+<script src="/assets/round9-tekst.js?v=8c5736e5" defer></script>
+<script src="/assets/round9.js?v=8c5736e5" defer></script>
+<script src="/assets/round10.js?v=8c5736e5" defer></script>
+<script src="/assets/ankre.js?v=8c5736e5" defer></script>
 </body>
 </html><tr><td class="h">01915ragn</td><td class="d">1915</td><td class="t">feat:</td><td class="m">§ 9: women have the vote. Passed after Ragnhild looked</td><td class="ru" title="ragnhild">ᚱᛅᚴᚾᚼᛁᛚᛏ</td><td class="tag"></td></tr>
 

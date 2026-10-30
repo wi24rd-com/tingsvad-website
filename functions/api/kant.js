@@ -1,6 +1,7 @@
 // GET /api/kant — »Hvor svarede tinget fra?« (runde 10). Viser gæsten sin egen vej til kanten ud fra request.cf:
 // datacenter (colo), protokol, TLS-version og målt tur-retur-tid. Ingen IP, by, land, udbyder eller cookie; intet gemmes.
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' } });
+import { release } from '../../shared/release.js';
 let byer = null;
 
 export async function onRequestGet({ request, env }) {
@@ -17,6 +18,7 @@ export async function onRequestGet({ request, env }) {
       tls: typeof cf.tlsVersion === 'string' ? cf.tlsVersion.slice(0, 12) : null,
       rttMs: rtt,
       hentet: new Date().toISOString(),
+      release: release(env), // runde 13: commit + Workers-version, så CI og Revisionen kan se hvilken udgave der svarer
     },
   });
 }

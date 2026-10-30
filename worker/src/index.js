@@ -36,12 +36,15 @@ import { getTopologi } from './features/topologi.js';
 import { signerBevis, tjekBevis, bevisNoegle, bevisEnabled } from './features/bevis.js';
 import { liveStatus, liveLyt, liveSvar, liveKilde, liveEnabled } from './features/liveradio.js';
 import { websearchEnabled } from './features/udland.js';
-import { tael, apiNavn, statusKlasse } from './lib/tael.js';
+import { tael, apiNavn, statusKlasse } from '../../shared/tael.js';
 import { cachebar, invalider, erOffentlig, TAGS } from './lib/kantcache.js';
 import { opdaterVagt, getVaern, getCrawlere, getDoer, vagtEnabled } from './features/vagt.js';
 import { opdaterHastighed, opdaterRadar, getHastighed, getDanmark, hastighedEnabled, radarEnabled } from './features/maaling.js';
 import { tale } from './features/tale.js';
 import { getSkab, postSegl, euEnabled } from './features/euskab.js';
+import { intern as internRuter } from './features/gaestebog.js';
+import { rydBesoeg } from './lib/gaestebog.js';
+import { release } from '../../shared/release.js';
 
 const PREFIX = '/api/ting-ai/';
 
@@ -91,12 +94,13 @@ async function handle(request, env, ctx) {
     let session;
     try {
       session = await getSession(request, env); // health sætter også sessionscookien, så WebSocket-forbindelsen har en ejer
-      if (path === 'health') return withCookie(ok({ configured: configured(env), date: cphDateKey(), miljoe: env.MILJOE || 'production' }, 'server'), session);
+      if (path === 'health') return withCookie(ok({ configured: configured(env), date: cphDateKey(), miljoe: env.MILJOE || 'production', release: release(env) }, 'server'), session);
       if (!env.DB) return withCookie(fail('not_configured', msg(lang, 'notconf'), 503), session);
       const c = { session, log, waitUntil: p => ctx.waitUntil(p.catch(e => log({ event: 'background_error', error: String(e && e.message).slice(0, 120) }))) };
       const m = request.method;
       let res;
-      if (path === 'court' && m === 'POST') res = await court(request, env, c);
+      if (path.startsWith('intern/')) res = await internRuter(request, env, c, path, lang); // runde 13: gæstebog/tællere i D1, kun via service binding
+      else if (path === 'court' && m === 'POST') res = await court(request, env, c);
       else if (path === 'vision' && m === 'POST') res = await vision(request, env, c);
       else if (path === 'guide' && m === 'POST') res = await guide(request, env, c);
       else if (path === 'news' && m === 'GET') res = await cachebar(request, await getNews(request, env, c), { maxAge: 300, swr: 3600, tags: [TAGS.avis, `${TAGS.avis}-${lang}`] });
@@ -176,7 +180,9 @@ async function scheduled(event, env, ctx) {
       log({ event: 'cron_news', lang, dateKey, result: r });
       if (r === 'published' || r === 'exists') { const rr = await publishRadio(env, lang, dateKey, log); log({ event: 'cron_radio', lang, dateKey, result: rr }); if (r === 'published' || rr === 'audio' || rr === 'text') await invalider(ctx, [`${TAGS.avis}-${lang}`, `${TAGS.radio}-${lang}`], log); }
     }
-    ctx.waitUntil(Promise.all([sweepQuota(env.DB), sweepIdem(env.DB), env.DB.prepare('DELETE FROM court_rounds WHERE expires_at < ?').bind(Date.now()).run()]));
+    ctx.waitUntil(Promise.all([sweepQuota(env.DB), sweepIdem(env.DB), env.DB.prepare('DELETE FROM court_rounds WHERE expires_at < ?').bind(Date.now()).run(),
+      rydBesoeg(env, cphDateKey(new Date(Date.now() - 2 * 86400000))).catch(() => {}), // runde 13: besøgshashes lever to døgn, som i KV
+      env.DB.prepare("DELETE FROM revision_sider WHERE date_key < date('now', '-90 days')").run().catch(() => {})])); // runde 13: Revisionens rækker gemmes 90 dage
 }
 
 // Dagbogen (runde 12): SQL-statistik fra stolens og afstemningens Durable Objects. Offentlig og ens for alle, så den caches på kanten et minut (se routeren).

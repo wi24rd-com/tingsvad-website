@@ -63,13 +63,18 @@ jobs:
       - name: Vent på site-Workeren
         if: github.event_name == 'push'
         run: |
+          # Runde 13 (ChatGPT T5): vent på commit-id'et i /api/kant (RELEASE sættes af deploy-kommandoen med $WORKERS_CI_COMMIT_SHA).
+          # Svarer Workeren uden release (deploy-kommandoen ikke sat endnu), falder vi tilbage til ?v=-hashen fra en HTML-side.
           V=$(grep -o 'site.css?v=[a-z0-9]*' historien/index.html | head -1)
-          echo "Venter på $V på ${{ steps.url.outputs.url }}/historien/"
+          U="${{ steps.url.outputs.url }}"
+          echo "Venter på ${GITHUB_SHA} (eller $V) på $U"
           for i in $(seq 1 60); do
-            if curl -fsS "${{ steps.url.outputs.url }}/historien/?nocache=$RANDOM" | grep -q "$V"; then echo "Deployet efter $((i*10)) s"; exit 0; fi
+            R=$(curl -fsS "$U/api/kant?nocache=$RANDOM" | python3 -c 'import json,sys; print((json.load(sys.stdin).get("data") or {}).get("release", {}).get("commit") or "")' 2>/dev/null || true)
+            if [ "$R" = "$GITHUB_SHA" ]; then echo "Deployet efter $((i*10)) s (release $R)"; exit 0; fi
+            if [ -z "$R" ] && curl -fsS "$U/historien/?nocache=$RANDOM" | grep -q "$V"; then echo "::warning::Workeren svarer uden release-id; matchede på $V efter $((i*10)) s"; exit 0; fi
             sleep 10
           done
-          echo "::error::Site-Workeren serverede ikke $V inden for 10 minutter"; exit 1
+          echo "::error::Site-Workeren serverede hverken ${GITHUB_SHA} eller $V inden for 10 minutter"; exit 1
 
   playwright:
     needs: adresse

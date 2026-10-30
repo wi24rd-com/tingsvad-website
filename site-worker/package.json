@@ -5,8 +5,8 @@
   "description": "tingsvad.dk as one Cloudflare Worker with Static Assets (round 11).",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "preview": "wrangler preview",
+    "deploy": "wrangler deploy --var RELEASE:$(git rev-parse HEAD)",
+    "preview": "wrangler preview --var RELEASE:$(git rev-parse HEAD)",
     "test": "node --test test/*.test.js"
   },
   "devDependencies": {

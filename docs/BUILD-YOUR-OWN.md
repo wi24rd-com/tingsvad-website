@@ -105,7 +105,7 @@ tingsvad.dk's images were made with ChatGPT from prompts written by Claude. The 
 ## Step 6: Build on it
 
 Once the first site is running, you can add one feature at a time. For example:
-- **A contact form** with Turnstile and KV (see the guestbook in `functions/api/sager.js`).
+- **A contact form** with Turnstile and D1 (see the guestbook in `functions/api/sager.js` and `worker/src/lib/gaestebog.js`).
 - **An AI assistant** that answers from your own pages, with AI Search (see "Ask the archive").
 - **Statistics on attacks and bots** like the defences and the crawlers.
 - **Data stored only in the EU**, like the archive cabinet.

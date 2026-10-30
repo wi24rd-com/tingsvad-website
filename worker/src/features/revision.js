@@ -5,7 +5,7 @@
 // Runde 10: Browser Run er dyrt på gratisplanen. HTML'en hashes (SHA-256); er den uændret siden et bestået browsertjek
 // inden for GENBRUG_DAGE, genbruges tjekket (genbrugt_fra), og browseren åbnes ikke. Om mandagen tjekkes alt fuldt.
 import { hentGithubUdfald } from './gudrun-github.js';
-import { tael } from '../lib/tael.js';
+import { tael } from '../../../shared/tael.js';
 import { ok, ApiError, langOf } from '../lib/http.js';
 import { cphDateKey } from '../lib/dates.js';
 import { browserAction } from '../lib/budget.js';

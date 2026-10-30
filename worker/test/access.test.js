@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { verificerAccess, _nulstilCache } from '../../functions/_lib/access.js';
+import { verificerAccess, _nulstilCache } from '../../shared/access.js';
 
 const b64u = b => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const TEAM = 'tingsvad.cloudflareaccess.com', AUD = 'aud-123';

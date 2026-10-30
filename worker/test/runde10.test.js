@@ -6,7 +6,6 @@ import { dirname, join } from 'node:path';
 import { makeDb } from './d1mock.js';
 import { revisionsliste, revisérSide, getRevision, kanGenbruge, fuldDag, htmlHash } from '../src/features/revision.js';
 
-const migr = f => readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'migrations', f), 'utf8');
 
 test('revision (round 10): the audit page and the architecture diagram are on the list', () => {
   const l = revisionsliste();
@@ -45,9 +44,7 @@ test('revision: a check is reused only for the same HTML, a passed original chec
 });
 
 test('revision: an unchanged page is not opened in the browser the next day, and its picture points at the original check', async () => {
-  const db = makeDb();
-  db.raw.exec(migr('0002_runde9.sql'));
-  db.raw.exec(migr('0004_revision_genbrug.sql'));
+  const db = makeDb(); // runde 13: makeDb kører alle migrationer
   let html = '<html lang="da"><body>samme side</body></html>', browserKald = 0;
   const gemt = {};
   const env = {

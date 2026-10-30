@@ -8,7 +8,7 @@ import { cphDateKey, prevDateKey } from '../lib/dates.js';
 import { randomId } from '../lib/crypto.js';
 import { faktaTekst, tilladteTal, rensTal, aarSiden } from '../lib/kanon.js';
 import { udlandsrubrik } from './udland.js';
-import { verificerAccess } from '../../../functions/_lib/access.js';
+import { verificerAccess } from '../../../shared/access.js';
 import { invalider, TAGS } from '../lib/kantcache.js';
 
 const SCHEMA = {

@@ -5,7 +5,7 @@
 // Idempotent: issuet bærer en usynlig markør <!-- gudrun:revision:YYYY-MM-DD -->, og åbne issues listes (ikke søges –
 // søge-API'et er forsinket) før oprettelse. Teksten er på engelsk som alt andet på GitHub og nævner kun offentlige ting:
 // sti, HTTP-status, hvilke nøgleelementer der manglede og antal JS-fejl. Aldrig fejltekster fra Workeren eller Browser Run.
-import { tael } from '../lib/tael.js';
+import { tael } from '../../../shared/tael.js';
 import { revisionsliste } from './revision.js';
 import { harHemmelighed, hemmelighed } from '../lib/hemmelighed.js';
 

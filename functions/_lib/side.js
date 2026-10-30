@@ -1,13 +1,13 @@
 // Tingets fælles side-middleware (runde 9–11): header/sidenav/footer via HTMLRewriter, brødkrummer, Markdown til agenter,
-// fejltavlen og tælleværkets sidevisninger. Én implementering, to værter: Pages Functions (functions/_middleware.js, tilbagefald
+// fejltavlen og tælleværkets sidevisninger. Én implementering, én vært: site-Workeren (site-worker/index.js; til runde 13 også Pages Functions som tilbagefald
 // i runde 11's overgangsuge) og site-Workeren med Static Assets (site-worker/index.js). Hver side har pladsholdere som
 // <div data-tv-del="topbar"></div>; HTMLRewriter erstatter dem undervejs i streamen med /partials/<navn>.<sprog>.html, så
 // navigationen findes ét sted. Sprogskifte-links udfyldes fra sidens egne <link rel="alternate" hreflang>, og den aktuelle side
-// markeres med aria-current ud fra <body data-side>. /assets/* m.fl. går uden om (Pages: _routes.json; Worker: run_worker_first).
+// markeres med aria-current ud fra <body data-side>. /assets/* m.fl. går uden om (run_worker_first i site-worker/wrangler.toml).
 import { SIKKERHED, MIKROFON } from './headers.js';
 import { naegl, htmlTilMarkdown } from './markdown.js';
 import { struktureretFejl, noedside } from './fejl.js';
-import { tael } from '../../worker/src/lib/tael.js';
+import { tael } from '../../shared/tael.js';
 
 const DELE = ['topbar', 'sidenav', 'footer'];
 const cache = new Map(); // pr. isolat; et nyt deploy giver nye isolater
@@ -68,7 +68,7 @@ async function mdFil(ctx, url) {
   return new Response(request.method === 'HEAD' ? null : markdown, { status: 200, headers: h });
 }
 
-/** ctx = { request, env, next } – Pages' ctx eller site-Workerens egen (site-worker/index.js). */
+/** ctx = { request, env, next } – site-Workerens ctx (site-worker/index.js), samme form som Pages Functions' i sin tid. */
 export async function sideMiddleware(ctx) {
   const { request, env } = ctx;
   const url0 = new URL(request.url);

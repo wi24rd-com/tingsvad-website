@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --var RELEASE:$(git rev-parse HEAD)",
     "migrate:local": "wrangler d1 migrations apply tingsvad-ting-ai --local",
     "migrate:remote": "wrangler d1 migrations apply tingsvad-ting-ai --remote",
     "test": "node --test test/"

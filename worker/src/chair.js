@@ -1,7 +1,7 @@
 // Den fælles stol (runde 9): Durable Object med WebSocket Hibernation. Én stol for hele internettet; serveren ejer positionen.
 // Klienter sender {type:'move', dx, dy}; serveren validerer, rate-limiter pr. session og sender et snapshot til alle.
 import { DurableObject } from 'cloudflare:workers';
-import { tael } from './lib/tael.js';
+import { tael } from '../../shared/tael.js';
 import { egetColo } from './features/topologi.js';
 import * as C from './lib/chairlogic.js';
 import { Dagbog } from './lib/dagbog.js';

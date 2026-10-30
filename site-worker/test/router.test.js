@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { haandter, find, haandtering, OMDIRIGERINGER } from '../index.js';
+import { makeDb } from '../../worker/test/d1mock.js';
+import { intern as tingIntern } from '../../worker/src/features/gaestebog.js';
 
 const rod = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fil = f => readFileSync(join(rod, f));
@@ -30,9 +32,10 @@ function assets() {
     },
   };
 }
+// Runde 13: intern/* (gæstebog, tællere, besøgende) køres mod ting-ai's rigtige kode med en D1 i hukommelsen; alt andet stubbes.
 function tingAi() {
-  const kald = [];
-  return { kald, async fetch(req) { kald.push(req); return Response.json({ ok: true, sti: new URL(req.url).pathname }); } };
+  const kald = [], db = makeDb();
+  return { kald, db, async fetch(req) { kald.push(req); const sti = new URL(req.url).pathname; if (sti.startsWith('/api/ting-ai/intern/')) return tingIntern(req, { DB: db }, {}, sti.slice('/api/ting-ai/'.length), 'da'); return Response.json({ ok: true, sti }); } };
 }
 const env = (x = {}) => ({ ASSETS: assets(), SAGER: kv(), TING_AI: tingAi(), TURNSTILE_SITEKEY: 'sk', ACCESS_TEAM_DOMAIN: 't.cloudflareaccess.com', ACCESS_AUD: 'aud', ADMIN_EMAILS: 'a@b.dk', ...x });
 const req = (sti, init = {}) => new Request(O + sti, init);
@@ -96,7 +99,11 @@ test('error board: 404 for machines is problem+json / JSON, /api/* is always JSO
 test('API handlers from functions/api run unchanged (turnstile, afgoer, kant, sager)', async () => {
   const e = env();
   assert.deepEqual(await (await haandter(req('/api/turnstile'), e)).json(), { sitekey: 'sk' });
-  assert.equal((await (await haandter(req('/api/afgoer'), e)).json()).n, 1284);
+  assert.equal((await (await haandter(req('/api/afgoer'), e)).json()).data.n, 1284);
+  assert.equal((await (await haandter(req('/api/afgoer', { method: 'POST' }), e)).json()).data.n, 1285);
+  assert.equal((await (await haandter(req('/api/afgoer', { method: 'POST' }), e)).json()).data.n, 1285, 'one per IP per minute');
+  const bes = await (await haandter(req('/api/besoeg', { method: 'POST', headers: { 'cf-connecting-ip': '9.9.9.9' } }), e)).json();
+  assert.equal(bes.data.n, 1);
   const k = await haandter(new Request(O + '/api/kant', { headers: { 'cf-ray': 'abc-CPH' } }), e);
   assert.equal((await k.json()).ok, true);
   assert.equal((await haandter(req('/api/kant', { method: 'POST' }), e)).status, 405);
@@ -106,8 +113,25 @@ test('API handlers from functions/api run unchanged (turnstile, afgoer, kant, sa
   const e2 = env({ MILJOE: 'local' });
   const ny = await haandter(req('/api/sager', { method: 'POST', headers: { 'content-type': 'application/json', 'cf-connecting-ip': '1.2.3.4' }, body: JSON.stringify({ navn: 'Test', sag: 'En sag om koen' }) }), e2);
   assert.equal(ny.status, 201);
+  assert.equal((await ny.json()).data.nr, '980-0004', 'the number comes from D1');
+  const igen = await haandter(req('/api/sager', { method: 'POST', headers: { 'content-type': 'application/json', 'cf-connecting-ip': '1.2.3.4' }, body: JSON.stringify({ navn: 'Test', sag: 'En sag mere' }) }), e2);
+  assert.equal(igen.status, 429); assert.equal(igen.headers.get('retry-after'), '120'); assert.equal((await igen.json()).code, 'rate_limited');
   const liste = await (await haandter(req('/api/sager'), e2)).json();
-  assert.equal(liste[0].navn, 'Test');
+  assert.equal(liste.ok, true); assert.equal(liste.data.sager[0].navn, 'Test'); assert.equal(liste.data.sager.length, 4);
+  const kort = await haandter(req('/api/sager', { method: 'POST', headers: { 'content-type': 'application/json', 'cf-connecting-ip': '5.5.5.5' }, body: JSON.stringify({ sag: 'x' }) }), e2);
+  assert.equal((await kort.json()).code, 'too_short');
+  // Uden ting-ai: 503 i kontrakten, ikke en KV-fejl
+  const uden = await haandter(req('/api/sager'), env({ TING_AI: undefined }));
+  assert.equal(uden.status, 503); assert.equal((await uden.json()).code, 'not_configured');
+});
+
+test('ting-ai proxy: intern/* is never reachable from outside, and the internal header is stripped', async () => {
+  const e = env();
+  const nej = await haandter(req('/api/ting-ai/intern/gaestebog', { headers: { 'x-tingsvad-intern': '1' } }), e);
+  assert.equal(nej.status, 404);
+  assert.equal(e.TING_AI.kald.length, 0);
+  await haandter(req('/api/ting-ai/health', { headers: { 'x-tingsvad-intern': '1' } }), e);
+  assert.equal(e.TING_AI.kald[0].headers.get('x-tingsvad-intern'), null);
 });
 
 test('ting-ai proxy: admin is refused, client-set internal headers are stripped, colo is set from request.cf', async () => {
@@ -169,15 +193,14 @@ test('shareable case /sag/:nr: og tags and refresh to the guest book', async () 
 
 test('.assetsignore keeps the repo out of the published site but never _headers or _redirects', () => {
   const linjer = readFileSync(join(rod, '.assetsignore'), 'utf8').split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#'));
-  for (const skal of ['worker/', '/mcp/', 'tests/', 'functions/', 'site-worker/', '.github/', '*.md', '*.toml', '_routes.json', '.git', 'node_modules/']) assert.ok(linjer.includes(skal), skal);
+  for (const skal of ['worker/', '/mcp/', 'tests/', 'functions/', 'site-worker/', 'shared/', '.github/', '*.md', '*.toml', '.git', 'node_modules/']) assert.ok(linjer.includes(skal), skal);
   assert.ok(!linjer.some(l => /_headers|_redirects/.test(l)));
   // /mcp/ er forankret i roden, så /.well-known/mcp/server-card.json stadig udgives (runde 12)
   assert.ok(!linjer.includes('mcp/'));
 });
 
-test('run_worker_first mirrors the old _routes.json exclude list', () => {
+test('run_worker_first: the static paths are served from the edge, and previews have their own ting-ai', () => {
   const toml = readFileSync(join(rod, 'site-worker', 'wrangler.toml'), 'utf8');
-  const routes = JSON.parse(readFileSync(join(rod, '_routes.json'), 'utf8'));
-  for (const ex of routes.exclude.filter(x => !x.startsWith('/protokol') && !x.startsWith('/en/protokol'))) assert.ok(toml.includes(`"!${ex}"`), ex);
+  for (const ex of ['/assets/*', '/partials/*', '/sw.js', '/manifest.webmanifest', '/robots.txt', '/sitemap.xml', '/llms.txt', '/favicon.ico', '/arkivet/protokol/*', '/en/archive/minutes/*']) assert.ok(toml.includes(`"!${ex}"`), ex);
   assert.match(toml, /\[\[previews\.services\]\]\nbinding = "TING_AI"\nservice = "tingsvad-ting-ai-preview"/);
 });

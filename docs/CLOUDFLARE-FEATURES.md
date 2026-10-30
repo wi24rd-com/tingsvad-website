@@ -75,7 +75,7 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 ## 2. Storage
 
 ### Workers KV
-- **Used for:** The guestbook's cases, and the finished overviews for the defences, the crawlers, the speed and Denmark right now.
+- **Used for:** Pacing keys that expire by themselves (one guestbook case per IP per two minutes, one press per minute on the decide button), and the finished overviews for the defences, the crawlers, the speed and Denmark right now. The guestbook's cases moved to D1 in round 13 (two guests at once could get the same number with KV's read-modify-write).
 - **How:** `npx wrangler kv namespace create tingsvad-sager`, and put the id in `wrangler.toml`:
   ```toml
   [[kv_namespaces]]
@@ -86,7 +86,7 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 - **Watch out:** KV is eventually consistent. A change can take up to a minute to reach every data centre.
 
 ### D1 (SQLite)
-- **Used for:** Quotas, courtroom rounds, newspaper editions, the defences' daily rows.
+- **Used for:** The guestbook (case numbers from `INSERT … RETURNING`), the decide counter and today's visitors, quotas, courtroom rounds, newspaper editions, the defences' daily rows.
 - **How:** `npx wrangler d1 create tingsvad-ting-ai`, id in `wrangler.toml`, migrations with `npx wrangler d1 migrations apply tingsvad-ting-ai --remote`.
 - **Plan:** Free.
 - **Watch out:** Jurisdiction and location can only be set at creation (see [Data location](#9-data-location)).

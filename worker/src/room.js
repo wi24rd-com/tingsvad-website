@@ -1,7 +1,7 @@
 // Durable Object for Den Store Afstemning (C02) med WebSocket Hibernation API.
 // Tilstand persisteres i DO-storage og genopbygges efter hibernation; alarms styrer frist og oprydning. Intet setInterval.
 import { DurableObject } from 'cloudflare:workers';
-import { tael } from './lib/tael.js';
+import { tael } from '../../shared/tael.js';
 import { egetColo } from './features/topologi.js';
 import * as L from './lib/roomlogic.js';
 import { bumpEvent } from './features/news.js';

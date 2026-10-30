@@ -105,7 +105,7 @@ tingsvad.dk's billeder er lavet med ChatGPT ud fra prompts, som Claude har skrev
 ## Trin 6: Byg videre
 
 Når den første side kører, kan du tilføje én funktion ad gangen. Fx:
-- **En kontaktformular** med Turnstile og KV (se gæstebogen i `functions/api/sager.js`).
+- **En kontaktformular** med Turnstile og D1 (se gæstebogen i `functions/api/sager.js` og `worker/src/lib/gaestebog.js`).
 - **En AI-assistent**, der svarer ud fra dine egne sider, med AI Search (se "Spørg arkivet").
 - **Statistik over angreb og bots** som Værnet og Crawlerne.
 - **Data, der kun gemmes i EU**, som arkivskabet.

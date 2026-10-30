@@ -1,6 +1,7 @@
 # Site-Workeren for tingsvad.dk (runde 11): Workers Static Assets + router i stedet for Cloudflare Pages.
-# Konfigurationen ligger her (ikke i roden), så Pages-projektets wrangler.toml i roden står urørt som tilbagefald i overgangsugen.
-# Workers Builds: Path = site-worker, Deploy command `npx wrangler deploy`, Preview command `npx wrangler preview`.
+# Runde 13: Pages-projektet og dets rod-wrangler.toml, _routes.json og _middleware.js er væk; denne fil er den eneste konfiguration.
+# Workers Builds: Path = site-worker, Deploy command `npx wrangler deploy --var RELEASE:$WORKERS_CI_COMMIT_SHA`,
+# Preview command `npx wrangler preview --var RELEASE:$WORKERS_CI_COMMIT_SHA` (release-id i /api/kant; shared/release.js).
 # Ting-ai (worker/) og MCP-serveren (mcp/) er separate Workers og deployes fortsat manuelt.
 name = "tingsvad-site"
 main = "index.js"
@@ -59,6 +60,10 @@ ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"
 # Web Analytics-beacon (offentligt token; Pages indsatte det automatisk). Kun produktion – previews tælles ikke med.
 WEB_ANALYTICS_TOKEN = "86e59310fa224069a0613eda1d3bbeb3"
 
+# Runde 13: Workers' eget versions-id og tidspunkt til release-feltet i /api/kant og health (shared/release.js).
+[version_metadata]
+binding = "CF_VERSION_METADATA"
+
 [[kv_namespaces]]
 binding = "SAGER"
 id = "5ad65c88ab174c29b7bd72cce99880e3"
@@ -79,6 +84,10 @@ TURNSTILE_SITEKEY = "0x4AAAAAAFmMzNKAUzZnti2H"
 ACCESS_TEAM_DOMAIN = "t-sec.cloudflareaccess.com"
 ACCESS_AUD = "14ce2893d2e119c197ac3695c65846f144930b7399e96aa69a0f2d8254f80c29"
 # ADMIN_EMAILS (kommasepareret allowliste til /admin/) er en secret: `npx wrangler secret put ADMIN_EMAILS`.
+
+# Runde 13: Workers' eget versions-id og tidspunkt til release-feltet i /api/kant og health (shared/release.js).
+[previews.version_metadata]
+binding = "CF_VERSION_METADATA"
 
 [[previews.kv_namespaces]]
 binding = "SAGER"

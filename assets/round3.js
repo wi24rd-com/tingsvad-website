@@ -127,14 +127,14 @@
   if (ak) {
     const visTal = n => { at.innerHTML = (da ? 'Sagen er forsøgt afgjort <b>{n}</b> gange.' : 'Deciding the case has been attempted <b>{n}</b> times.').replace('{n}', n.toLocaleString(da ? 'da-DK' : 'en-GB')); };
     let lokal = +(store.get('afgoer') || 0);
-    fetch('/api/afgoer').then(r => r.ok ? r.json() : Promise.reject()).then(j => visTal(j.n)).catch(() => visTal(lokal + 1284));
+    fetch('/api/afgoer').then(r => r.ok ? r.json() : Promise.reject()).then(j => visTal((j.data || j).n)).catch(() => visTal(lokal + 1284));
     const trin = da ? ['Indkalder tinget…', 'Venter på tågen…', 'Spørger koen…', 'Koen svarer ikke…', 'Spørger Mímir…'] : ['Convening the thing…', 'Waiting for the fog…', 'Asking the cow…', 'The cow does not reply…', 'Asking Mímir…'];
     ak.addEventListener('click', async () => {
       ak.disabled = true; ast.classList.remove('stemplet'); const st0 = document.getElementById('udsat-stempel'); if (st0) st0.hidden = true; let i = 0; ast.innerHTML = `<span class="behandler"><span class="spin"></span>${trin[0]}</span>`;
       const t = setInterval(() => { i++; if (i < trin.length) ast.querySelector('.behandler').lastChild.textContent = trin[i]; }, 650);
       await new Promise(r => setTimeout(r, 3300)); clearInterval(t);
       ast.textContent = da ? 'Udsat.' : 'Adjourned.'; const st = document.getElementById('udsat-stempel'); if (st) { ast.classList.add('stemplet'); st.hidden = false; st.classList.remove('slaa'); void st.offsetWidth; st.classList.add('slaa'); } ak.disabled = false; lokal++; store.set('afgoer', lokal);
-      try { const r = await fetch('/api/afgoer', { method: 'POST' }); if (r.ok) { const j = await r.json(); visTal(j.n); } else visTal(lokal + 1284); } catch (e) { visTal(lokal + 1284); }
+      try { const r = await fetch('/api/afgoer', { method: 'POST' }); if (r.ok) { const j = await r.json(); visTal((j.data || j).n); } else visTal(lokal + 1284); } catch (e) { visTal(lokal + 1284); }
     });
   }
 
@@ -299,7 +299,7 @@
 
   /* ── 21. Besøgende i dag ── */
   const bes = $('#besoeg');
-  if (bes) fetch('/api/besoeg', { method: 'POST' }).then(r => r.ok ? r.json() : Promise.reject()).then(j => { bes.textContent = j.n.toLocaleString(da ? 'da-DK' : 'en-GB'); bes.classList.add('live'); }).catch(() => {});
+  if (bes) fetch('/api/besoeg', { method: 'POST' }).then(r => r.ok ? r.json() : Promise.reject()).then(j => { bes.textContent = (j.data || j).n.toLocaleString(da ? 'da-DK' : 'en-GB'); bes.classList.add('live'); }).catch(() => {});
 
   /* ── 20. Service worker ── */
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
