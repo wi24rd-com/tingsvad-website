@@ -63,7 +63,7 @@ jobs:
       - name: Vent på site-Workeren
         if: github.event_name == 'push'
         run: |
-          # Runde 13 (ChatGPT T5): vent på commit-id'et i /api/kant (RELEASE sættes af deploy-kommandoen med $WORKERS_CI_COMMIT_SHA).
+          # Runde 13 (ChatGPT T5): vent på commit-id'et i /api/kant (bages ind af deploy-/preview-kommandoen med --define __RELEASE__ fra $WORKERS_CI_COMMIT_SHA).
           # Svarer Workeren uden release (deploy-kommandoen ikke sat endnu), falder vi tilbage til ?v=-hashen fra en HTML-side.
           V=$(grep -o 'site.css?v=[a-z0-9]*' historien/index.html | head -1)
           U="${{ steps.url.outputs.url }}"

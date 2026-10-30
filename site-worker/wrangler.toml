@@ -1,7 +1,8 @@
 # Site-Workeren for tingsvad.dk (runde 11): Workers Static Assets + router i stedet for Cloudflare Pages.
 # Runde 13: Pages-projektet og dets rod-wrangler.toml, _routes.json og _middleware.js er væk; denne fil er den eneste konfiguration.
-# Workers Builds: Path = site-worker, Deploy command `npx wrangler deploy --var RELEASE:$WORKERS_CI_COMMIT_SHA`,
-# Preview command `npx wrangler preview --var RELEASE:$WORKERS_CI_COMMIT_SHA` (release-id i /api/kant; shared/release.js).
+# Workers Builds: Path = site-worker, Deploy command `npx wrangler deploy --define "__RELEASE__:\"$WORKERS_CI_COMMIT_SHA\""`,
+# Preview command `npx wrangler preview --define "__RELEASE__:\"$WORKERS_CI_COMMIT_SHA\""` (release-id i /api/kant; shared/release.js;
+# --define frem for --var, fordi previews.vars ellers vinder over en --var i preview-kommandoen).
 # Ting-ai (worker/) og MCP-serveren (mcp/) er separate Workers og deployes fortsat manuelt.
 name = "tingsvad-site"
 main = "index.js"
