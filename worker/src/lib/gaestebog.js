@@ -66,8 +66,10 @@ export async function adminListe(env) {
   return { sager: (a.results || []).map(raekke), slettet: (b.results || []).map(r => ({ nr: nummer(r.id), slettet: r.slettet, af: r.slettet_af })) };
 }
 
-/** Tællere (afgørelsesknappen m.fl.): atomisk +1, eller aflæsning. */
+/** Tællere (afgørelsesknappen m.fl.): atomisk +1, eller aflæsning. Første gang hentes den gamle KV-stand (nøglen med samme navn) med over. */
 export async function taeller(env, navn, laegTil = 0) {
+  const r0 = await env.DB.prepare('SELECT n FROM taellere WHERE navn = ?').bind(navn).first();
+  if (!r0 && env.SAGER) { const gammel = (await env.SAGER.get(navn, 'text').catch(() => null)) | 0; await env.DB.prepare('INSERT OR IGNORE INTO taellere (navn, n) VALUES (?, ?)').bind(navn, gammel).run(); }
   if (laegTil > 0) {
     const r = await env.DB.prepare('INSERT INTO taellere (navn, n) VALUES (?, ?) ON CONFLICT (navn) DO UPDATE SET n = n + excluded.n RETURNING n').bind(navn, laegTil).first();
     return r ? r.n : 0;

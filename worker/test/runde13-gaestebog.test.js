@@ -63,8 +63,13 @@ test('delete keeps number, time and who, drops the text; base cases cannot be de
   assert.equal((await skrivSag(e, { navn: 'Y', sag: 'næste' })).nr, '980-0005');
 });
 
-test('counters and visitors are atomic and keyed per day', async () => {
-  const e = env();
+test('counters and visitors are atomic and keyed per day; the old KV count is carried over once', async () => {
+  const e = env({ SAGER: kv({ afgoer: '40' }) });
+  assert.equal(await taeller(e, 'afgoer'), 40);
+  assert.equal(await taeller(e, 'afgoer', 1), 41);
+  e.SAGER.m.set('afgoer', '999');
+  assert.equal(await taeller(e, 'afgoer'), 41, 'KV is only read the first time');
+  await e.DB.prepare('DELETE FROM taellere').run(); e.SAGER.m.delete('afgoer');
   await Promise.all([taeller(e, 'afgoer', 1), taeller(e, 'afgoer', 1), taeller(e, 'afgoer', 1)]);
   assert.equal(await taeller(e, 'afgoer'), 3);
   assert.equal(await besoeg(e, '2026-10-30', 'a'.repeat(16)), 1);
