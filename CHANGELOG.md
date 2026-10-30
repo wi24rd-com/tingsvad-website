@@ -10,6 +10,13 @@ A sprint that works through every finding of the 29 October review (security, OP
 
 <details><summary>Details</summary>
 
+### Design, accessibility and weight
+- **Fold buttons are readable in the dark theme** (»Show the whole protocol« and friends were 1.13:1); a skip link is the first element on every page; the machine room has a proper heading order (h2 for the seven layers); the investigation's exhibits are headings.
+- **The village map on phones**: the swipe hint sits above the map, five key markers keep their labels, the list of places is open. Scroll arrows are gone from the front page and from narrow screens; »Summon the fog« is a text link in the status band.
+- **Lighter front page**: the autumn-leaf sprite, »page two« and the shield are served at the size they are shown (−800 KB), the map is 1200 px on phones.
+- The »On this page« bar on phones slides away when scrolling down and returns on scrolling up; the access-to-records paper loads eagerly and is cropped below its text; 44 px share button; dark rim on map pins; Danish seed cases in the English guestbook carry `lang="da"`.
+- Quality tests: keyboard spec checks the skip link and ten visible focus stops; a contrast spec measures every button; Lighthouse blocks the analytics beacon (test runs are not guests) and fails below 0.8 performance.
+
 ### Security and privacy
 - **Admin identities and account ids out of the repo**: `ADMIN_EMAILS`, `CF_ACCOUNT_ID`, `CF_ZONE_ID` and `RUM_SITE_TAG` are now secrets (`wrangler secret put`); the preview Worker's `SITE_ORIGIN` and `TURNSTILE_HOSTNAMES` are preview secrets too, so the workers.dev subdomain is not in the repo. `tests/site.config.js` defaults to tingsvad.dk and is overridden by `BASE_URL`.
 - **The door counts by week**: `/maskinrummet/doeren/` shows 7-day and 4-week totals and four weekly bars instead of per-day counts, so it does not reveal when the administrator logs in.

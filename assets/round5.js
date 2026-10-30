@@ -206,7 +206,7 @@
     if (sæsonLag) { sæsonLag.remove(); sæsonLag = null; }
     if (!reduce() && (s === 'efteraar' || s === 'vinter')) {
       sæsonLag = document.createElement('div'); sæsonLag.className = 'aarstid-lag aarstid-lag-' + s; sæsonLag.setAttribute('aria-hidden', 'true');
-      if (s === 'efteraar') { const blade = [[3, 2, 40, 42], [59, 2, 33, 35], [35, 30, 30, 40], [72, 36, 27, 24], [5, 52, 30, 44]]; sæsonLag.innerHTML = Array.from({ length: 10 }, (_, i) => { const b = blade[(i * 3) % 5], t = 14 + ((i * 7) % 11); return `<i class="${i % 2 ? 'blad-h' : 'blad-v'}" style="--bx:${b[0]};--by:${b[1]};--bw:${b[2]};--bh:${b[3]};--bl:${(4 + i * 37) % 92}%;--bd:${-((i * 5) % t)}s;--bt:${t}s;--bs:${(.7 + ((i * 3) % 6) / 10).toFixed(1)};background-image:url('${NY}efteraarsblade.webp')"></i>`; }).join(''); } // runde 12: ti blade i toppen, i gang fra start
+      if (s === 'efteraar') { const blade = [[3, 2, 40, 42], [59, 2, 33, 35], [35, 30, 30, 40], [72, 36, 27, 24], [5, 52, 30, 44]]; sæsonLag.innerHTML = Array.from({ length: 10 }, (_, i) => { const b = blade[(i * 3) % 5], t = 14 + ((i * 7) % 11); return `<i class="${i % 2 ? 'blad-h' : 'blad-v'}" style="--bx:${b[0]};--by:${b[1]};--bw:${b[2]};--bh:${b[3]};--bl:${(4 + i * 37) % 92}%;--bd:${-((i * 5) % t)}s;--bt:${t}s;--bs:${(.7 + ((i * 3) % 6) / 10).toFixed(1)};background-image:url('${NY}efteraarsblade-512.webp')"></i>`; }).join(''); } // runde 12: ti blade i toppen, i gang fra start
       ($('.r12-hero') || $('.r12s-hero') || (s === 'efteraar' && ($('.hero-lag') || $('.side-hoved'))) || document.body).appendChild(sæsonLag); // blade og frost kun i toppen (runde 12: i maleriet), aldrig hen over tekst og formularer
     }
     let linje = $('#aarstid-linje'); const bar = $('.hero-bar'); if (!bar) return;

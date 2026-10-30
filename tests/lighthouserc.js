@@ -10,7 +10,8 @@ module.exports = {
     collect: {
       url: K.lighthouseSider.map(s => BASE + s),
       numberOfRuns: 1,
-      settings: { chromeFlags: '--no-sandbox --headless=new' },
+      // Runde 13: analytics-beaconen blokeres som i Playwright (K.bloker), så testkørsler ikke tæller som gæster i Web Analytics.
+      settings: { chromeFlags: '--no-sandbox --headless=new', blockedUrlPatterns: ['*cloudflareinsights.com*'] },
     },
     assert: {
       assertions: {
@@ -18,7 +19,9 @@ module.exports = {
         'categories:seo': PROD ? ['error', { minScore: 0.9 }] : 'off',
         'is-crawlable': PROD ? ['error', { minScore: 1 }] : 'off',
         'categories:best-practices': ['warn', { minScore: 0.9 }],
-        'categories:performance': ['warn', { minScore: 0.6 }], // svinger med netværk og dynamisk indhold; advarsel, ikke stop
+        'categories:performance': ['error', { minScore: 0.8 }], // runde 13: et budget, ikke en advarsel (mobilprofil; svinger lidt med netværk)
+        'largest-contentful-paint': ['warn', { maxNumericValue: 3000 }],
+        'total-byte-weight': ['warn', { maxNumericValue: 1500000 }],
       },
     },
     upload: { target: 'filesystem', outputDir: './lighthouse-rapport' },
