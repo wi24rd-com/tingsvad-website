@@ -178,8 +178,8 @@ window.TV_R9 = {
   const læs = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
 
   /* ── Sagsmappen + Ravnecentralen ── */
-  const mappeEl = $('#sagsmappe');
-  if (mappeEl) {
+  const mappeEl = $('#sagsmappe'), ravnEl = $('#ravnecentralen'); // runde 13: Ravnecentralen bor på /oplevelser/ravnen/, mappen på /oplevelser/sagsmappen/
+  if (mappeEl || ravnEl) {
     const M = T.mappe, R = T.ravn, RKEY = 'tingsvad.ravn.v1';
     const exp = læs('tingsvad.experience.v1') || {}, ai = læs('tingsvad.ai.v1') || {}, cert = læs('tingsvad.cert.v1');
     let forsøg = 0; try { forsøg = Math.max(0, parseInt(localStorage.getItem('afgoer') || '0', 10) || 0); } catch (e) { }
@@ -197,7 +197,7 @@ window.TV_R9 = {
     const certDato = d => new Date(d + 'T12:00:00Z').toLocaleDateString(lang === 'da' ? 'da-DK' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     const række = (k, v) => `<div><dt>${esc(k)}</dt><dd>${v}</dd></div>`;
     const ingen = `<span class="note">${esc(M.ingen)}</span>`;
-    mappeEl.innerHTML = `<dl class="r9-mappe">
+    if (mappeEl) mappeEl.innerHTML = `<dl class="r9-mappe">
       ${række(M.felter.side2, data.fragments.length === 3 ? esc(M.samlet) : esc(`${data.fragments.length} ${M.af} 3`))}
       ${række(M.felter.stykker, data.fragments.length ? data.fragments.map(f => esc(M.stykker[f])).join('<br>') : ingen)}
       ${række(M.felter.fund, data.found.length ? data.found.map(f => esc(M.fundNavne[f])).join(', ') : ingen)}
@@ -208,7 +208,7 @@ window.TV_R9 = {
       ${række(M.felter.forsoeg, esc(data.decideAttempts) + (data.decideAttempts ? ` · ${esc(M.alleUdsat)}` : ''))}
     </dl>${tom ? `<p class="r6-status">${esc(M.tom)}</p><p class="note">${esc(M.tomHjaelp)}</p>` : ''}<p class="note">${esc(M.lokalt)}</p>`;
 
-    const ravnEl = $('#ravnecentralen');
+    if (ravnEl) {
     ravnEl.innerHTML = `<form class="r6-form r9-ravn-form" id="rv-form"><label for="rv-navn">${esc(M.navn)}</label><input id="rv-navn" type="text" maxlength="40" placeholder="${esc(M.navnPh)}" value="${data.cert ? esc(data.cert.navn) : ''}" autocomplete="off">
       <div class="turnstile-slot" id="rv-ts"></div><button class="knap" type="submit" id="rv-send">${esc(M.send)}</button></form>
       <p class="r6-status" id="rv-status" aria-live="polite"></p><div id="rv-job" aria-live="polite"></div>`;
@@ -254,6 +254,7 @@ window.TV_R9 = {
     // seneste bestilling i denne browser
     const seneste = ((læs(RKEY) || {}).jobs || [])[0];
     if (seneste && seneste.id && seneste.token) api(`ravn/${seneste.id}?token=${encodeURIComponent(seneste.token)}&lang=${lang}`, null, mk).then(r => { if (r.ok) { visJob(r.data, seneste.token); if (r.data.state !== 'leveret' && r.data.state !== 'fejlet') følg(seneste.id, seneste.token); } });
+    }
   }
 
 

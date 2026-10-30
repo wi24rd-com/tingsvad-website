@@ -9,7 +9,7 @@ test('gamle ankre på forsiden sender videre til undersiden', async ({ page }) =
   for (const [anker, mål] of [['/#gaestebog', '/oplevelser/gaestebog/'], ['/#undersoeg', '/oplevelser/undersoegelsen/'], ['/#maskinrummet', '/maskinrummet/'], ['/en/#paafund-radio', '/en/experiences/machine-park/'],
     // runde 10: indhold flyttet ud af Oplevelser og forsiden
     ['/oplevelser/#afgoer', '/oplevelser/undersoegelsen/#afgoer'], ['/oplevelser/#cert-form', '/oplevelser/runevaerkstedet/'], ['/#forkl', '/historien/#forkl'],
-    ['/maskinrummet/#net-wrap', '/historien/#net-wrap'], ['/oplevelser/sagsmappen/#ravnepost', '/oplevelser/gaestebog/'], ['/en/#slaegt', '/en/history/#slaegt']]) {
+    ['/maskinrummet/#net-wrap', '/historien/#net-wrap'], ['/oplevelser/sagsmappen/#ravnepost', '/oplevelser/ravnen/'], ['/oplevelser/gaestebog/#ravn', '/oplevelser/ravnen/'] /* runde 13: ravnen samlet */, ['/en/#slaegt', '/en/history/#slaegt']]) {
     await page.goto(anker, { waitUntil: 'domcontentloaded' });
     await expect(page, `${anker} → ${mål}`).toHaveURL(new RegExp(reEsc(mål)), { timeout: 8000 });
   }
