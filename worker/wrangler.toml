@@ -56,6 +56,7 @@ QUOTA_AUDIO_PER_DAY = "2"
 QUOTA_EDITION_TEXT_PER_DAY = "6"  # reserveret budget til dagsavis (2 sprog × få forsøg)
 BROWSER_PER_DAY = "120"           # nødbremse: Browser Run-kald pr. døgn for hele sitet (Workers Paid fakturerer ud over 10 timer/md.)
 EMBED_PER_DAY = "400"             # nødbremse: embedding-kald pr. døgn (hittegods og arkivet)
+MCP_QUOTA_AI_KLIENT = "20"       # runde 13: AI-kald via MCP pr. klient pr. døgn (den fælles MCP-kvote er 100)
 EU_SEGL_PER_DAY = "300"           # runde 13: segl i EU-skabet pr. døgn (fem skrivninger pr. segl)
 LIVE_LYT_PER_DAY = "200"          # runde 13: SFU-lyttersessioner pr. døgn
 BEVIS_PER_DAY = "300"             # runde 13: ML-DSA-signeringer pr. døgn

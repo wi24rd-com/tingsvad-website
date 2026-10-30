@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 The MIT license covers all code: the HTML structure, CSS, JavaScript (`assets/`, `sw.js`),
-Pages Functions (`functions/`) and the Worker (`worker/`), including configuration and scripts.
+the request handlers (`functions/`), the site Worker (`site-worker/`), the ting-ai Worker (`worker/`) and the MCP server (`mcp/`), including configuration, tests and scripts.
 
 ## Content · CC BY 4.0
 
@@ -44,7 +44,8 @@ tingsvad.dk is appreciated.
 
 ## Third parties
 
-- Fonts are served from Google Fonts under their own licenses.
+- Fonts are Google Fonts under their own licenses (OFL); on tingsvad.dk they are served from the site's own domain by Cloudflare Fonts.
+- `assets/verden.json` (country centroids for the map of the defences) is derived from [world-countries](https://github.com/mledoze/countries) and Natural Earth and is published under the ODbL 1.0, as the ODbL's share-alike requires.
 - Model responses are provided by Cloudflare Workers AI under the respective model licenses
   (Meta Llama, Black Forest Labs FLUX.1 schnell, BAAI bge-m3, Deepgram Aura-2).
 

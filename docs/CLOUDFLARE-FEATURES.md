@@ -242,7 +242,7 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 - **Plan:** Free.
 
 ### Security headers (CSP, HSTS, Permissions-Policy)
-- **Used for:** A strict CSP with no third parties. The microphone is only allowed on the courtroom page.
+- **Used for:** A strict CSP with only Cloudflare’s own beacon and Turnstile as third parties. The microphone is only allowed on the courtroom page.
 - **How:** `_headers` for static files and `functions/_lib/headers.js` for Worker responses.
 - **Watch out:** Both places must be updated when the CSP changes.
 

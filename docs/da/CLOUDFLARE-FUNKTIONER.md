@@ -242,7 +242,7 @@ Planer og priser ændrer sig. Tjek altid [Cloudflares dokumentation](https://dev
 - **Plan:** Free.
 
 ### Sikkerhedsheadere (CSP, HSTS, Permissions-Policy)
-- **Bruges til:** Streng CSP uden tredjeparter. Mikrofonen er kun tilladt på retssalens side.
+- **Bruges til:** Streng CSP med kun Cloudflares egen beacon og Turnstile som tredjeparter. Mikrofonen er kun tilladt på retssalens side.
 - **Sådan:** `_headers` for statiske filer og `functions/_lib/headers.js` for Worker-svar.
 - **Pas på:** Begge steder skal rettes, når CSP'en ændres.
 

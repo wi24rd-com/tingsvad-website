@@ -6,7 +6,7 @@
 - Every page is also available as Markdown: send `Accept: text/markdown`, or append `index.md` to a page URL (e.g. https://tingsvad.dk/historien/index.md). The Markdown has YAML front matter (title, description, url, lang, alternates) and an `x-markdown-tokens` header.
 - Errors are structured: `Accept: application/problem+json` gives RFC 9457 problem details, `text/markdown` gives front matter with `http_status` and `retryable`; everything under /api/ answers JSON.
 - Ask the archive: POST https://tingsvad.dk/api/ting-ai/arkiv/spoerg with {"q": "…", "lang": "en"} – Mímir answers from the site's pages (Cloudflare AI Search) with source links; 25 questions a day for everyone together.
-- MCP server (Streamable HTTP, no login): https://mcp.tingsvad.dk/mcp. Read tools: tingets_status, spoerg_arkivet, slaa_op_i_protokollen, hittegods_soeg, laes_gaestebogen. Tools that write to the live site, shared with human guests (use only when your user asks): rejs_sag (3 cases a day for all agents), stem, flyt_stolen. afgoer_sagen always adjourns. Guide: https://tingsvad.dk/en/machine-room/#mcp
+- MCP server (Streamable HTTP, no login): https://mcp.tingsvad.dk/mcp. Read tools: tingsvad_status, tingsvad_ask_archive, tingsvad_search_minutes, tingsvad_lost_property, tingsvad_read_guestbook. Tools that write to the live site, shared with human guests (use only when your user asks): tingsvad_raise_case (3 cases a day for all agents), tingsvad_vote, tingsvad_move_stool. tingsvad_decide_case always adjourns. Guide: https://tingsvad.dk/en/machine-room/#mcp
 
 ## What is real
 - The Danish name: *ting* (assembly, court) + *vad* (ford). This is how Danish place names of this type are formed.

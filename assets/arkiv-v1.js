@@ -6,12 +6,12 @@
   if (!rod) return;
   const da = (document.documentElement.lang || 'da').slice(0, 2) !== 'en', lang = da ? 'da' : 'en';
   const T = da ? {
-    spoerger: 'Mímir leder i arkivet …', kort: 'Skriv mindst tre tegn.', ai: 'AI · Mímir', server: 'Kun uddrag', kilder: 'Kilder', brugt: 'brugt i svaret',
+    spoerger: 'Mímir leder i arkivet …', kort: 'Skriv mindst tre tegn.', ai: 'AI · Mímir', server: 'Kun uddrag', kilder: 'Kilder (tallet er relevans, ikke sandsynlighed)', brugt: 'brugt i svaret', relevans: 'relevans',
     tavs: 'Mímir svarede ikke i dag, men her er de sider, han fandt.', ingen: 'Arkivet fandt intet om det. Mímir trækker på skuldrene.',
     sml: 'Det gamle kartotek fandt', smlIngen: 'Det gamle kartotek fandt intet, der lignede.', tid: 'AI Search {a} ms · model {m} ms · Vectorize {v} ms',
     fejl: { quota: 'Dagens spørgsmål er brugt. Arkivet åbner igen ved midnat (UTC).', rate_limited: 'Ét spørgsmål ad gangen. Vent et øjeblik.', busy: 'Arkivet er ved at blive sat på hylderne. Prøv igen senere.', not_configured: 'Arkivet er ikke tilsluttet endnu.' }, net: 'Nettet svarede ikke. Prøv igen.'
   } : {
-    spoerger: 'Mímir is searching the archive …', kort: 'Write at least three characters.', ai: 'AI · Mímir', server: 'Excerpts only', kilder: 'Sources', brugt: 'used in the answer',
+    spoerger: 'Mímir is searching the archive …', kort: 'Write at least three characters.', ai: 'AI · Mímir', server: 'Excerpts only', kilder: 'Sources (the figure is relevance, not probability)', brugt: 'used in the answer', relevans: 'relevance',
     tavs: 'Mímir did not answer today, but here are the pages he found.', ingen: 'The archive found nothing about that. Mímir shrugs.',
     sml: 'The old card index found', smlIngen: 'The old card index found nothing similar.', tid: 'AI Search {a} ms · model {m} ms · Vectorize {v} ms',
     fejl: { quota: 'Today’s questions are used up. The archive opens again at midnight (UTC).', rate_limited: 'One question at a time. Wait a moment.', busy: 'The archive is being shelved. Try again later.', not_configured: 'The archive is not connected yet.' }, net: 'The network did not answer. Try again.'
@@ -40,8 +40,8 @@
     const kilder = d.kilder || [];
     const svar = d.svar ? `<p class="r6-kildelinje"><span class="r6-kilde r6-kilde-ai">${esc(T.ai)}</span></p><blockquote class="arkiv-brian">${esc(d.svar)}</blockquote>`
       : `<p class="r6-kildelinje"><span class="r6-kilde r6-kilde-server">${esc(T.server)}</span></p><p>${esc(kilder.length ? T.tavs : T.ingen)}</p>`;
-    const liste = kilder.length ? `<h3>${esc(T.kilder)}</h3><ol class="arkiv-kilder">${kilder.map(k => `<li${k.brugt ? ' class="brugt"' : ''}><a href="${esc(sikkerUrl(k.url))}">${esc(k.titel)}</a> <span class="r9-score-tal">${esc(Math.round((k.score || 0) * 100))} %${k.brugt ? ' · ' + esc(T.brugt) : ''}</span><p>${esc(k.uddrag)}</p></li>`).join('')}</ol>` : '';
-    const h = Array.isArray(d.haandbygget) ? `<h3>${esc(T.sml)}</h3>${d.haandbygget.length ? `<ol class="arkiv-kilder arkiv-vectorize">${d.haandbygget.map(k => `<li><b>${esc(k.kilde)}</b> <span class="r9-score-tal">${esc(Math.round((k.score || 0) * 100))} %</span><p>${esc(k.uddrag)}</p></li>`).join('')}</ol>` : `<p class="note">${esc(T.smlIngen)}</p>`}` : '';
+    const liste = kilder.length ? `<h3>${esc(T.kilder)}</h3><ol class="arkiv-kilder">${kilder.map(k => `<li${k.brugt ? ' class="brugt"' : ''}><a href="${esc(sikkerUrl(k.url))}">${esc(k.titel)}</a> <span class="r9-score-tal" title="${esc(T.relevans)}">${esc(Math.round((k.score || 0) * 100))} % ${esc(T.relevans)}${k.brugt ? ' · ' + esc(T.brugt) : ''}</span><p>${esc(k.uddrag)}</p></li>`).join('')}</ol>` : '';
+    const h = Array.isArray(d.haandbygget) ? `<h3>${esc(T.sml)}</h3>${d.haandbygget.length ? `<ol class="arkiv-kilder arkiv-vectorize">${d.haandbygget.map(k => `<li><b>${esc(k.kilde)}</b> <span class="r9-score-tal" title="${esc(T.relevans)}">${esc(Math.round((k.score || 0) * 100))} % ${esc(T.relevans)}</span><p>${esc(k.uddrag)}</p></li>`).join('')}</ol>` : `<p class="note">${esc(T.smlIngen)}</p>`}` : '';
     const tid = d.ms ? `<p class="note">${esc(fmt(T.tid, { a: Math.round(d.ms.aiSearch || 0), m: Math.round(d.ms.model || 0), v: Math.round(d.ms.vectorize || 0) }))} · <code>${esc(d.instans || '')}</code></p>` : '';
     ud.innerHTML = svar + liste + h + (rod.closest('.r12s') ? '' : tid);
   }

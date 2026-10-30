@@ -28,7 +28,7 @@ test('naegl: browsers always get HTML, agents that prefer Markdown get Markdown'
 
 test('markdown: the machine room becomes front matter + text without navigation, scripts or decoration', () => {
   const { markdown, meta, tokens } = htmlTilMarkdown(fil('maskinrummet/index.html'), 'https://tingsvad.dk/maskinrummet/');
-  assert.ok(markdown.startsWith('---\ntitle: "Maskinrummet · Tingsvad"\n'));
+  assert.ok(markdown.startsWith('---\ntitle: "Maskinrummet – sådan er tingsvad.dk bygget på Cloudflare · Tingsvad"\n'));
   assert.match(markdown, /\nurl: "https:\/\/tingsvad\.dk\/maskinrummet\/"\n/);
   assert.match(markdown, /\n {2}en: "https:\/\/tingsvad\.dk\/en\/machine-room\/"\n/);
   assert.match(markdown, /\n# Maskinrummet\n/);

@@ -140,7 +140,7 @@ window.TV5 = {
       titel: 'Museet for det, der næsten skete', under: 'Tre montrer. Alle tomme. Den tredje er tildækket, hvilket er mere end de andre.',
       montrer: ['Hammeren, der næsten faldt', 'Dokumentet, der næsten blev underskrevet', 'Punktet eventuelt'],
       beskr: ['Hævet i 1572. Ikke sænket. Står stadig i luften, et sted.', 'Fjerpennen nåede papiret. Papiret nåede åen.', 'Tildækket. Punktet er ikke nået, og udstillingen heller ikke.'],
-      loeft: 'Løft klædet', loeftet: 'Udstillingen åbner efter koen.', igen: 'Du har nu set eventuelt. Det er mere end tinget har.', laeg: 'Læg klædet på igen',
+      loeft: 'Løft klædet', loeftet: 'Udstillingen åbner efter koen.', igen: 'Du har nu set eventuelt. Det er mere, end tinget har.', laeg: 'Læg klædet på igen',
       tom: 'Montren er tom.',
       alt: 'Maleri: en lys museumssal med tre tomme glasmontrer på egetræssokler og udsigt til åen gennem en åben port.',
       hjelm: {
@@ -239,7 +239,7 @@ window.TV5 = {
     /* H01–H03 */
     pind: {
       titel: 'Send en pind', under: 'Runerne ovenfor kan også skæres i en pind og sendes nedstrøms. Beskeden vises her som runeleg oven på pinden.',
-      send: 'Send nedstrøms', sendt: 'Pinden er sendt nedstrøms. Den ankommer mellem tre dage og fire hundrede år.',
+      send: 'Send nedstrøms', sendt: 'Pinden er sendt nedstrøms. Den ankommer om mellem tre dage og fire hundrede år.',
       hoevl: 'Høvl beskeden væk', hoevlet: 'Beskeden er slettet. Pinden er nu smallere.', tom: 'Pinden er tom. Skriv noget i feltet ovenfor.',
       pindAlt: 'Illustration: en runepind af lyst træ med en snor i den ene ende.', knivAlt: 'Illustration: en lille snittekniv med træskaft.',
       modern: 'Moderne tekst',

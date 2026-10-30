@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Maskinrummet · Tingsvad</title>
+<title>Maskinrummet – sådan er tingsvad.dk bygget på Cloudflare · Tingsvad</title>
 <meta name="description" content="Maskinrummet på tingsvad.dk: hvordan sitet er bygget på Cloudflare – Workers med Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize og mere.">
-<meta property="og:title" content="Maskinrummet · Tingsvad">
+<meta property="og:title" content="Maskinrummet – sådan er tingsvad.dk bygget på Cloudflare · Tingsvad">
 <meta property="og:description" content="Sådan er vadestedet bygget. Kolofon, ikke fiktion.">
 <meta property="og:image" content="https://tingsvad.dk/assets/og/maskinrummet.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
   <link rel="canonical" href="https://tingsvad.dk/maskinrummet/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://tingsvad.dk/maskinrummet/#page", "url": "https://tingsvad.dk/maskinrummet/", "name": "Maskinrummet · Tingsvad", "description": "Maskinrummet på tingsvad.dk: hvordan sitet er bygget på Cloudflare – Workers med Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize og mere.", "inLanguage": "da", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "genre": "Satire", "license": "https://creativecommons.org/licenses/by/4.0/"}]}
+{"@context": "https://schema.org", "@graph": [{"@type": "SoftwareSourceCode", "@id": "https://github.com/wi24rd-com/tingsvad-website#code", "name": "tingsvad-website", "codeRepository": "https://github.com/wi24rd-com/tingsvad-website", "programmingLanguage": "JavaScript", "runtimePlatform": "Cloudflare Workers", "license": "https://opensource.org/licenses/MIT", "author": {"@type": "Person", "@id": "https://tingsvad.dk/#jan", "name": "Jan Tingsvad", "sameAs": ["https://github.com/wi24rd"]}, "description": "Kildekoden til tingsvad.dk: et site på Cloudflare Workers med Static Assets, Workers AI, D1, R2, KV, Durable Objects, Workflows og en MCP-server. MIT-licens.", "inLanguage": "da"}, {"@type": "WebPage", "@id": "https://tingsvad.dk/maskinrummet/#page", "url": "https://tingsvad.dk/maskinrummet/", "name": "Maskinrummet · Tingsvad", "description": "Maskinrummet på tingsvad.dk: hvordan sitet er bygget på Cloudflare – Workers med Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize og mere.", "inLanguage": "da", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "genre": "Satire", "license": "https://creativecommons.org/licenses/by/4.0/"}]}
 </script>
 <link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/">
 <link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/">
@@ -30,13 +30,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav-ko-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-ko-512.png">
 <link rel="apple-touch-icon" href="/assets/fav-ko-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=b0af9514">
-<link rel="stylesheet" href="/assets/forside.css?v=b0af9514">
-<link rel="stylesheet" href="/assets/undersider.css?v=b0af9514">
-<link rel="stylesheet" href="/assets/infrakort.css?v=b0af9514">
+<link rel="stylesheet" href="/assets/site.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/forside.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/undersider.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/infrakort.css?v=e55b11d4">
 </head>
 <body data-side="maskinrummet" class="r12m">
 <header class="r12-top" id="top">
@@ -100,10 +98,10 @@
           <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-kant-kort" data-aaben="Vis de 8 kort" data-luk="Fold sammen">Vis de 8 kort</button>
         </div>
         <div class="maskinrum" id="lag-kant-kort" hidden>
-        <article><b>DNS og domæne</b><h3>Navnet bor på Cloudflares navneservere</h3><p>tingsvad.dk har været familiens siden 90'erne. I dag svarer Cloudflares anycast-DNS (<code>sid</code> og <code>val</code>) på navnet fra hundredvis af byer på én gang, så opslaget sker tæt på den, der spørger. Zonen er signeret med DNSSEC (ECDSA P-256), og DS-posten ligger hos Punktum.dk, så en validerende resolver kan afvise forfalskede svar. Trafikken til sitet proxies gennem Cloudflare, så de rigtige IP-adresser bag Workerne aldrig vises.</p></article>
-        <article><b>Netværk og sikkerhed</b><h3>HTTP/3, HSTS, CSP og ingen tredjeparter</h3><p>Alt serveres over HTTP/3 fra Cloudflares net med HSTS. Content-Security-Policy tillader kun sitets egne scripts og Turnstile; AI-tekst escapes altid og bliver aldrig HTML. Sessioner er en signeret, HttpOnly-cookie uden personoplysninger. Web Analytics tæller uden cookies.</p></article>
-        <article><b>DDoS, WAF og analyse</b><h3>Et værn, der er tændt, før nogen beder om det</h3><p>Cloudflares DDoS-beskyttelse står foran alt trafik uden opsætning, og det forvaltede WAF-regelsæt stopper kendte angrebsmønstre, før de når Workerne. <a href="/maskinrummet/vaernet/">Værnet</a> viser hver time, hvad det har stoppet, og <a href="/maskinrummet/crawlerne/">Crawlerne</a>, hvilke bots der kom forbi. Web Analytics tæller besøg med et lille script fra Cloudflares eget domæne, uden cookies, fingerprinting eller tredjeparter. Tingets egen besøgstæller nederst på siden er en daghash i KV (se kortet om Workers KV) og ved intet om, hvem du er. Network Error Logging (<code>NEL</code>) rapporterer forbindelsesfejl tilbage til Cloudflare, så sitet kan se, når noget ikke når frem.</p></article>
-        <article><b>Rate Limiting + Turnstile</b><h3>Én stemme ad gangen, og helst fra et menneske</h3><p>Workers' indbyggede rate limiting-binding tæller kald pr. session og endpoint i Cloudflares eget net. Gæstebogen og stolansøgningen beskyttes af Turnstile, en usynlig bot-kontrol uden billedgåder; tokenet valideres server-side og kan kun bruges én gang.</p></article>
+        <article><b>DNS og domæne</b><h3>Navnet bor på Cloudflares navneservere</h3><p>tingsvad.dk har været familiens siden 90'erne. I dag svarer Cloudflares anycast-DNS (<code>sid</code> og <code>val</code>) på navnet fra hundredvis af byer på én gang, så opslaget sker tæt på den, der spørger. Zonen er signeret med DNSSEC (ECDSA P-256), og DS-posten ligger hos Punktum.dk, så en validerende resolver kan afvise forfalskede svar. Trafikken til sitet går gennem Cloudflares proxy, så de rigtige IP-adresser bag Workerne aldrig vises.</p></article>
+        <article><b>Netværk og sikkerhed</b><h3>HTTP/3, HSTS, CSP og få, kendte dataveje</h3><p>Alt serveres over HTTP/3 fra Cloudflares net med HSTS. Content-Security-Policy tillader kun sitets egne scripts, Cloudflares beacon og Turnstile; AI-tekst escapes altid og bliver aldrig HTML. Sessionen er en signeret HttpOnly-cookie uden personoplysninger. Dataveje ud af huset: Cloudflare (alt), Cloudflare Fonts (skrifterne, same-origin), Turnstile (gæstebogen), GitHub (Gudruns issues) – og ingen andre.</p></article>
+        <article><b>DDoS, WAF og analyse</b><h3>Et værn, der er tændt, før nogen beder om det</h3><p>Cloudflares DDoS-beskyttelse står foran al trafik uden opsætning, og det forvaltede WAF-regelsæt stopper kendte angrebsmønstre, før de når Workerne. <a href="/maskinrummet/vaernet/">Værnet</a> viser hver time, hvad det har stoppet, og <a href="/maskinrummet/crawlerne/">Crawlerne</a>, hvilke bots der kom forbi. Web Analytics tæller besøg med et lille script fra Cloudflares eget domæne, uden cookies, fingerprinting eller tredjeparter. Tingets egen besøgstæller nederst på siden er en daghash i KV (se kortet om Workers KV) og ved intet om, hvem du er. Network Error Logging (<code>NEL</code>) rapporterer forbindelsesfejl tilbage til Cloudflare, så sitet kan se, når noget ikke når frem.</p></article>
+        <article><b>Rate Limiting + Turnstile</b><h3>Én stemme ad gangen, og helst fra et menneske</h3><p>Workers' indbyggede rate-limiting-binding tæller kald pr. session og endpoint i Cloudflares eget net. Gæstebogen og stolansøgningen beskyttes af Turnstile, en usynlig bot-kontrol uden billedgåder; tokenet valideres server-side og kan kun bruges én gang.</p></article>
         <article><b>request.cf</b><h3>Kanten ved, hvor den står</h3><p>Hver forespørgsel får et <code>cf</code>-objekt med fra Cloudflare: datacenter, protokol, TLS-version, målt tur-retur-tid og meget mere. En lille rute i site-Workeren, <code>/api/kant</code>, læser fire af felterne og sender dem tilbage til dig, så du kan se, hvilket af Cloudflares datacentre der svarede (<a href="#vejen">din vej hertil</a>). IP, by, land og udbyder står også i objektet; dem læser tinget ikke, og intet gemmes.</p></article>
         <article><b>Workers Cache</b><h3>Avisen trykkes én gang og læses mange</h3><p>Dagens avis, radio, revision og dagbøgerne er ens for alle, så de caches foran Workeren med <code>Cache-Control: public</code>, et <code>Cache-Tag</code> og en ETag ud fra indholdet. Næste gæst får svaret fra kantens cache uden at Workeren kører; bagefter genvalideres med <code>If-None-Match</code> og et tomt 304. Når Cron har trykt en ny udgave, kalder Workeren <code>ctx.cache.invalidate({tags})</code>. Under »Vis maskineriet« står, om svaret kom fra cachen (HIT) eller fra Workeren.</p></article>
         <article><b>Web Crypto · ML-DSA-65</b><h3>Et bevis, der holder mod en kvantecomputer</h3><p><a href="/oplevelser/runevaerkstedet/#fremmoede">Beviset for fremmøde</a> underskrives nu af Workeren med ML-DSA-65 (FIPS 204), som Workers' Web Crypto har bag flaget <code>webcrypto_modern_algorithms</code>. Underskriften er 3.309 bytes, den offentlige nøgle ligger åbent på <code>/api/ting-ai/bevis/noegle</code>, og siden kan selv vise, at et ændret navn får tjekket til at fejle. Sagen om koen er stadig udsat.</p></article>
@@ -166,7 +164,7 @@
         <article><b>D1</b><h3>SQLite på kanten</h3><p>Avisudgaver, sager, kvoter, idempotency-nøgler og rate limits ligger i en D1-database i Vesteuropa. Reservationer har en lease, så et nedbrud midt i et kald ikke låser dagens bevilling for evigt.</p></article>
         <article><b>R2</b><h3>Mediefiler uden udgående gebyr</h3><p>Opdigtede fund og radioens lydfiler gemmes i en R2-bucket under en nøgle af valg, sprog, promptversion og model. Samme kombination hentes derfor kun én gang fra modellen; alle gæster deler filen.</p></article>
         <article><b>Vectorize</b><h3>Mímirs arkiv som vektorindeks</h3><p>Det redaktionelle korpus (figurer, sagsakter, de virkelige fakta med kilder) indekseres som embeddings fra bge-m3. Mímir finder de nærmeste uddrag til et spørgsmål og må kun citere dem. Gådens løsninger ligger ikke i indekset; de vælges stadig af serveren efter spoiler-niveau. <a href="/oplevelser/hittegods/">Hittegodskontoret</a> har sit eget namespace med et fast katalog, så svarene altid kommer fra kataloget og aldrig fra modellen.</p></article>
-        <article><b>Analytics Engine</b><h3>Tingets tælleværk</h3><p>Middlewaren skriver ét datapunkt pr. side, Workeren ét pr. maskinkald og ét pr. hændelse (en flyttet stol, en afgivet stemme, dagens revision) til datasættet <code>tingsvad_taelle</code>. Et datapunkt er en art, et navn, et sprog, et datacenter og to tal: ingen IP, ingen cookie, ingen session. Skrivningen blokerer ikke svaret. Workeren læser tallene med Analytics SQL-bindingen uden API-token og gemmer svaret i fem minutter. Ved stor trafik tager Analytics Engine stikprøver og vægter tallene tilbage; ved tingets trafik er de stort set eksakte.</p></article>
+        <article><b>Analytics Engine</b><h3>Tingets tælleværk</h3><p>Middlewaren skriver ét datapunkt pr. side, Workeren ét pr. maskinkald og ét pr. hændelse (en flyttet stol, en afgivet stemme, dagens revision) til datasættet <code>tingsvad_taelle</code>. Et datapunkt er en art, et navn, et sprog, et datacenter og to tal: ingen cookie, ingen session; IP-adressen bruges kun til en saltet hash for rate limits og besøgstælling (udløber efter to døgn) og gemmes aldrig i klartekst. Skrivningen blokerer ikke svaret. Workeren læser tallene med Analytics SQL-bindingen uden API-token og gemmer svaret i fem minutter. Ved stor trafik tager Analytics Engine stikprøver og vægter tallene tilbage; ved tingets trafik er de stort set eksakte.</p></article>
         <article><b>Durable Objects · SQL</b><h3>Stolen fører dagbog</h3><p>Stolen og afstemningen er Durable Objects med SQLite-lager, og nu bruger de det: hver flytning, stemme og afsluttet runde bliver en række i objektets egen tabel (<code>ctx.storage.sql</code>), med ugedag og time i dansk tid. <a href="/oplevelser/stolen/">Stolen</a> og <a href="/oplevelser/maskinparken/afstemningen/">afstemningen</a> viser statistikken og den SQL, der lavede den. Kun tidspunkt og art, aldrig hvem. Rækker ældre end et halvt år ryddes.</p></article>
         </div>
       </div>
@@ -176,12 +174,12 @@
             <p class="mr-lag-over">Lag 5 af 7 · 5 kort</p>
             <h2 class="mr-lag-h2">AI og browsere på kanten</h2>
             <p class="mr-lag-kort">Modeller og en headless browser, alle bag bindings.</p>
-            <p>Sprogmodeller, billedmodeller og en rigtig browser kører i Cloudflares eget net og kaldes gennem bindings uden API-nøgler i koden. Hvert kald har en døgnkvote, og svarene valideres, før nogen ser dem.</p>
+            <p>Sprogmodeller, billedmodeller og en rigtig browser kører i Cloudflares eget net og kaldes gennem bindings uden API-nøgler i koden. Hvert kald har en døgnkvote, og svarene valideres mod et skema, før nogen ser dem – det sikrer formen, ikke sandheden: modellen kan stadig tage fejl, og gæstetekst behandles som data, aldrig som instruks.</p>
           </div>
           <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-ai-kort" data-aaben="Vis de 5 kort" data-luk="Fold sammen">Vis de 5 kort</button>
         </div>
         <div class="maskinrum" id="lag-ai-kort" hidden>
-        <article><b>Workers AI</b><h3>Tre modeller, ét budget</h3><p>Retssal, Mímir, avis og proveniens: Llama 3.3 70B med JSON-mode, så svar valideres mod et skema, før de vises. Billedbeviset: Llama 3.2 Vision beskriver, tekstmodellen oversætter. Bevisværkstedet: FLUX.1 schnell. Døgnkvoter reserveres i databasen, <em>før</em> modellen kaldes.</p></article>
+        <article><b>Workers AI</b><h3>Modellerne, ét budget</h3><p>Retssal, Mímir, avis og proveniens: Llama 3.3 70B med JSON-mode, så svar valideres mod et skema, før de vises. Billedbeviset: Llama 3.2 Vision beskriver, tekstmodellen oversætter. Bevisværkstedet: FLUX.1 schnell. Døgnkvoter reserveres i databasen, <em>før</em> modellen kaldes.</p></article>
         <article><b>AI Gateway</b><h3>Én port foran alle modeller</h3><p>Hvert AI-kald går gennem AI Gateway, der logger model, varighed og tokens, cacher identiske kald (samme prøvebillede beskrives kun én gang) og kan sætte sit eget loft. Sitets egne døgnkvoter gælder stadig; gatewayen er sikkerhedsnettet udenom.</p></article>
         <article><b>Browser Run + Images</b><h3>En browser på kanten</h3><p>Link-previews af en delt sag (<code>/sag/980-0007</code>) tegnes som et rigtigt billede af en headless browser og gemmes i R2. Protokollen kan hentes som PDF fra samme browser. Images-bindingen normaliserer uploads i billedbeviset: orientering, metadata og størrelse, før modellen ser filen.</p></article>
         <article><b>AI Search</b><h3>Spørg arkivet</h3><p>Det færdige modstykke til det håndbyggede Vectorize-arkiv: Cloudflare AI Search med indbygget lager. Workeren opretter selv to instanser (dansk og engelsk) via en namespace-binding og lægger én gang i døgnet sitets Markdown-udgaver ind, men kun de sider, hvis SHA-256 har ændret sig. <a href="/arkivet/#arkiv-spoerg">Spørg arkivet</a> søger hybridt (vektor og nøgleord), og Mímir svarer med tekstmodellen kun ud fra de fundne uddrag og linker til kilderne. AI Search faktureres fra november 2026 med 1.000 forespørgsler om måneden inkluderet, så tinget har en hård døgnkvote på 25.</p></article>
@@ -216,8 +214,8 @@
         <div class="maskinrum" id="lag-vaerktoej-kort" hidden>
         <article><b>Server-Timing</b><h3>Vis maskineriet</h3><p>Hvert panel i <a href="/oplevelser/maskinparken/">maskinparken</a> kan folde sit maskineri ud: produkterne bag, det faktiske kald, svartiden målt i din browser og Workerens egne målinger af D1, Workers AI, R2, KV og Vectorize, sendt som en <code>Server-Timing</code>-header. Bindings pakkes ind i en lille proxy (<code>worker/src/lib/timing.js</code>), så målingen sker ét sted. Gemte resultater mærkes <i>Gemt resultat</i>, så det altid er tydeligt, om noget er live.</p></article>
         <article><b>Én kanon</b><h3>Datoer og afgørelser ét sted</h3><p><code>assets/kanon.json</code> rummer universets faste tal: tinget sat i 980, de tre afgørelser og den seneste i 90'erne, tågedage og sommer. Siden læser filen, og Wrangler bundler den samme fil ind i Workeren ved deploy, så avisens FAKTA og forsidens tællere ikke kan glide fra hinanden. En talvagt fjerner sætninger med tal, modellen selv har fundet på.</p></article>
-        <article><b>GitHub Actions + Playwright</b><h3>Gudrun tjekker også browserne</h3><p>Efter hver udgivelse åbner en testsuite alle sider på begge sprog i de tre browsermotorer (Chromium, Firefox og WebKit, der driver Safari) og som iPhone, iPad og Pixel, i lyst og mørkt tema. Den tjekker, at ingen side ruller vandret, at der er præcis én overskrift, at billeder og egne filer loader uden fejl, og kører tilgængelighedstjekket axe-core og Lighthouse. Første kørsel fandt for svag kontrast i lyst tema, en side der var 148 px for bred på mobil og et link uden navn til skærmlæsere; alle tre er rettet. Testene læser kun; de sender intet. <a href="https://github.com/wi24rd-com/tingsvad-website/tree/main/tests">Testene</a> og <a href="https://github.com/wi24rd-com/tingsvad-website/actions/workflows/kvalitet.yml">kørslerne</a> er offentlige, og den generelle del kan genbruges på andre sites.</p></article>
-        <article><b>Workflows + GitHub REST</b><h3>Gudrun fører sag på GitHub</h3><p>Når <a href="/maskinrummet/revisionen/">revisionen</a> har fejl, er dens sidste trin at åbne ét issue pr. dag i repoet med de fejlede sider: sti, HTTP-status, manglende elementer og antal JavaScript-fejl, aldrig interne fejltekster. Før hun opretter, lister hun de åbne issues og leder efter en usynlig datomarkør, så et genforsøgt trin ikke giver dobbelte sager. Består en senere revision helt, kommenterer og lukker hun selv. Tokenet er fint-scopet (kun Issues på ét repo) og ligger som Worker-secret. Fejler GitHub, vælter det ikke revisionen. <a href="https://github.com/wi24rd-com/tingsvad-website/issues?q=label%3Agudrun">Se Gudruns issues</a>.</p></article>
+        <article><b>GitHub Actions + Playwright</b><h3>Gudrun tjekker også browserne</h3><p>Efter hver udgivelse åbner en testsuite alle sider på begge sprog i de tre browsermotorer (Chromium, Firefox og WebKit, der driver Safari) og som iPhone, iPad og Pixel, i lyst og mørkt tema. Den tjekker, at ingen side ruller vandret, at der er præcis én overskrift, at billeder og egne filer loader uden fejl, og kører tilgængelighedstjekket axe-core og Lighthouse. Første kørsel fandt for svag kontrast i lyst tema, en side, der var 148 px for bred på mobil og et link uden navn til skærmlæsere; alle tre er rettet. Testene læser kun; de sender intet. <a href="https://github.com/wi24rd-com/tingsvad-website/tree/main/tests">Testene</a> og <a href="https://github.com/wi24rd-com/tingsvad-website/actions/workflows/kvalitet.yml">kørslerne</a> er offentlige, og den generelle del kan genbruges på andre sites.</p></article>
+        <article><b>Workflows + GitHub REST</b><h3>Gudrun fører sag på GitHub</h3><p>Når <a href="/maskinrummet/revisionen/">revisionen</a> har fejl, er dens sidste trin at åbne ét issue pr. dag i repoet med de fejlede sider: sti, HTTP-status, manglende elementer og antal JavaScript-fejl, aldrig interne fejltekster. Før hun opretter, lister hun de åbne issues og leder efter en usynlig datomarkør, så et genforsøgt trin ikke giver dobbelte sager. Består en senere revision helt, kommenterer og lukker hun selv. Tokenet er snævert scopet (kun Issues på ét repo) og ligger som Worker-secret. Fejler GitHub, vælter det ikke revisionen. <a href="https://github.com/wi24rd-com/tingsvad-website/issues?q=label%3Agudrun">Se Gudruns issues</a>.</p></article>
         <article><b>Workers Issues + Traces</b><h3>Fejl i drift går også til Gudrun</h3><p>Alle tre Workers har Workers Issues og Traces slået til: kørselsfejl samles og grupperes, og en del af kaldene spores hele vejen gennem bindingerne. En automation sender nye fejl som webhook til <code>/api/ting-ai/gudrun/issues</code>; Gudrun tjekker hemmeligheden, renser teksten for alt, der ligner nøgler, og samler dagens fejl i ét issue på GitHub, højst 20 om dagen.</p></article>
         </div>
       </div>
@@ -237,9 +235,9 @@
     <div class="txt" id="fejltavle">
       <h3>Til maskinerne</h3>
       <p>Hver side findes også som Markdown, og tingets fejl svarer i et format, en maskine kan læse. Prøv selv:</p>
-      <pre tabindex="0" aria-label="Eksempler med curl"><code>curl -H "Accept: text/markdown" https://tingsvad.dk/maskinrummet/
+      <pre tabindex="0" aria-label="Eksempler med curl"><code>curl -H »Accept: text/markdown« https://tingsvad.dk/maskinrummet/
 curl https://tingsvad.dk/historien/index.md
-curl -H "Accept: application/problem+json" https://tingsvad.dk/findes-ikke/</code></pre>
+curl -H »Accept: application/problem+json« https://tingsvad.dk/findes-ikke/</code></pre>
       <p class="note">Metoden står på kortene <a href="#lag-levering">Markdown til maskinerne</a> og <a href="#lag-levering">Fejltavlen</a> i maskinrummet. En agent kan også begynde med <a href="/llms.txt">llms.txt</a>.</p>
     </div>
   </section>
@@ -260,15 +258,15 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/findes-ikke/</cod
       <table>
         <thead><tr><th>Værktøj</th><th>Gør</th><th>Grænse</th></tr></thead>
         <tbody>
-          <tr><td>tingets_status</td><td>Tingets alder, seneste revision, stolens plads og den nyeste sag.</td><td>Læser</td></tr>
-          <tr><td>slaa_op_i_protokollen</td><td>Semantisk opslag i arkivet. Svarer med ordrette uddrag og kilde.</td><td>Læser · 100 AI-opslag i døgnet i alt</td></tr>
-          <tr><td>spoerg_arkivet</td><td>Mímir svarer ud fra hele sitet (AI Search) med kildelinks.</td><td>Læser · deler døgnkvoten på 25 med gæsterne</td></tr>
-          <tr><td>hittegods_soeg</td><td>Finder de nærmeste genstande i hittegodskataloget.</td><td>Læser · samme pulje</td></tr>
-          <tr><td>laes_gaestebogen</td><td>De nyeste sager i gæstebogen.</td><td>Læser</td></tr>
-          <tr><td>rejs_sag</td><td>Rejser en sag i gæstebogen, mærket »· MCP«.</td><td>Skriver · 3 sager i døgnet for alle agenter tilsammen</td></tr>
-          <tr><td>stem</td><td>Tager en ledig plads i afstemningen og stemmer ja, nej eller eventuelt.</td><td>Skriver · én stemme pr. runde</td></tr>
-          <tr><td>flyt_stolen</td><td>Flytter den fælles stol 1–3 skridt.</td><td>Skriver · 300 skridt i døgnet i alt</td></tr>
-          <tr><td>afgoer_sagen</td><td>Beder tinget afgøre sagen om koen.</td><td>Udsætter altid</td></tr>
+          <tr><td>tingsvad_status</td><td>Tingets alder, seneste revision, stolens plads og den nyeste sag.</td><td>Læser</td></tr>
+          <tr><td>tingsvad_search_minutes</td><td>Semantisk opslag i arkivet. Svarer med ordrette uddrag og kilde.</td><td>Læser · 100 AI-opslag i døgnet i alt</td></tr>
+          <tr><td>tingsvad_ask_archive</td><td>Mímir svarer ud fra hele sitet (AI Search) med kildelinks.</td><td>Læser · deler døgnkvoten på 25 med gæsterne</td></tr>
+          <tr><td>tingsvad_lost_property</td><td>Finder de nærmeste genstande i hittegodskataloget.</td><td>Læser · samme pulje</td></tr>
+          <tr><td>tingsvad_read_guestbook</td><td>De nyeste sager i gæstebogen.</td><td>Læser</td></tr>
+          <tr><td>tingsvad_raise_case</td><td>Rejser en sag i gæstebogen, mærket »· MCP«.</td><td>Skriver · 3 sager i døgnet for alle agenter tilsammen</td></tr>
+          <tr><td>tingsvad_vote</td><td>Tager en ledig plads i afstemningen og stemmer ja, nej eller eventuelt.</td><td>Skriver · én stemme pr. runde</td></tr>
+          <tr><td>tingsvad_move_stool</td><td>Flytter den fælles stol 1–3 skridt.</td><td>Skriver · 300 skridt i døgnet i alt</td></tr>
+          <tr><td>tingsvad_decide_case</td><td>Beder tinget afgøre sagen om koen.</td><td>Udsætter altid</td></tr>
         </tbody>
       </table>
     </div>
@@ -299,17 +297,17 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/findes-ikke/</cod
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=b0af9514"></script>
-<script src="/assets/round3.js?v=b0af9514" defer></script>
-<script src="/assets/round4.js?v=b0af9514" defer></script>
-<script src="/assets/round5-tekst.js?v=b0af9514" defer></script>
-<script src="/assets/round5.js?v=b0af9514" defer></script>
-<script src="/assets/round6-tekst.js?v=b0af9514" defer></script>
-<script src="/assets/kaede.js?v=b0af9514" defer></script>
-<script src="/assets/round6.js?v=b0af9514" defer></script>
-<script src="/assets/round9-tekst.js?v=b0af9514" defer></script>
-<script src="/assets/round9.js?v=b0af9514" defer></script>
-<script src="/assets/round10.js?v=b0af9514" defer></script>
-<script src="/assets/ankre.js?v=b0af9514" defer></script>
+<script src="/assets/site.js?v=e55b11d4"></script>
+<script src="/assets/round3.js?v=e55b11d4" defer></script>
+<script src="/assets/round4.js?v=e55b11d4" defer></script>
+<script src="/assets/round5-tekst.js?v=e55b11d4" defer></script>
+<script src="/assets/round5.js?v=e55b11d4" defer></script>
+<script src="/assets/round6-tekst.js?v=e55b11d4" defer></script>
+<script src="/assets/kaede.js?v=e55b11d4" defer></script>
+<script src="/assets/round6.js?v=e55b11d4" defer></script>
+<script src="/assets/round9-tekst.js?v=e55b11d4" defer></script>
+<script src="/assets/round9.js?v=e55b11d4" defer></script>
+<script src="/assets/round10.js?v=e55b11d4" defer></script>
+<script src="/assets/ankre.js?v=e55b11d4" defer></script>
 </body>
 </html>

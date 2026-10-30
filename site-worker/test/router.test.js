@@ -79,7 +79,7 @@ test('Markdown twin: /historien/index.md comes from the static HTML, with front 
   assert.equal(r.status, 200);
   assert.match(r.headers.get('content-type'), /^text\/markdown/);
   assert.equal(r.headers.get('link'), '<https://tingsvad.dk/historien/>; rel="canonical"');
-  assert.match(await r.text(), /^---\ntitle: "Historien · Tingsvad"/);
+  assert.match(await r.text(), /^---\ntitle: "Historien om Tingsvad – vadestedet, de syv på stenene og Ragnhild · Tingsvad"/);
   assert.equal((await haandter(req('/admin/index.md'), e)).status, 404);
 });
 

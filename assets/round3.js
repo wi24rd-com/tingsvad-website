@@ -125,7 +125,7 @@
   /* ── 10. Afgør sagen ── */
   const ak = $('#afgoer-knap'), ast = $('#afgoer-status'), at = $('#afgoer-taelt');
   if (ak) {
-    const visTal = n => { at.innerHTML = (da ? 'Sagen er forsøgt afgjort <b>{n}</b> gange.' : 'The case has been decided <b>{n}</b> times.').replace('{n}', n.toLocaleString(da ? 'da-DK' : 'en-GB')); };
+    const visTal = n => { at.innerHTML = (da ? 'Sagen er forsøgt afgjort <b>{n}</b> gange.' : 'Deciding the case has been attempted <b>{n}</b> times.').replace('{n}', n.toLocaleString(da ? 'da-DK' : 'en-GB')); };
     let lokal = +(store.get('afgoer') || 0);
     fetch('/api/afgoer').then(r => r.ok ? r.json() : Promise.reject()).then(j => visTal(j.n)).catch(() => visTal(lokal + 1284));
     const trin = da ? ['Indkalder tinget…', 'Venter på tågen…', 'Spørger koen…', 'Koen svarer ikke…', 'Spørger Mímir…'] : ['Convening the thing…', 'Waiting for the fog…', 'Asking the cow…', 'The cow does not reply…', 'Asking Mímir…'];

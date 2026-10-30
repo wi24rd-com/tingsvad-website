@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The machine room · Tingsvad</title>
+<title>The machine room – how tingsvad.dk is built on Cloudflare · Tingsvad</title>
 <meta name="description" content="The machine room of tingsvad.dk: how the site is built on Cloudflare – Workers with Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize and more.">
-<meta property="og:title" content="The machine room · Tingsvad">
+<meta property="og:title" content="The machine room – how tingsvad.dk is built on Cloudflare · Tingsvad">
 <meta property="og:description" content="How the ford is built. Colophon, not fiction.">
 <meta property="og:image" content="https://tingsvad.dk/assets/og/en-machine-room.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
   <link rel="canonical" href="https://tingsvad.dk/en/machine-room/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://tingsvad.dk/en/machine-room/#page", "url": "https://tingsvad.dk/en/machine-room/", "name": "The machine room · Tingsvad", "description": "The machine room of tingsvad.dk: how the site is built on Cloudflare – Workers with Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize and more.", "inLanguage": "en", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "genre": "Satire", "license": "https://creativecommons.org/licenses/by/4.0/"}]}
+{"@context": "https://schema.org", "@graph": [{"@type": "SoftwareSourceCode", "@id": "https://github.com/wi24rd-com/tingsvad-website#code", "name": "tingsvad-website", "codeRepository": "https://github.com/wi24rd-com/tingsvad-website", "programmingLanguage": "JavaScript", "runtimePlatform": "Cloudflare Workers", "license": "https://opensource.org/licenses/MIT", "author": {"@type": "Person", "@id": "https://tingsvad.dk/#jan", "name": "Jan Tingsvad", "sameAs": ["https://github.com/wi24rd"]}, "description": "The source code of tingsvad.dk: a site on Cloudflare Workers with Static Assets, Workers AI, D1, R2, KV, Durable Objects, Workflows and an MCP server. MIT licence.", "inLanguage": "en"}, {"@type": "WebPage", "@id": "https://tingsvad.dk/en/machine-room/#page", "url": "https://tingsvad.dk/en/machine-room/", "name": "The machine room · Tingsvad", "description": "The machine room of tingsvad.dk: how the site is built on Cloudflare – Workers with Static Assets, Workers AI, D1, R2, KV, Durable Objects, Vectorize and more.", "inLanguage": "en", "isPartOf": {"@id": "https://tingsvad.dk/#site"}, "genre": "Satire", "license": "https://creativecommons.org/licenses/by/4.0/"}]}
 </script>
 <link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/">
 <link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/">
@@ -30,13 +30,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav-brian-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-brian-512.png">
 <link rel="apple-touch-icon" href="/assets/fav-brian-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=b0af9514">
-<link rel="stylesheet" href="/assets/forside.css?v=b0af9514">
-<link rel="stylesheet" href="/assets/undersider.css?v=b0af9514">
-<link rel="stylesheet" href="/assets/infrakort.css?v=b0af9514">
+<link rel="stylesheet" href="/assets/site.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/forside.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/undersider.css?v=e55b11d4">
+<link rel="stylesheet" href="/assets/infrakort.css?v=e55b11d4">
 </head>
 <body data-side="maskinrummet" class="r12m">
 <header class="r12-top" id="top">
@@ -86,7 +84,7 @@
       <p>The diagram is drawn by your browser from the Worker’s <code>health</code> answer: the layers from your browser to the models, every product, whether its binding is on, and how many of the thing’s sixteen machines use it.</p>
     </div>
     <div class="ik-indgang"><p><b>See all of it on one map</b>The infrastructure map shows which data centre answered you, where the database and the two Durable Objects live, and measured response times for every binding.</p><a class="knap" href="/en/machine-room/map/">Open the infrastructure map <span aria-hidden="true">→</span></a></div>
-    <div class="ik-indgang"><p><b>The defences, the crawlers, the speed and Denmark right now</b>What Cloudflare kept out, who came to read, how fast the pages are for real guests, and what it looks like for the rest of Denmark. Counted every hour from Cloudflare’s own figures.</p><span class="vg-indgang-knapper"><a class="knap" href="/en/machine-room/defences/">The defences <span aria-hidden="true">→</span></a> <a class="knap sek" href="/en/machine-room/crawlers/">The crawlers</a> <a class="knap sek" href="/en/machine-room/speed/">The speed</a> <a class="knap sek" href="/en/machine-room/denmark/">Denmark right now</a> <a class="knap sek" href="/en/machine-room/archive-cabinet/">The archive cabinet</a> <a class="knap sek" href="/en/machine-room/the-door/">The thing’s door</a></span></div>
+    <div class="ik-indgang"><p><b>The defences, the crawlers, the speed and Denmark right now</b>What Cloudflare kept out, who came to read, how fast the pages are for real guests, and what it looks like for the rest of Denmark. Updated hourly from Cloudflare’s own figures.</p><span class="vg-indgang-knapper"><a class="knap" href="/en/machine-room/defences/">The defences <span aria-hidden="true">→</span></a> <a class="knap sek" href="/en/machine-room/crawlers/">The crawlers</a> <a class="knap sek" href="/en/machine-room/speed/">The speed</a> <a class="knap sek" href="/en/machine-room/denmark/">Denmark right now</a> <a class="knap sek" href="/en/machine-room/archive-cabinet/">The archive cabinet</a> <a class="knap sek" href="/en/machine-room/the-door/">The thing’s door</a></span></div>
     <div id="arkitektur" role="region" aria-labelledby="arkitektur-h"><noscript><p class="note">The diagram needs JavaScript. The cards below are still there.</p></noscript></div>
     <div class="maskinrum-lag" id="maskinrum-gitter">
       <div class="mr-lag" id="lag-kant">
@@ -101,7 +99,7 @@
         </div>
         <div class="maskinrum" id="lag-kant-kort" hidden>
         <article><b>DNS and domain</b><h3>The name lives on Cloudflare's name servers</h3><p>tingsvad.dk has been the family's since the 90s. Today Cloudflare's anycast DNS (<code>sid</code> and <code>val</code>) answers for the name from hundreds of cities at once, so the lookup happens close to whoever asks. The zone is signed with DNSSEC (ECDSA P-256) and the DS record sits with Punktum.dk, so a validating resolver can reject forged answers. Traffic to the site is proxied through Cloudflare, so the real IP addresses behind the Workers are never shown.</p></article>
-        <article><b>Network and security</b><h3>HTTP/3, HSTS, CSP and no third parties</h3><p>Everything is served over HTTP/3 from Cloudflare’s network with HSTS. The Content-Security-Policy allows only the site’s own scripts and Turnstile; AI text is always escaped and never becomes HTML. Sessions are a signed, HttpOnly cookie with no personal data. Web Analytics counts without cookies.</p></article>
+        <article><b>Network and security</b><h3>HTTP/3, HSTS, CSP and a few, known data paths</h3><p>Everything is served over HTTP/3 from Cloudflare’s network with HSTS. The Content-Security-Policy allows only the site’s own scripts, Cloudflare’s beacon and Turnstile; AI text is always escaped and never becomes HTML. The session is a signed HttpOnly cookie with no personal data. Data paths out of the house: Cloudflare (everything), Cloudflare Fonts (the typefaces, same-origin), Turnstile (the guestbook), GitHub (Gudrun’s issues) – and no others.</p></article>
         <article><b>DDoS, WAF and analytics</b><h3>A guard that is on before anyone asks</h3><p>Cloudflare's DDoS protection stands in front of all traffic with no setup, and the managed WAF ruleset stops known attack patterns before they reach the Workers. <a href="/en/machine-room/defences/">The defences</a> show every hour what it has stopped, and <a href="/en/machine-room/crawlers/">the crawlers</a> which bots came by. Web Analytics counts visits with a small script from Cloudflare's own domain, with no cookies, fingerprinting or third parties. The thing's own visitor counter at the bottom of the page is a daily hash in KV (see the Workers KV card) and knows nothing about who you are. Network Error Logging (<code>NEL</code>) reports connection failures back to Cloudflare, so the site can see when something does not arrive.</p></article>
         <article><b>Rate Limiting + Turnstile</b><h3>One vote at a time, preferably from a human</h3><p>Workers’ built-in rate limiting binding counts calls per session and endpoint inside Cloudflare’s own network. The guestbook and the stool application are protected by Turnstile, an invisible bot check with no picture puzzles; the token is validated server-side and can be used only once.</p></article>
         <article><b>request.cf</b><h3>The edge knows where it stands</h3><p>Every request carries a <code>cf</code> object from Cloudflare: data centre, protocol, TLS version, measured round-trip time and much more. A small route in the site Worker, <code>/api/kant</code>, reads four of the fields and sends them back to you, so you can see which of Cloudflare’s data centres answered (<a href="#vejen">your way here</a>). IP, city, country and provider are in the object too; the thing does not read them, and nothing is stored.</p></article>
@@ -166,7 +164,7 @@
         <article><b>D1</b><h3>SQLite at the edge</h3><p>Newspaper editions, cases, quotas, idempotency keys and rate limits live in a D1 database in Western Europe. Reservations carry a lease, so a crash mid-call never locks the day’s allowance forever.</p></article>
         <article><b>R2</b><h3>Media without egress fees</h3><p>Fictional finds and the radio’s audio files are stored in an R2 bucket under a key of choices, language, prompt version and model. The same combination is therefore fetched from the model only once; every guest shares the file.</p></article>
         <article><b>Vectorize</b><h3>Mímir’s archive as a vector index</h3><p>The editorial corpus (characters, case files, the real facts with sources) is indexed as embeddings from bge-m3. Mímir finds the nearest excerpts to a question and may only quote them. The puzzle’s solutions are not in the index; the server still selects them by spoiler level. The <a href="/en/experiences/lost-property/">lost property office</a> has its own namespace with a fixed catalogue, so the answers always come from the catalogue and never from the model.</p></article>
-        <article><b>Analytics Engine</b><h3>The thing’s counting works</h3><p>The middleware writes one data point per page, the Worker one per machine call and one per event (a moved stool, a vote cast, the day’s audit) to the dataset <code>tingsvad_taelle</code>. A data point is a kind, a name, a language, a data centre and two numbers: no IP, no cookie, no session. Writing does not hold up the response. The Worker reads the numbers with the Analytics SQL binding, without an API token, and keeps the answer for five minutes. Under heavy traffic Analytics Engine samples and weights the numbers back; at the thing’s traffic they are practically exact.</p></article>
+        <article><b>Analytics Engine</b><h3>The thing’s counting works</h3><p>The middleware writes one data point per page, the Worker one per machine call and one per event (a moved stool, a vote cast, the day’s audit) to the dataset <code>tingsvad_taelle</code>. A data point is a kind, a name, a language, a data centre and two numbers: no cookie, no session; the IP address is used only for a salted hash for rate limits and the visitor count (expires after two days) and is never stored in clear. Writing does not hold up the response. The Worker reads the numbers with the Analytics SQL binding, without an API token, and keeps the answer for five minutes. Under heavy traffic Analytics Engine samples and weights the numbers back; at the thing’s traffic they are practically exact.</p></article>
         <article><b>Durable Objects · SQL</b><h3>The stool keeps a diary</h3><p>The stool and the vote are Durable Objects with SQLite storage, and now they use it: every move, vote and closed round becomes a row in the object's own table (<code>ctx.storage.sql</code>), with weekday and hour in Danish time. <a href="/en/experiences/the-stool/">The stool</a> and <a href="/en/experiences/machine-park/the-vote/">the vote</a> show the statistics and the SQL that made them. Only time and kind, never who. Rows older than half a year are cleared.</p></article>
         </div>
       </div>
@@ -176,12 +174,12 @@
             <p class="mr-lag-over">Layer 5 of 7 · 5 cards</p>
             <h2 class="mr-lag-h2">AI and browsers at the edge</h2>
             <p class="mr-lag-kort">Models and a headless browser, all behind bindings.</p>
-            <p>Language models, image models and a real browser run inside Cloudflare’s own network and are called through bindings with no API keys in the code. Every call has a daily quota, and the answers are validated before anyone sees them.</p>
+            <p>Language models, image models and a real browser run inside Cloudflare’s own network and are called through bindings with no API keys in the code. Every call has a daily quota, and the answers are validated against a schema before anyone sees them – that guarantees the shape, not the truth: the model can still be wrong, and guest text is treated as data, never as instructions.</p>
           </div>
           <button class="knap sek mr-lag-knap" type="button" aria-expanded="false" aria-controls="lag-ai-kort" data-aaben="Show the 5 cards" data-luk="Show less">Show the 5 cards</button>
         </div>
         <div class="maskinrum" id="lag-ai-kort" hidden>
-        <article><b>Workers AI</b><h3>Three models, one budget</h3><p>Courtroom, Mímir, newspaper and provenance: Llama 3.3 70B in JSON mode, so replies are validated against a schema before they are shown. The image evidence: Llama 3.2 Vision describes, the text model translates. The forge: FLUX.1 schnell. Daily quotas are reserved in the database <em>before</em> the model is called.</p></article>
+        <article><b>Workers AI</b><h3>The models, one budget</h3><p>Courtroom, Mímir, newspaper and provenance: Llama 3.3 70B in JSON mode, so replies are validated against a schema before they are shown. The image evidence: Llama 3.2 Vision describes, the text model translates. The forge: FLUX.1 schnell. Daily quotas are reserved in the database <em>before</em> the model is called.</p></article>
         <article><b>AI Gateway</b><h3>One gate in front of every model</h3><p>Every AI call passes through AI Gateway, which logs model, latency and tokens, caches identical calls (the same sample picture is described only once) and can set its own ceiling. The site’s own daily quotas still apply; the gateway is the safety net around them.</p></article>
         <article><b>Browser Run + Images</b><h3>A browser at the edge</h3><p>Link previews of a shared case (<code>/sag/980-0007</code>) are drawn as a real image by a headless browser and stored in R2. The minutes can be fetched as a PDF from the same browser. The Images binding normalises uploads in the image evidence: orientation, metadata and size, before the model sees the file.</p></article>
         <article><b>AI Search</b><h3>Ask the archive</h3><p>The ready-made counterpart to the hand-built Vectorize archive: Cloudflare AI Search with built-in storage. The Worker creates two instances itself (Danish and English) through a namespace binding and once a day puts in the site’s Markdown versions, but only the pages whose SHA-256 has changed. <a href="/en/archive/#arkiv-spoerg">Ask the archive</a> searches hybrid (vector and keyword), and Mímir answers with the text model only from the excerpts found and links to the sources. AI Search is billed from November 2026 with 1,000 queries a month included, so the thing has a hard daily quota of 25.</p></article>
@@ -260,15 +258,15 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/en/does-not-exist
       <table>
         <thead><tr><th>Tool</th><th>Does</th><th>Limit</th></tr></thead>
         <tbody>
-          <tr><td>tingets_status</td><td>The thing’s age, the latest audit, where the stool stands and the newest case.</td><td>Reads</td></tr>
-          <tr><td>slaa_op_i_protokollen</td><td>Semantic search in the archive. Answers with verbatim excerpts and their source.</td><td>Reads · 100 AI look-ups a day in total</td></tr>
-          <tr><td>spoerg_arkivet</td><td>Mímir answers from the whole site (AI Search) with source links.</td><td>Reads · shares the daily quota of 25 with guests</td></tr>
-          <tr><td>hittegods_soeg</td><td>Finds the closest items in the lost property catalogue.</td><td>Reads · same pool</td></tr>
-          <tr><td>laes_gaestebogen</td><td>The newest cases in the guestbook.</td><td>Reads</td></tr>
-          <tr><td>rejs_sag</td><td>Raises a case in the guestbook, marked “· MCP”.</td><td>Writes · 3 cases a day for all agents together</td></tr>
-          <tr><td>stem</td><td>Takes a free seat in the vote and votes ja, nej or eventuelt.</td><td>Writes · one vote per round</td></tr>
-          <tr><td>flyt_stolen</td><td>Moves the shared stool 1–3 steps.</td><td>Writes · 300 steps a day in total</td></tr>
-          <tr><td>afgoer_sagen</td><td>Asks the thing to decide the case of the cow.</td><td>Always adjourns</td></tr>
+          <tr><td>tingsvad_status</td><td>The thing’s age, the latest audit, where the stool stands and the newest case.</td><td>Reads</td></tr>
+          <tr><td>tingsvad_search_minutes</td><td>Semantic search in the archive. Answers with verbatim excerpts and their source.</td><td>Reads · 100 AI look-ups a day in total</td></tr>
+          <tr><td>tingsvad_ask_archive</td><td>Mímir answers from the whole site (AI Search) with source links.</td><td>Reads · shares the daily quota of 25 with guests</td></tr>
+          <tr><td>tingsvad_lost_property</td><td>Finds the closest items in the lost property catalogue.</td><td>Reads · same pool</td></tr>
+          <tr><td>tingsvad_read_guestbook</td><td>The newest cases in the guestbook.</td><td>Reads</td></tr>
+          <tr><td>tingsvad_raise_case</td><td>Raises a case in the guestbook, marked “· MCP”.</td><td>Writes · 3 cases a day for all agents together</td></tr>
+          <tr><td>tingsvad_vote</td><td>Takes a free seat in the vote and votes ja, nej or eventuelt.</td><td>Writes · one vote per round</td></tr>
+          <tr><td>tingsvad_move_stool</td><td>Moves the shared stool 1–3 steps.</td><td>Writes · 300 steps a day in total</td></tr>
+          <tr><td>tingsvad_decide_case</td><td>Asks the thing to decide the case of the cow.</td><td>Always adjourns</td></tr>
         </tbody>
       </table>
     </div>
@@ -299,18 +297,18 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/en/does-not-exist
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=b0af9514"></script>
-<script src="/assets/round3.js?v=b0af9514" defer></script>
-<script src="/assets/round4.js?v=b0af9514" defer></script>
-<script src="/assets/round5-tekst.js?v=b0af9514" defer></script>
-<script src="/assets/round5.js?v=b0af9514" defer></script>
-<script src="/assets/round6-tekst.js?v=b0af9514" defer></script>
-<script src="/assets/kaede.js?v=b0af9514" defer></script>
-<script src="/assets/round6.js?v=b0af9514" defer></script>
-<script src="/assets/round9-tekst.js?v=b0af9514" defer></script>
-<script src="/assets/round9.js?v=b0af9514" defer></script>
-<script src="/assets/round10.js?v=b0af9514" defer></script>
-<script src="/assets/ankre.js?v=b0af9514" defer></script>
+<script src="/assets/site.js?v=e55b11d4"></script>
+<script src="/assets/round3.js?v=e55b11d4" defer></script>
+<script src="/assets/round4.js?v=e55b11d4" defer></script>
+<script src="/assets/round5-tekst.js?v=e55b11d4" defer></script>
+<script src="/assets/round5.js?v=e55b11d4" defer></script>
+<script src="/assets/round6-tekst.js?v=e55b11d4" defer></script>
+<script src="/assets/kaede.js?v=e55b11d4" defer></script>
+<script src="/assets/round6.js?v=e55b11d4" defer></script>
+<script src="/assets/round9-tekst.js?v=e55b11d4" defer></script>
+<script src="/assets/round9.js?v=e55b11d4" defer></script>
+<script src="/assets/round10.js?v=e55b11d4" defer></script>
+<script src="/assets/ankre.js?v=e55b11d4" defer></script>
 </body>
 </html><tr><td class="h">01915ragn</td><td class="d">1915</td><td class="t">feat:</td><td class="m">§ 9: women have the vote. Passed after Ragnhild looked</td><td class="ru" title="ragnhild">ᚱᛅᚴᚾᚼᛁᛚᛏ</td><td class="tag"></td></tr>
 
