@@ -100,6 +100,10 @@ body.r12 {
 .r12-mini { min-height: 2.5rem; padding: .35rem .95rem; border-radius: 999px; border: 1px solid rgba(230,189,104,.6); background: rgba(230,189,104,.1); color: #f6e3b6; font: inherit; font-size: .95rem; font-weight: 600; cursor: pointer; }
 .r12-mini:hover { background: rgba(230,189,104,.22); }
 .r12-mini[aria-pressed="true"] { background: var(--guld2); color: var(--guld-ink); }
+/* Runde 13: »Tilkald tågen« er et tekstlink i statusbåndet (ikke en tredje knap over folden); stenknappens baggrund fra site.css slås fra her. */
+.r12-status .ting-fog-toggle.r12-tekstknap { width: auto; min-height: 2.5rem; padding: .35rem .2rem; background: none; filter: none; color: #f6e3b6; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.r12-status .ting-fog-toggle.r12-tekstknap:hover { color: var(--guld2); }
+.r12-status .ting-fog-toggle.r12-tekstknap[aria-pressed="true"] { color: var(--guld2); text-decoration-style: double; }
 @media (max-width: 720px) { .r12-knude { display: none; } }
 
 /* ── Pergamentsektioner ── */
@@ -119,7 +123,7 @@ body.r12 {
 .r12-kort { position: relative; margin: 0; }
 .r12-kort img { width: 100%; height: auto; aspect-ratio: 3 / 2; border-radius: 16px; border: 1px solid var(--linje); box-shadow: 0 24px 48px -28px rgba(50,30,5,.7); }
 @keyframes r12-aande { 0%, 100% { box-shadow: 0 0 0 3px rgba(244,214,144,.55), 0 4px 10px rgba(0,0,0,.5); } 50% { box-shadow: 0 0 0 9px rgba(244,214,144,.12), 0 4px 10px rgba(0,0,0,.5); } }
-.r12-skub { display: none; margin: .6rem 0 0; text-align: right; font-size: .9rem; color: var(--ink2); }
+.r12-skub { display: none; margin: 0 0 .5rem; text-align: right; font-size: .9rem; color: var(--ink2); } /* runde 13: over kortet, så hintet ses før man ruller */
 @media (max-width: 760px) {
   .r12-kort { width: 760px; }
   .r12-skub { display: block; }
@@ -235,7 +239,7 @@ body.r12 {
 
 /* ── Footeren på forsiden: skovgrøn ── */
 .r12 footer { background: var(--gron2); color: #cfc2a3; border-top: 1px solid rgba(230,189,104,.3); color-scheme: dark; }
-.r12 footer a { color: #ecc776; }
+.r12 footer a { color: #ecc776; display: inline-block; padding-block: .25rem; } /* runde 13: lidt højere mål i footeren */
 .r12 footer code { color: #f2e4c1; }
 .r12 footer .runes { color: #e6bd68 !important; opacity: .9 !important; text-shadow: none !important; }
 .r12 footer .licens { border-top-color: rgba(230,189,104,.2); }
@@ -297,7 +301,7 @@ body.r12 h1 { line-height: .95; }
 .km-knap { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; color: var(--elfenben); font: inherit; -webkit-tap-highlight-color: transparent; }
 .km-prik { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
   background: radial-gradient(circle at 50% 50%, var(--rav) 0 2.6px, #b77c33 3.4px, rgba(37,39,32,0) 6px), radial-gradient(circle at 50% 35%, #3a3a31, var(--jern) 70%);
-  border: 2px solid var(--bronze);
+  border: 2px solid var(--bronze); box-shadow: 0 0 0 1.5px rgba(20,14,6,.7), 0 2px 6px rgba(0,0,0,.5); /* runde 13: mørk kant, så prikken står ≥ 3:1 mod lyse kortpartier */
   box-shadow: inset 0 1.5px 1.5px rgba(245,214,150,.35), inset 0 -2px 3px rgba(0,0,0,.55), 0 2px 5px rgba(0,0,0,.55), 0 0 0 1px rgba(20,14,8,.55);
   transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
 .km-skilt { position: absolute; top: 50%; translate: 0 -50%; display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap; pointer-events: auto;
@@ -344,7 +348,8 @@ body.r12 h1 { line-height: .95; }
 .km-luk:focus-visible { outline: 3px solid #8a5a12; outline-offset: 2px; }
 /* skiltene vises kun, når der er plads; ellers kun markørerne (navnet står stadig for skærmlæsere) */
 @media (max-width: 999px) {
-  .km-skilt { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .km-skilt:not(.km-skilt-altid) { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .km-skilt-altid { font-size: 11px; padding: 4px 7px; } /* runde 13: fem nøglemarkører beholder skiltet på mobil */
 }
 @media (min-width: 1500px) { .km-skilt { font-size: 16px; padding-block: 8px; } .km-prik { width: 26px; height: 26px; margin: -13px 0 0 -13px; } }
 /* mobil: panelet står under kortet */

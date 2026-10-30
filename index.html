@@ -37,8 +37,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Cormorant+Unicase:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=88083686">
-<link rel="stylesheet" href="/assets/forside.css?v=88083686">
+<link rel="stylesheet" href="/assets/site.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/forside.css?v=9ada3626">
 </head>
 <body data-side="forside" class="r12">
 
@@ -82,7 +82,7 @@
     <div class="r12-status-in gutter">
       <svg class="r12-knude" viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h14M48 8h14"/><path d="M20 8c0-5 8-5 8 0s8 5 8 0 8-5 8 0-8 5-8 0-8-5-8 0 8 5 8 0"/></svg>
       <div class="r12-status-txt"><span class="r12-status-lbl">Lige nu ved vadestedet:</span> <div class="varsel" id="varsel"><div><b>Tåge.</b> <span>Tinget afventer bedre sigt.</span></div></div></div>
-      <button class="ting-fog-toggle r12-mini" type="button" data-fog-toggle aria-pressed="false" hidden>Tilkald tågen</button>
+      <button class="ting-fog-toggle r12-tekstknap" type="button" data-fog-toggle aria-pressed="false" hidden>Tilkald tågen</button>
       <span class="sr-only" data-fog-status role="status" aria-live="polite"></span>
       <svg class="r12-knude" viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h14M48 8h14"/><path d="M20 8c0-5 8-5 8 0s8 5 8 0 8-5 8 0-8 5-8 0-8-5-8 0 8 5 8 0"/></svg>
     </div>
@@ -93,6 +93,7 @@
       <div class="r12-orn" aria-hidden="true"><i></i><svg viewBox="0 0 24 12" fill="currentColor"><path d="M12 0l3 6-3 6-3-6z"/></svg><i></i></div>
       <h2 id="kort-h">Der er mere mellem stenene.</h2>
       <p class="r12-sub">Vælg et sted på kortet. Nogen har sikkert en forklaring.</p>
+      <p class="r12-skub" aria-hidden="true">Skub kortet til siden →</p>
       <div class="r12-kort-rul" tabindex="-1">
         <figure class="r12-kort">
           <picture>
@@ -102,18 +103,18 @@
           <div class="km-lag" role="group" aria-label="Steder på kortet">
             <div class="km km-r" style="--x:21%;--y:14%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Skriv dit navn i runer. Det går ikke af igen." data-href="/oplevelser/runevaerkstedet/" data-cta="Gå i værkstedet"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Runeværkstedet</span></button></div>
             <div class="km km-l" style="--x:84%;--y:27%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Syv pladser. Spørgsmålet kommer senere." data-href="/oplevelser/maskinparken/afstemningen/" data-cta="Tag en plads"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Tingstedet</span></button></div>
-            <div class="km km-b" style="--x:20%;--y:44%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Han har svaret. Han overvejer stadig, om du skal have det." data-href="/arkivet/#arkiv-spoerg" data-cta="Besøg arkivet"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Mímirs arkiv</span></button></div>
+            <div class="km km-b" style="--x:20%;--y:44%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Han har svaret. Han overvejer stadig, om du skal have det." data-href="/arkivet/#arkiv-spoerg" data-cta="Besøg arkivet"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt km-skilt-altid">Mímirs arkiv</span></button></div>
             <div class="km km-b" style="--x:86%;--y:55%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Dagens avis. Der er ingen nyheder, men de er godt skrevet." data-href="/oplevelser/maskinparken/tidende/" data-cta="Læs opslaget"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Gudruns opslag</span></button></div>
-            <div class="km km-r" style="--x:64%;--y:59%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Afgør sagen. Du får ét tryk. Det har ingen andre fået." data-href="/oplevelser/undersoegelsen/#afgoer" data-cta="Afgør sagen"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Koen</span></button></div>
+            <div class="km km-r" style="--x:64%;--y:59%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Afgør sagen. Du får ét tryk. Det har ingen andre fået." data-href="/oplevelser/undersoegelsen/#afgoer" data-cta="Afgør sagen"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt km-skilt-altid">Koen</span></button></div>
             <div class="km km-b" style="--x:50%;--y:64%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Noget ligger under den. Det har det gjort i 1.046 år." data-href="/oplevelser/undersoegelsen/" data-cta="Undersøg stenen"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Den fjerde sten</span></button></div>
-            <div class="km km-r" style="--x:20%;--y:73%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Tusind års glemte ting. Én af dem er din." data-href="/oplevelser/hittegods/" data-cta="Se fundene"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Hittegodskontoret</span></button></div>
+            <div class="km km-r" style="--x:20%;--y:73%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Tusind års glemte ting. Én af dem er din." data-href="/oplevelser/hittegods/" data-cta="Se fundene"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt km-skilt-altid">Hittegodskontoret</span></button></div>
             <div class="km km-r" style="--x:83%;--y:80%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Dagens udsendelse. Ravnen læser op, om man vil eller ej." data-href="/oplevelser/maskinparken/radio/" data-cta="Lyt med"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Tingsvad Radio</span></button></div>
             <div class="km km-l" style="--x:45%;--y:58%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Syv mænd, syv sten, ingen afgørelse." data-href="/historien/#personer-sektion" data-cta="Mød de fremmødte"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">De fremmødte</span></button></div>
             <div class="km km-t" style="--x:29%;--y:40%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Én stol til alle gæster. Ingen har siddet på den." data-href="/oplevelser/stolen/" data-cta="Flyt stolen"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Den fælles stol</span></button></div>
             <div class="km km-l" style="--x:72%;--y:44%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Alt, tinget har på dig. Ravnen bringer den ud." data-href="/oplevelser/sagsmappen/" data-cta="Åbn mappen"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Sagsmappen</span></button></div>
             <div class="km km-r" style="--x:10%;--y:21%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Små opgaver i en gammel gryde. Den koger over." data-href="/oplevelser/kodegryden/" data-cta="Rør i gryden"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Kodegryden</span></button></div>
-            <div class="km km-l" style="--x:63%;--y:77%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Rejs en sag. Der er kun én foran dig. Den er fra 980." data-href="/oplevelser/gaestebog/" data-cta="Skriv til tinget"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Gæstebogen</span></button></div>
-            <div class="km km-l" style="--x:88%;--y:19%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Atten maskiner. Ingen af dem afgør noget." data-href="/oplevelser/maskinparken/" data-cta="Se maskinerne"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt">Maskinparken</span></button></div>
+            <div class="km km-l" style="--x:63%;--y:77%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Rejs en sag. Der er kun én foran dig. Den er fra 980." data-href="/oplevelser/gaestebog/" data-cta="Skriv til tinget"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt km-skilt-altid">Gæstebogen</span></button></div>
+            <div class="km km-l" style="--x:88%;--y:19%"><button class="km-knap" type="button" aria-expanded="false" aria-controls="km-panel" data-tekst="Atten maskiner. Ingen af dem afgør noget." data-href="/oplevelser/maskinparken/" data-cta="Se maskinerne"><span class="km-prik" aria-hidden="true"></span><span class="km-skilt km-skilt-altid">Maskinparken</span></button></div>
           </div>
           <div class="km-panel" id="km-panel" role="dialog" aria-modal="false" aria-labelledby="km-panel-h" hidden>
             <button class="km-luk" type="button" aria-label="Luk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
@@ -123,7 +124,6 @@
           </div>
         </figure>
       </div>
-      <p class="r12-skub" aria-hidden="true">Skub kortet til siden →</p>
       <details class="r12-steder" id="steder">
         <summary>Vis alle steder <span aria-hidden="true">→</span></summary>
         <ul>
@@ -246,15 +246,15 @@
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=88083686"></script>
-<script src="/assets/round3.js?v=88083686" defer></script>
-<script src="/assets/round4.js?v=88083686" defer></script>
-<script src="/assets/round5-tekst.js?v=88083686" defer></script>
-<script src="/assets/round5.js?v=88083686" defer></script>
-<script src="/assets/round6-tekst.js?v=88083686" defer></script>
-<script src="/assets/kaede.js?v=88083686" defer></script>
-<script src="/assets/round6.js?v=88083686" defer></script>
-<script src="/assets/ankre.js?v=88083686" defer></script>
-<script src="/assets/forside.js?v=88083686" defer></script>
+<script src="/assets/site.js?v=9ada3626"></script>
+<script src="/assets/round3.js?v=9ada3626" defer></script>
+<script src="/assets/round4.js?v=9ada3626" defer></script>
+<script src="/assets/round5-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/round5.js?v=9ada3626" defer></script>
+<script src="/assets/round6-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/kaede.js?v=9ada3626" defer></script>
+<script src="/assets/round6.js?v=9ada3626" defer></script>
+<script src="/assets/ankre.js?v=9ada3626" defer></script>
+<script src="/assets/forside.js?v=9ada3626" defer></script>
 </body>
 </html>

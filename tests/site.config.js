@@ -36,6 +36,8 @@ module.exports = {
 
   // Siden hvor tastaturfokus prøves (de første fire Tab-tryk skal give en synlig fokusmarkering).
   tastaturSide: '/oplevelser/', // Tingsvad
+  // Sider hvor alle knapper måles for kontrast (runde 13). Fold-knapperne bor på Arkivet og Historien.
+  kontrastSider: ['/arkivet/', '/historien/', '/maskinrummet/'], // Tingsvad
   // tastaturSide: '/',
 
   // Ekstra tjek der køres på hver side, mens den alligevel er åben (så siden ikke hentes to gange). Valgfri.

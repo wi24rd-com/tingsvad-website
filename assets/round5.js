@@ -63,7 +63,7 @@
     const A = T.akt;
     const linjer = A.linjer.map((l, i) => i < 4 ? `<p>${esc(l)}</p>` : '').join('');
     const strege = A.skjult.map((s, i) => `<span class="akt-linje"><button type="button" class="akt-streg" aria-expanded="false" aria-controls="akt-s${i}" aria-label="${esc(s[1])}"></button><span class="akt-afsl" id="akt-s${i}" hidden>${esc(s[0])}</span></span>`).join('');
-    el.innerHTML = `<div class="akt"><div class="akt-dok">${img(NY + 'arkivdokument.webp', '', 800, 1200)}<div class="akt-tekst"><div class="akt-hoved">${esc(A.hoved)}</div>${linjer}<p>${esc(A.linjer[4])}${strege}</p><div class="akt-saml" id="akt-saml" hidden>${samlKnap('archive')}<span class="note">${esc(A.fund)}</span></div></div></div><p class="note">${esc(A.fod)}</p></div>`;
+    el.innerHTML = `<div class="akt"><div class="akt-dok">${img(NY + 'arkivdokument.webp', '', 800, 1200).replace('loading="lazy"', 'loading="eager"')}<div class="akt-tekst"><div class="akt-hoved">${esc(A.hoved)}</div>${linjer}<p>${esc(A.linjer[4])}${strege}</p><div class="akt-saml" id="akt-saml" hidden>${samlKnap('archive')}<span class="note">${esc(A.fund)}</span></div></div></div><p class="note">${esc(A.fod)}</p></div>`;
     $$('.akt-streg', el).forEach((b, i) => b.addEventListener('click', () => {
       const åben = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', String(!åben)); const t = $('#' + b.getAttribute('aria-controls'), el); t.hidden = åben; b.classList.toggle('aaben', !åben);
       if (i === 3 && !åben) { $('#akt-saml', el).hidden = false; }

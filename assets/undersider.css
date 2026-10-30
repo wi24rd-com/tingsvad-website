@@ -72,6 +72,8 @@ body.r12s {
   .r12s-menu a { white-space: nowrap; border: 1px solid var(--linje); background: var(--kortflade); padding: .35rem .8rem; min-height: 2.5rem; font-size: .95rem; }
 }
 @media (max-width: 720px) { .r12s-side { top: calc(3.3rem + env(safe-area-inset-top, 0px)); } }
+@media (max-width: 960px) { .r12s-side { transition: transform .25s, opacity .25s; } .r12s-side.r12s-side-skjult { transform: translateY(-110%); opacity: 0; pointer-events: none; } }
+@media (prefers-reduced-motion: reduce) { .r12s-side { transition: none; } }
 
 /* ── Indhold ── */
 .r12s-indhold { min-width: 0; }
@@ -153,8 +155,8 @@ body.r12s {
 .r12s-gammel figcaption { font-size: .92rem; color: var(--ink2); }
 .r12s-gammel .protokol, .r12s-gammel .regnskab, .r12s-gammel .gitlog-wrap { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; }
 .r12s-gammel .vidfakta { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; }
-.r12s .fold-knap.knap.sek { border-radius: 10px; border-color: var(--guld); color: var(--ink); background: var(--kortflade); }
-.r12s .fold-knap.knap.sek:hover { background: var(--p2); }
+/* Runde 13: fold-knapperne er almindelige sekundære knapper (lys guld-flade, mørk tekst) – den mørke kortflade gav 1,13:1 i mørkt tema. */
+.r12s .fold-knap.knap.sek { border-radius: 10px; }
 .r12s-gammel .fakta li { background: var(--kortflade); border: 1px solid var(--linje); border-radius: 12px; }
 
 /* Det står med småt */
@@ -429,8 +431,8 @@ body.r12m { --gron2: #142a1e; --guld2: #e6bd68; --serif: "Alegreya Sans", "Gill 
 .mr-lag-hoved { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .8rem 2.5rem; align-items: end; }
 .mr-lag-tekst > * { margin: 0; }
 .mr-lag-over { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--dawn); }
-.mr-lag-tekst h3 { margin: .3rem 0 .2rem; font-family: var(--display); font-weight: 500; font-size: clamp(1.6rem, 2.8vw, 2.2rem); letter-spacing: -.02em; line-height: 1.1; color: var(--mist); }
-.r12m .mr-lag-tekst h3 { font-family: var(--titel); font-weight: 700; letter-spacing: .01em; }
+.mr-lag-tekst :is(h2, h3) { margin: .3rem 0 .2rem; font-family: var(--display); font-weight: 500; font-size: clamp(1.6rem, 2.8vw, 2.2rem); letter-spacing: -.02em; line-height: 1.1; color: var(--mist); }
+.r12m .mr-lag-tekst :is(h2, h3) { font-family: var(--titel); font-weight: 700; letter-spacing: .01em; }
 .mr-lag-kort { font-style: italic; color: var(--dawn); font-size: 1.02rem; }
 .mr-lag-tekst p:last-child { margin-top: .5rem; max-width: 68ch; color: var(--mist-dim); line-height: 1.55; }
 .mr-lag-knap { white-space: nowrap; }

@@ -33,10 +33,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=88083686">
-<link rel="stylesheet" href="/assets/forside.css?v=88083686">
-<link rel="stylesheet" href="/assets/undersider.css?v=88083686">
-<link rel="stylesheet" href="/assets/infrakort.css?v=88083686">
+<link rel="stylesheet" href="/assets/site.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/forside.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/undersider.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/infrakort.css?v=9ada3626">
 </head>
 <body data-side="maskinrummet" class="r12m">
 <header class="r12-top" id="top">
@@ -74,15 +74,15 @@
   <img class="side-aa" src="/assets/pak/toppe/aa-linje.svg" alt="" width="1440" height="48">
 </header>
 
-<main class="col gutter">
+<main id="indhold" class="col gutter">
   <section id="maskinrum-side">
     <div class="txt r6-intro" id="maskinrummet">
-      <h3 class="maskinrum-h">Sådan er vadestedet bygget</h3>
+      <h2 class="maskinrum-h">Sådan er vadestedet bygget</h2>
       <p class="lead">For de IT-kyndige: tinget kører på Cloudflares platform, fra DNS til kunstig intelligens, uden en eneste server, som nogen skal holde øje med. Det passer tinget fint. Det har aldrig holdt øje med noget. Siden er dermed også en åben demo af, hvad man kan bygge på Cloudflare Workers og resten af platformen – med kildekoden frit tilgængelig.</p>
       <p class="note">Kolofon, ikke fiktion. Alt herunder er, hvad sitet faktisk bruger. Kildekoden ligger på <a href="https://github.com/wi24rd-com/tingsvad-website" rel="noopener">GitHub</a>.</p>
     </div>
     <div class="txt">
-      <h3 class="maskinrum-h" id="arkitektur-h">Arkitekturen, som den svarer lige nu</h3>
+      <h2 class="maskinrum-h" id="arkitektur-h">Arkitekturen, som den svarer lige nu</h2>
       <p>Diagrammet tegnes af din browser ud fra Workerens <code>health</code>-svar: lagene fra din browser til modellerne, hvert produkt, om bindingen er tændt, og hvor mange af tingets seksten maskiner der bruger det.</p>
     </div>
     <div class="ik-indgang"><p><b>Se det hele på ét kort</b>Infrastrukturkortet viser, hvilket datacenter der svarede dig, hvor databasen og de to Durable Objects bor, og målte svartider for hver binding.</p><a class="knap" href="/maskinrummet/kortet/">Åbn infrastrukturkortet <span aria-hidden="true">→</span></a></div>
@@ -93,7 +93,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 1 af 7 · 8 kort</p>
-            <h3>Kanten</h3>
+            <h2 class="mr-lag-h2">Kanten</h2>
             <p class="mr-lag-kort">Navn, værn og adgang foran alt andet.</p>
             <p>Før en eneste linje af tingets kode kører, har Cloudflares net allerede slået navnet op, valgt det nærmeste datacenter, krypteret forbindelsen og sorteret angreb og robotter fra. Kanten er alt det, der sker i de første millisekunder, tæt på dig.</p>
           </div>
@@ -114,7 +114,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 2 af 7 · 5 kort</p>
-            <h3>Levering</h3>
+            <h2 class="mr-lag-h2">Levering</h2>
             <p class="mr-lag-kort">Sitet selv: statiske filer og en Worker, der kun vågner, når der er brug for den.</p>
             <p>Siderne er almindelige filer, der sendes direkte fra kanten. Kun når en side skal have topbjælke, sprog eller et API-svar, vågner site-Workeren, gør sit arbejde i samme request og lægger sig til at sove igen.</p>
           </div>
@@ -132,7 +132,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 3 af 7 · 10 kort</p>
-            <h3>Beregning</h3>
+            <h2 class="mr-lag-h2">Beregning</h2>
             <p class="mr-lag-kort">Tingets maskiner i en Worker uden egen adresse.</p>
             <p>Alt, der kræver mere end at sende en fil, sker i maskin-Workeren bag en service binding: afstemninger, ansøgninger, avistryk og ravnepost. Her bor de lange processer, der skal kunne sove, vågne og fortsætte uden at miste tråden.</p>
           </div>
@@ -155,7 +155,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 4 af 7 · 6 kort</p>
-            <h3>Data</h3>
+            <h2 class="mr-lag-h2">Data</h2>
             <p class="mr-lag-kort">Hvor tinget husker, så godt det kan.</p>
             <p>Tingets hukommelse er delt efter, hvad den skal huske: hurtige tællere i KV, sager og kvoter i en SQL-database, filer i R2 og betydning i et vektorindeks. Intet af det gemmer, hvem du er.</p>
           </div>
@@ -174,7 +174,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 5 af 7 · 5 kort</p>
-            <h3>AI og browsere på kanten</h3>
+            <h2 class="mr-lag-h2">AI og browsere på kanten</h2>
             <p class="mr-lag-kort">Modeller og en headless browser, alle bag bindings.</p>
             <p>Sprogmodeller, billedmodeller og en rigtig browser kører i Cloudflares eget net og kaldes gennem bindings uden API-nøgler i koden. Hvert kald har en døgnkvote, og svarene valideres, før nogen ser dem.</p>
           </div>
@@ -192,7 +192,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 6 af 7 · 2 kort</p>
-            <h3>Din browser</h3>
+            <h2 class="mr-lag-h2">Din browser</h2>
             <p class="mr-lag-kort">Det, der aldrig forlader din maskine.</p>
             <p>Noget af tinget kører slet ikke på en server. Kodegryden, lydene, udgravningen og dine fund lever i din egen browser under en streng CSP og sendes aldrig nogen steder hen.</p>
           </div>
@@ -207,7 +207,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Lag 7 af 7 · 5 kort</p>
-            <h3>Værktøj og kvalitet</h3>
+            <h2 class="mr-lag-h2">Værktøj og kvalitet</h2>
             <p class="mr-lag-kort">Det, der holder resten ærligt.</p>
             <p>Målinger, faste tal og automatiske tests sørger for, at det, siden påstår om sig selv, også passer. Hver morgen går Gudrun siderne igennem, og fejl bliver til sager på GitHub.</p>
           </div>
@@ -299,17 +299,17 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/findes-ikke/</cod
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=88083686"></script>
-<script src="/assets/round3.js?v=88083686" defer></script>
-<script src="/assets/round4.js?v=88083686" defer></script>
-<script src="/assets/round5-tekst.js?v=88083686" defer></script>
-<script src="/assets/round5.js?v=88083686" defer></script>
-<script src="/assets/round6-tekst.js?v=88083686" defer></script>
-<script src="/assets/kaede.js?v=88083686" defer></script>
-<script src="/assets/round6.js?v=88083686" defer></script>
-<script src="/assets/round9-tekst.js?v=88083686" defer></script>
-<script src="/assets/round9.js?v=88083686" defer></script>
-<script src="/assets/round10.js?v=88083686" defer></script>
-<script src="/assets/ankre.js?v=88083686" defer></script>
+<script src="/assets/site.js?v=9ada3626"></script>
+<script src="/assets/round3.js?v=9ada3626" defer></script>
+<script src="/assets/round4.js?v=9ada3626" defer></script>
+<script src="/assets/round5-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/round5.js?v=9ada3626" defer></script>
+<script src="/assets/round6-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/kaede.js?v=9ada3626" defer></script>
+<script src="/assets/round6.js?v=9ada3626" defer></script>
+<script src="/assets/round9-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/round9.js?v=9ada3626" defer></script>
+<script src="/assets/round10.js?v=9ada3626" defer></script>
+<script src="/assets/ankre.js?v=9ada3626" defer></script>
 </body>
 </html>

@@ -201,7 +201,7 @@
 
   /* ── Op/ned-pile i højre side: én skærm ad gangen. Scrollbaren er desuden altid synlig (CSS). ── */
   (function () {
-    if (matchMedia('(pointer: coarse)').matches || innerWidth <= 700 || document.querySelector('.rul')) return;
+    if (matchMedia('(pointer: coarse)').matches || innerWidth <= 1100 || document.body.classList.contains('r12') || document.querySelector('.rul')) return; // runde 13: ikke på forsiden (kortpanel + Mímir-knap), ikke på smalle skærme
     const rul = document.createElement('div'); rul.className = 'rul';
     const pil = (op) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${op ? 'M12 19V5M5 12l7-7 7 7' : 'M12 5v14M19 12l-7 7-7-7'}"/></svg>`;
     const lbl = lang === 'da' ? ['Rul en skærm op', 'Rul en skærm ned'] : ['Scroll one screen up', 'Scroll one screen down'];
@@ -212,6 +212,16 @@
     const [op, ned] = rul.querySelectorAll('button');
     const opd = () => { op.disabled = scrollY < 4; ned.disabled = scrollY + innerHeight >= document.documentElement.scrollHeight - 4; };
     addEventListener('scroll', opd, { passive: true }); addEventListener('resize', opd); opd();
+  })();
+
+  /* ── »På denne side« på smalle skærme (runde 13): den faste bjælke glider væk, når man ruller ned, og kommer igen ved rul op ── */
+  (function () {
+    const side = $('.r12s-side'); if (!side || !matchMedia('(max-width: 960px)').matches) return;
+    let sidst = scrollY, tik = false;
+    addEventListener('scroll', () => {
+      if (tik) return; tik = true;
+      requestAnimationFrame(() => { const y = scrollY; side.classList.toggle('r12s-side-skjult', y > sidst + 6 && y > 160); if (y < sidst - 6) side.classList.remove('r12s-side-skjult'); sidst = y; tik = false; });
+    }, { passive: true });
   })();
 
   /* ── Mobilmenuen i topbaren (runde 10): lukker ved Escape, klik udenfor og valg af en side ── */
@@ -414,7 +424,7 @@
     if (!alleSager.length) { gbList.innerHTML = `<li class="sager-tom">${T.gbTom}</li>`; if (sagNav) sagNav.hidden = true; return; }
     const sider = Math.ceil(alleSager.length / PR_SIDE); side = Math.max(0, Math.min(side, sider - 1));
     const vis = alleSager.slice(side * PR_SIDE, side * PR_SIDE + PR_SIDE);
-    gbList.innerHTML = vis.map(s => `<li><span class="nr">${esc(s.nr)}${s.dato ? '<br><span style="color:var(--mist-dim)">' + esc(String(s.dato)) + '</span>' : ''}</span><div><b>${esc(s.navn)}</b><p>${esc(s.sag)}</p></div><span class="u">${T.status}</span></li>`).join('');
+    gbList.innerHTML = vis.map(s => `<li><span class="nr">${esc(s.nr)}${s.dato ? '<br><span style="color:var(--mist-dim)">' + esc(String(s.dato)) + '</span>' : ''}</span><div${lang === 'en' && /^980-000[123]$/.test(s.nr) ? ' lang="da"' : ''}><b>${esc(s.navn)}</b><p>${esc(s.sag)}</p></div><span class="u">${T.status}</span></li>`).join('');
     if (sagNav) { sagNav.hidden = sider <= 1; sagNyere.disabled = side === 0; sagAeldre.disabled = side >= sider - 1; sagSide.textContent = (lang === 'da' ? 'Side {a} af {b} · {n} sager, alle udsat' : 'Page {a} of {b} · {n} cases, all adjourned').replace('{a}', side + 1).replace('{b}', sider).replace('{n}', alleSager.length); }
   }
   if (sagNyere) sagNyere.addEventListener('click', () => { side--; visSager(); gbList.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); });

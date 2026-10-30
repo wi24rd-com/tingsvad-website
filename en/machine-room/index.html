@@ -33,10 +33,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Unicase:wght@600;700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=88083686">
-<link rel="stylesheet" href="/assets/forside.css?v=88083686">
-<link rel="stylesheet" href="/assets/undersider.css?v=88083686">
-<link rel="stylesheet" href="/assets/infrakort.css?v=88083686">
+<link rel="stylesheet" href="/assets/site.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/forside.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/undersider.css?v=9ada3626">
+<link rel="stylesheet" href="/assets/infrakort.css?v=9ada3626">
 </head>
 <body data-side="maskinrummet" class="r12m">
 <header class="r12-top" id="top">
@@ -74,15 +74,15 @@
   <img class="side-aa" src="/assets/pak/toppe/aa-linje.svg" alt="" width="1440" height="48">
 </header>
 
-<main class="col gutter">
+<main id="indhold" class="col gutter">
   <section id="maskinrum-side">
     <div class="txt r6-intro" id="maskinrummet">
-      <h3 class="maskinrum-h">How the ford is built</h3>
+      <h2 class="maskinrum-h">How the ford is built</h2>
       <p class="lead">For the technically minded: the thing runs on Cloudflare’s platform, from DNS to artificial intelligence, without a single server anyone has to watch. That suits the thing. It has never watched anything. The site is thereby also an open demo of what can be built on Cloudflare Workers and the rest of the platform – with the source code freely available.</p>
       <p class="note">Colophon, not fiction. Everything below is what the site actually uses. The source is on <a href="https://github.com/wi24rd-com/tingsvad-website" rel="noopener">GitHub</a>.</p>
     </div>
     <div class="txt">
-      <h3 class="maskinrum-h" id="arkitektur-h">The architecture, as it answers right now</h3>
+      <h2 class="maskinrum-h" id="arkitektur-h">The architecture, as it answers right now</h2>
       <p>The diagram is drawn by your browser from the Worker’s <code>health</code> answer: the layers from your browser to the models, every product, whether its binding is on, and how many of the thing’s sixteen machines use it.</p>
     </div>
     <div class="ik-indgang"><p><b>See all of it on one map</b>The infrastructure map shows which data centre answered you, where the database and the two Durable Objects live, and measured response times for every binding.</p><a class="knap" href="/en/machine-room/map/">Open the infrastructure map <span aria-hidden="true">→</span></a></div>
@@ -93,7 +93,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 1 of 7 · 8 cards</p>
-            <h3>The edge</h3>
+            <h2 class="mr-lag-h2">The edge</h2>
             <p class="mr-lag-kort">Name, shields and access in front of everything.</p>
             <p>Before a single line of the thing’s code runs, Cloudflare’s network has already looked up the name, picked the nearest data centre, encrypted the connection and filtered out attacks and bots. The edge is everything that happens in the first milliseconds, close to you.</p>
           </div>
@@ -114,7 +114,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 2 of 7 · 5 cards</p>
-            <h3>Delivery</h3>
+            <h2 class="mr-lag-h2">Delivery</h2>
             <p class="mr-lag-kort">The site itself: static files and a Worker that only wakes up when it is needed.</p>
             <p>The pages are ordinary files sent straight from the edge. Only when a page needs its header, language or an API answer does the site Worker wake up, do its work in the same request and go back to sleep.</p>
           </div>
@@ -132,7 +132,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 3 of 7 · 10 cards</p>
-            <h3>Compute</h3>
+            <h2 class="mr-lag-h2">Compute</h2>
             <p class="mr-lag-kort">The thing’s machines in a Worker with no address of its own.</p>
             <p>Everything that needs more than sending a file happens in the machine Worker behind a service binding: votes, applications, printing the paper and raven post. This is where the long processes live that must be able to sleep, wake and carry on without losing the thread.</p>
           </div>
@@ -155,7 +155,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 4 of 7 · 6 cards</p>
-            <h3>Data</h3>
+            <h2 class="mr-lag-h2">Data</h2>
             <p class="mr-lag-kort">Where the thing remembers, as well as it can.</p>
             <p>The thing’s memory is split by what it has to remember: quick counters in KV, cases and quotas in an SQL database, files in R2 and meaning in a vector index. None of it stores who you are.</p>
           </div>
@@ -174,7 +174,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 5 of 7 · 5 cards</p>
-            <h3>AI and browsers at the edge</h3>
+            <h2 class="mr-lag-h2">AI and browsers at the edge</h2>
             <p class="mr-lag-kort">Models and a headless browser, all behind bindings.</p>
             <p>Language models, image models and a real browser run inside Cloudflare’s own network and are called through bindings with no API keys in the code. Every call has a daily quota, and the answers are validated before anyone sees them.</p>
           </div>
@@ -192,7 +192,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 6 of 7 · 2 cards</p>
-            <h3>Your browser</h3>
+            <h2 class="mr-lag-h2">Your browser</h2>
             <p class="mr-lag-kort">What never leaves your machine.</p>
             <p>Some of the thing never runs on a server at all. The cauldron, the sounds, the excavation and your finds live in your own browser under a strict CSP and are never sent anywhere.</p>
           </div>
@@ -207,7 +207,7 @@
         <div class="mr-lag-hoved">
           <div class="mr-lag-tekst">
             <p class="mr-lag-over">Layer 7 of 7 · 5 cards</p>
-            <h3>Tooling and quality</h3>
+            <h2 class="mr-lag-h2">Tooling and quality</h2>
             <p class="mr-lag-kort">What keeps the rest honest.</p>
             <p>Measurements, fixed numbers and automated tests make sure that what the site claims about itself is also true. Every morning Gudrun goes through the pages, and faults become issues on GitHub.</p>
           </div>
@@ -299,18 +299,18 @@ curl -H "Accept: application/problem+json" https://tingsvad.dk/en/does-not-exist
 
 <div data-tv-del="footer"></div>
 
-<script src="/assets/site.js?v=88083686"></script>
-<script src="/assets/round3.js?v=88083686" defer></script>
-<script src="/assets/round4.js?v=88083686" defer></script>
-<script src="/assets/round5-tekst.js?v=88083686" defer></script>
-<script src="/assets/round5.js?v=88083686" defer></script>
-<script src="/assets/round6-tekst.js?v=88083686" defer></script>
-<script src="/assets/kaede.js?v=88083686" defer></script>
-<script src="/assets/round6.js?v=88083686" defer></script>
-<script src="/assets/round9-tekst.js?v=88083686" defer></script>
-<script src="/assets/round9.js?v=88083686" defer></script>
-<script src="/assets/round10.js?v=88083686" defer></script>
-<script src="/assets/ankre.js?v=88083686" defer></script>
+<script src="/assets/site.js?v=9ada3626"></script>
+<script src="/assets/round3.js?v=9ada3626" defer></script>
+<script src="/assets/round4.js?v=9ada3626" defer></script>
+<script src="/assets/round5-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/round5.js?v=9ada3626" defer></script>
+<script src="/assets/round6-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/kaede.js?v=9ada3626" defer></script>
+<script src="/assets/round6.js?v=9ada3626" defer></script>
+<script src="/assets/round9-tekst.js?v=9ada3626" defer></script>
+<script src="/assets/round9.js?v=9ada3626" defer></script>
+<script src="/assets/round10.js?v=9ada3626" defer></script>
+<script src="/assets/ankre.js?v=9ada3626" defer></script>
 </body>
 </html><tr><td class="h">01915ragn</td><td class="d">1915</td><td class="t">feat:</td><td class="m">§ 9: women have the vote. Passed after Ragnhild looked</td><td class="ru" title="ragnhild">ᚱᛅᚴᚾᚼᛁᛚᛏ</td><td class="tag"></td></tr>
 
