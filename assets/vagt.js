@@ -4,8 +4,9 @@
    Indtil første indsamling (eller med ?eksempel) vises et mærket øjebliksbillede fra /assets/vagt-eksempel.json. */
 (function () {
   'use strict';
-  const rod = document.getElementById('vagt');
-  if (!rod) return;
+  // Runde 13: Værnet og Crawlerne bor på samme side (/maskinrummet/tal/) som to faner, så scriptet kører pr. rod.
+  document.querySelectorAll('[data-vagt]').forEach(koer);
+  function koer(rod) {
   const side = rod.getAttribute('data-vagt') === 'crawlere' ? 'crawlere' : 'vaern';
   const da = document.documentElement.lang !== 'en', lang = da ? 'da' : 'en', loc = da ? 'da-DK' : 'en-GB';
   const tvang = /[?&]eksempel\b/.test(location.search);
@@ -162,8 +163,8 @@
     const colos = v.colos.map(c => { const p = xyColo(c.kode); if (!p) return ''; const s = (1.8 + 3.2 * Math.sqrt(c.n / mc)) / k; return `<path class="vg-colo" d="M${p[0]} ${(p[1] - s).toFixed(2)} L${(p[0] + s).toFixed(2)} ${p[1]} L${p[0]} ${(p[1] + s).toFixed(2)} L${(p[0] - s).toFixed(2)} ${p[1]} Z"><title>${esc(coloNavn(c.kode))}: ${esc(T.blok(c.n))}</title></path>`; }).join('');
     const etiketter = v.lande.slice(0, visning === 'europa' ? 8 : 5).map(l => { const p = L[l.kode]; if (!p) return ''; const rr = (2.4 + 9 * Math.sqrt(l.n / ml)) / k; return `<text class="vg-etiket" x="${(p[0] + rr + 3 / k).toFixed(2)}" y="${(p[1] + 4 / k).toFixed(2)}" style="font-size:${r(11.5)}px;stroke-width:${r(3)}px">${esc(landNavn(l.kode))}</text>`; }).join('');
     const desc = fmt(T.kortDesc, { lande: v.lande.slice(0, 3).map(l => landNavn(l.kode)).join(', '), colos: v.colos.slice(0, 3).map(c => coloNavn(c.kode)).join(', ') });
-    return `<svg class="vg-kort" viewBox="${vx} ${vy} ${vw} ${vh}" role="img" aria-labelledby="vg-kort-t vg-kort-d" preserveAspectRatio="xMidYMid meet">
-      <title id="vg-kort-t">${esc(T.kortTitel)}</title><desc id="vg-kort-d">${esc(desc)}</desc>
+    return `<svg class="vg-kort" viewBox="${vx} ${vy} ${vw} ${vh}" role="img" aria-labelledby="vg-kort-t-${side} vg-kort-d-${side}" preserveAspectRatio="xMidYMid meet">
+      <title id="vg-kort-t-${side}">${esc(T.kortTitel)}</title><desc id="vg-kort-d-${side}">${esc(desc)}</desc>
       <rect class="vg-hav" x="0" y="0" width="1000" height="500"/><g class="vg-gitter" style="stroke-width:${r(.4)}">${g.join('')}</g>
       <path class="vg-landflade" d="${verden.land}" style="stroke-width:${r(.5)}"/>
       <g>${alle}</g><g>${buer}</g><g style="stroke-width:${r(.6)}">${lande}</g><g style="stroke-width:${r(.5)}">${colos}</g><g>${etiketter}</g></svg>`;
@@ -249,4 +250,5 @@
     }
   }
   start();
+  }
 })();

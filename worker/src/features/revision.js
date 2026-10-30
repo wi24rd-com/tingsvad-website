@@ -33,6 +33,7 @@ export const SELEKTORER = {
   maskinrummet: { kort: '#maskinrum-gitter article', arkitektur: '#arkitektur' },
   revisionen: { tabel: '#revisionen-ind' },
   noedoevelser: { oevelser: '[data-oev]' },
+  tal: { faner: '.tal-faner [role="tab"]', tavler: '.tal-tavle' },
 };
 export const SIDER = Object.entries(KANON.sider).map(([k, v]) => [k, v.da, v.en, SELEKTORER[k] || {}]);
 const sideNavn = side => { const k = side.replace(/-(da|en)$/, ''); return (KANON.sider[k] && KANON.sider[k].navn) || null; };

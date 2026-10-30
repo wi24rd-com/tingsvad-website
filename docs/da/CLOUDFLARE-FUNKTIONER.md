@@ -208,7 +208,7 @@ Planer og priser ændrer sig. Tjek altid [Cloudflares dokumentation](https://dev
 ## 6. Sikkerhed og adgang
 
 ### DDoS-beskyttelse og WAF
-- **Bruges til:** Kendte angreb (fx React RCE og WordPress-sårbarheder) stoppes, før de når Workerne. Se [Værnet](https://tingsvad.dk/maskinrummet/vaernet/).
+- **Bruges til:** Kendte angreb (fx React RCE og WordPress-sårbarheder) stoppes, før de når Workerne. Se [Værnet](https://tingsvad.dk/maskinrummet/tal/#vaernet).
 - **Sådan:** Tændt som standard. Security → WAF → Managed rules.
 - **Plan:** Free (Cloudflares gratis regelsæt), mere med betalte planer.
 
@@ -261,7 +261,7 @@ Planer og priser ændrer sig. Tjek altid [Cloudflares dokumentation](https://dev
 - **Plan:** Free.
 
 ### Web Analytics
-- **Bruges til:** Besøg og Core Web Vitals fra rigtige gæster uden cookies. Se [Hastigheden](https://tingsvad.dk/maskinrummet/hastigheden/).
+- **Bruges til:** Besøg og Core Web Vitals fra rigtige gæster uden cookies. Se [Hastigheden](https://tingsvad.dk/maskinrummet/tal/#hastigheden).
 - **Sådan:** Analytics → Web analytics → Add a site → vælg domænet → *Enable with JS Snippet installation*, og læg tokenet i `WEB_ANALYTICS_TOKEN`.
 - **Plan:** Free.
 - **Pas på:** Sitet skal være oprettet for det domæne, beaconen sendes fra. Ellers afviser Cloudflare den (CORS), og intet tælles.
@@ -273,7 +273,7 @@ Planer og priser ændrer sig. Tjek altid [Cloudflares dokumentation](https://dev
 - **Pas på:** Lange perioder samples. Hent ét døgn ad gangen.
 
 ### Cloudflare Radar API
-- **Bruges til:** [Danmark lige nu](https://tingsvad.dk/maskinrummet/danmark/): bots, AI-crawlere, angreb, kvantesikre forbindelser og hastighed i Danmark.
+- **Bruges til:** [Danmark lige nu](https://tingsvad.dk/maskinrummet/tal/#danmark): bots, AI-crawlere, angreb, kvantesikre forbindelser og hastighed i Danmark.
 - **Sådan:** Samme token med **Account → Radar → Read**. Fx `GET /client/v4/radar/http/summary/bot_class?location=DK&dateRange=7d`.
 - **Plan:** Free. Data er CC BY-NC 4.0.
 

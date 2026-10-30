@@ -101,6 +101,10 @@
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
 
+/assets/tal.js
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
 /assets/vagt-eksempel.json
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate

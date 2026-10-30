@@ -10,6 +10,9 @@ A sprint that works through every finding of the 29 October review (security, OP
 
 <details><summary>Details</summary>
 
+### Fewer pages
+- **The four number pages are one**: `/maskinrummet/tal/` · `/en/machine-room/numbers/` shows the Defences, the Crawlers, the Speed and Denmark right now as four tabs (`assets/tal.js`; the address follows the tab, the painting in the top changes with it, arrow keys move between tabs, and without JavaScript all four boards stand below each other). The old addresses answer 301 to their tab, and old `#vaernet-live`-style anchors land on the right board too. `vagt.js` and `maaling.js` run once per board on the page. 56 pages in the sitemap instead of 62; the Zero Trust door and the European archive cabinet stay on their own, since they are explanations, not boards.
+
 ### Architecture
 - **The guestbook lives in D1** (`worker/migrations/0005_gaestebog.sql`, `worker/src/lib/gaestebog.js`): the case number comes from `INSERT … RETURNING`, so two guests at once never get the same number (the KV read-modify-write did, reproduced in the second outside review). The decide counter and today's visitors took the same road (an atomic `+1`, and one row per day-hash, deleted after two days). The site Worker reaches them through `intern/*` routes on the ting-ai service binding, which the public proxy never forwards; Turnstile, honeypot, validation and the two-minute pacing stay in the site Worker. The old KV list is imported once on the first write, and numbers of deleted cases are not reused. Test: twenty concurrent cases, twenty different numbers.
 - **One response contract** for every JSON route on both Workers (`shared/svar.js`): `{ok:true, source, requestId, data}` and `{ok:false, code, message, requestId, retryAfter?}` with a `Retry-After` header; `/api/sager`, `/api/afgoer` and `/api/besoeg` answer in it now (before: a bare array and `{error}`), and the pages read the new shape.

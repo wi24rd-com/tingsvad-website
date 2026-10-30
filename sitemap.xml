@@ -136,38 +136,14 @@
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/kortet/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/map/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/kortet/"/></url>
-  <url><loc>https://tingsvad.dk/maskinrummet/vaernet/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/vaernet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/defences/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/vaernet/"/></url>
-  <url><loc>https://tingsvad.dk/en/machine-room/defences/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/vaernet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/defences/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/vaernet/"/></url>
-  <url><loc>https://tingsvad.dk/maskinrummet/crawlerne/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/crawlerne/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/crawlers/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/crawlerne/"/></url>
-  <url><loc>https://tingsvad.dk/en/machine-room/crawlers/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/crawlerne/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/crawlers/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/crawlerne/"/></url>
-  <url><loc>https://tingsvad.dk/maskinrummet/hastigheden/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/hastigheden/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/speed/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/hastigheden/"/></url>
-  <url><loc>https://tingsvad.dk/en/machine-room/speed/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/hastigheden/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/speed/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/hastigheden/"/></url>
-  <url><loc>https://tingsvad.dk/maskinrummet/danmark/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/danmark/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/denmark/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/danmark/"/></url>
-  <url><loc>https://tingsvad.dk/en/machine-room/denmark/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/danmark/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/denmark/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/danmark/"/></url>
+  <url><loc>https://tingsvad.dk/maskinrummet/tal/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/tal/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/numbers/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/tal/"/></url>
+  <url><loc>https://tingsvad.dk/en/machine-room/numbers/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/tal/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/numbers/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/tal/"/></url>
   <url><loc>https://tingsvad.dk/maskinrummet/arkivskabet/</loc><lastmod>2026-10-30</lastmod>
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/arkivskabet/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/archive-cabinet/"/>

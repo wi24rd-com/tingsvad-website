@@ -6,5 +6,5 @@
     "sagsmappe.js": ["sagsmappe-tekst.js", "sagsmappe.js"],
     "maskinrum.js": ["maskinrum.js"]
   },
-  "versioneret": ["kanon.json", "site.css", "site.js", "tingsvad.js", "indslag.js", "sagsmappe.js", "maskinrum.js", "forside.css", "forside.js", "undersider.css", "undersider.js", "arkiv-v1.js", "infrakort.css", "infrakort.js", "vagt.css", "vagt.js", "maaling.js", "arkivskab.js", "doeren.js", "vagt-eksempel.json", "verden.json"]
+  "versioneret": ["kanon.json", "site.css", "site.js", "tingsvad.js", "indslag.js", "sagsmappe.js", "maskinrum.js", "forside.css", "forside.js", "undersider.css", "undersider.js", "arkiv-v1.js", "infrakort.css", "infrakort.js", "vagt.css", "vagt.js", "maaling.js", "arkivskab.js", "doeren.js", "tal.js", "vagt-eksempel.json", "verden.json"]
 }

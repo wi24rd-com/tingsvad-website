@@ -24,6 +24,11 @@ import * as sag from '../functions/sag/[nr].js';
 export const OMDIRIGERINGER = {
   '/protokol/': '/arkivet/#protokol', '/protokol': '/arkivet/#protokol',
   '/en/protokol/': '/en/archive/#protokol', '/en/protokol': '/en/archive/#protokol',
+  // Runde 13 (AP8): fire statistiksider blev til én med faner.
+  '/maskinrummet/vaernet/': '/maskinrummet/tal/#vaernet', '/maskinrummet/crawlerne/': '/maskinrummet/tal/#crawlerne',
+  '/maskinrummet/hastigheden/': '/maskinrummet/tal/#hastigheden', '/maskinrummet/danmark/': '/maskinrummet/tal/#danmark',
+  '/en/machine-room/defences/': '/en/machine-room/numbers/#vaernet', '/en/machine-room/crawlers/': '/en/machine-room/numbers/#crawlerne',
+  '/en/machine-room/speed/': '/en/machine-room/numbers/#hastigheden', '/en/machine-room/denmark/': '/en/machine-room/numbers/#danmark',
 };
 
 const API = { '/api/afgoer': afgoer, '/api/besoeg': besoeg, '/api/kant': kant, '/api/sager': sager, '/api/turnstile': turnstile };
@@ -63,8 +68,9 @@ async function filer(env, request) {
 export async function haandter(request, env, ectx = {}) {
   const url = new URL(request.url);
   const sti = url.pathname;
-  if ((request.method === 'GET' || request.method === 'HEAD') && OMDIRIGERINGER[sti]) {
-    return new Response(null, { status: 301, headers: { ...SIKKERHED, location: OMDIRIGERINGER[sti] } });
+  const om = OMDIRIGERINGER[sti] || OMDIRIGERINGER[sti + '/']; // med og uden afsluttende skråstreg
+  if ((request.method === 'GET' || request.method === 'HEAD') && om) {
+    return new Response(null, { status: 301, headers: { ...SIKKERHED, location: om } });
   }
   const data = {};
   const waitUntil = p => (typeof ectx.waitUntil === 'function' ? ectx.waitUntil(p) : undefined);

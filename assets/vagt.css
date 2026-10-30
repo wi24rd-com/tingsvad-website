@@ -309,3 +309,13 @@ rect.vg-soejle:hover, .vg-soejle:hover rect { filter: brightness(1.25); }
 .dr-trin li::before { content: counter(trin); position: absolute; left: 0; top: .1rem; width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font: 700 .9rem var(--mono); color: #1a1205; background: var(--dawn); }
 .dr-opskrift { margin: .8rem 0 0; padding-left: 1.3rem; display: grid; gap: .4rem; }
 .dr-legende i { border-radius: 2px !important; }
+
+/* ── Tallene (runde 13): fire tavler som faner på én side ── */
+.tal-faner { display: flex; flex-wrap: wrap; gap: .4rem; margin: -.6rem 0 .4rem; padding: .35rem; border: 1px solid var(--rule); border-radius: 999px; width: fit-content; max-width: 100%; }
+.tal-faner [role="tab"] { display: inline-flex; align-items: center; min-height: 44px; padding: .4rem 1.05rem; border-radius: 999px; font: 500 1rem/1.2 var(--display); color: var(--mist); text-decoration: none; }
+.tal-faner [role="tab"]:hover { background: var(--bg-2); }
+.tal-faner [role="tab"][aria-selected="true"] { background: var(--dawn-fyld); color: #1b1408; }
+.tal-faner [role="tab"]:focus-visible { outline: 3px solid var(--dawn); outline-offset: 2px; }
+.tal-tavle[hidden] { display: none; }
+.tal-tavle > section + section { margin-top: 2.4rem; }
+@media (max-width: 600px) { .tal-faner { border-radius: 1rem; width: 100%; } .tal-faner [role="tab"] { flex: 1 1 45%; justify-content: center; } }

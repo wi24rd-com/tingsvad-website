@@ -208,7 +208,7 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 ## 6. Security and access
 
 ### DDoS protection and WAF
-- **Used for:** Known attacks (for example React RCE and WordPress vulnerabilities) are stopped before they reach the Workers. See [the defences](https://tingsvad.dk/en/machine-room/defences/).
+- **Used for:** Known attacks (for example React RCE and WordPress vulnerabilities) are stopped before they reach the Workers. See [the defences](https://tingsvad.dk/en/machine-room/numbers/#vaernet).
 - **How:** On by default. Security → WAF → Managed rules.
 - **Plan:** Free (Cloudflare's free ruleset), more with paid plans.
 
@@ -261,7 +261,7 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 - **Plan:** Free.
 
 ### Web Analytics
-- **Used for:** Visits and Core Web Vitals from real guests without cookies. See [the speed](https://tingsvad.dk/en/machine-room/speed/).
+- **Used for:** Visits and Core Web Vitals from real guests without cookies. See [the speed](https://tingsvad.dk/en/machine-room/numbers/#hastigheden).
 - **How:** Analytics → Web analytics → Add a site → pick the domain → *Enable with JS Snippet installation*, and put the token in `WEB_ANALYTICS_TOKEN`.
 - **Plan:** Free.
 - **Watch out:** The site must be created for the domain the beacon is sent from. Otherwise Cloudflare rejects it (CORS), and nothing is counted.
@@ -273,7 +273,7 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 - **Watch out:** Long periods are sampled. Fetch one day at a time.
 
 ### Cloudflare Radar API
-- **Used for:** [Denmark right now](https://tingsvad.dk/en/machine-room/denmark/): bots, AI crawlers, attacks, quantum-safe connections and speed in Denmark.
+- **Used for:** [Denmark right now](https://tingsvad.dk/en/machine-room/numbers/#danmark): bots, AI crawlers, attacks, quantum-safe connections and speed in Denmark.
 - **How:** The same token with **Account → Radar → Read**. For example `GET /client/v4/radar/http/summary/bot_class?location=DK&dateRange=7d`.
 - **Plan:** Free. Data is CC BY-NC 4.0.
 

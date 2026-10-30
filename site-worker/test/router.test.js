@@ -63,6 +63,13 @@ test('haandtering: method-specific handler first, HEAD uses GET, otherwise onReq
   assert.equal(haandtering({ onRequest: () => 'a' }, 'PUT')(), 'a');
 });
 
+test('folded number pages (round 13): the four old addresses 301 to the tab on /maskinrummet/tal/', async () => {
+  for (const [fra, til] of [['/maskinrummet/vaernet/', '/maskinrummet/tal/#vaernet'], ['/maskinrummet/danmark', '/maskinrummet/tal/#danmark'], ['/en/machine-room/speed/', '/en/machine-room/numbers/#hastigheden']]) {
+    const r = await haandter(req(fra), env());
+    assert.equal(r.status, 301, fra); assert.equal(r.headers.get('location'), til);
+  }
+});
+
 test('protocol redirects: 301 with the fragment and security headers (Worker code, since _redirects only covers assets)', async () => {
   for (const [fra, til] of Object.entries(OMDIRIGERINGER)) {
     const r = await haandter(req(fra), env());

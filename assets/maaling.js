@@ -5,8 +5,9 @@
    lige nu et mærket øjebliksbillede fra /assets/vagt-eksempel.json; Hastigheden har intet øjebliksbillede. */
 (function () {
   'use strict';
-  const rod = document.getElementById('maaling');
-  if (!rod) return;
+  // Runde 13: Hastigheden og Danmark lige nu bor på samme side (/maskinrummet/tal/) som to faner, så scriptet kører pr. rod.
+  document.querySelectorAll('[data-maaling]').forEach(koer);
+  function koer(rod) {
   const side = rod.getAttribute('data-maaling') === 'danmark' ? 'danmark' : 'hastighed';
   const da = document.documentElement.lang !== 'en', lang = da ? 'da' : 'en', loc = da ? 'da-DK' : 'en-GB';
   const tvang = /[?&]eksempel\b/.test(location.search);
@@ -184,4 +185,5 @@
     dispatchEvent(new Event('tv:indhold'));
   }
   start();
+  }
 })();

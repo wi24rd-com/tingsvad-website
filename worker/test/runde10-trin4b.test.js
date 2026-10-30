@@ -24,7 +24,7 @@ function siteFetch(over = {}) {
 test('mdTitel and the page list: both languages, one file per page, ARKIV_UDELAD respected', () => {
   assert.equal(mdTitel(md('Historien', 'x')), 'Historien');
   const alle = arkivSider({});
-  assert.ok(alle.length === 62 && alle.every(s => /^[a-z0-9-]+-(da|en)\.md$/.test(s.noegle)));
+  assert.ok(alle.length === 56 && alle.every(s => /^[a-z0-9-]+-(da|en)\.md$/.test(s.noegle)));
   assert.equal(arkivSider({ ARKIV_UDELAD: 'kodegryden-da,kodegryden-en' }).length, alle.length - 2);
   assert.equal(instansNavn({}, 'en'), 'tingsvad-arkiv-en');
 });
