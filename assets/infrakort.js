@@ -209,7 +209,7 @@
       <p class="ik-advarsel" id="ik-advarsel" hidden></p>
       <div class="ik-kortramme">
         <div class="ik-zoom" role="group" aria-label="${esc(T.verden)} / ${esc(T.europa)}"><button type="button" data-vis="verden" aria-pressed="true">${esc(T.verden)}</button><button type="button" data-vis="europa" aria-pressed="false">${esc(T.europa)}</button></div>
-        <div id="ik-kort"></div>
+        <div id="ik-kort" tabindex="0" role="region" aria-label="${esc(T.kortTitel)}"></div>
         <ul class="ik-legende">${['net', 'besog', 'du', 'd1', 'do', 'bue'].map(k => `<li><i class="ik-leg-${k}" aria-hidden="true"></i>${esc(T.leg[k])}</li>`).join('')}</ul>
       </div>
       <div class="ik-kaede-rul" tabindex="0" role="region" aria-label="${esc(T.kaedeTitel)}"><div id="ik-kaede"></div></div>

@@ -1,5 +1,5 @@
 // tingsvad.dk service worker: assets cache-first, sider network-first, /api aldrig cachet.
-const V = 'tingsvad-5ed52696'; // runde 13: sættes af bump.sh til samme hash som ?v= på filerne, så gamle assets ryddes ved hver udgave
+const V = 'tingsvad-ba67bdc0'; // runde 13: sættes af bump.sh til samme hash som ?v= på filerne, så gamle assets ryddes ved hver udgave
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
