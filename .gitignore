@@ -31,3 +31,6 @@ site-worker/node_modules/
 Tingsvad-*/
 # Videoer til sociale medier holdes uden for repoet
 *.mp4
+
+# Lokale fonte til build-og.py (hentes fra @fontsource, OFL)
+og-fonts/
