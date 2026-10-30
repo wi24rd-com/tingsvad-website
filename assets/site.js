@@ -392,7 +392,7 @@
   }
 
   /* ── Gæstebog ── */
-  /* Turnstile (valgfri): widget vises kun, hvis sitet har en sitekey. Hjælperen deles med round6.js via window.tvTurnstile. */
+  /* Turnstile (valgfri): widget vises kun, hvis sitet har en sitekey. Hjælperen deles med maskinpark.js via window.tvTurnstile. */
   window.tvTurnstile = (() => {
     let sitekeyP = null, scriptP = null;
     const sitekey = () => sitekeyP || (sitekeyP = fetch('/api/turnstile').then(r => r.ok ? r.json() : {}).then(j => (j && j.sitekey) || null).catch(() => null));

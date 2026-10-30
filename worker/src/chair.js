@@ -7,10 +7,13 @@ import * as C from './lib/chairlogic.js';
 import { Dagbog } from './lib/dagbog.js';
 
 export class ChairRoom extends DurableObject {
-  constructor(ctx, env) { super(ctx, env); this.ctx = ctx; this.env = env; this.st = null; this.rate = {}; this.dagbog = new Dagbog(ctx.storage); }
+  constructor(ctx, env) { super(ctx, env); this.ctx = ctx; this.env = env; this.st = null; this.rate = null; this.dagbog = new Dagbog(ctx.storage); }
   /** Dagbogen (runde 12): stolens historik som SQL i objektets eget SQLite-lager. */
   async dagbogStatistik() { return this.dagbog.statistik('flyt'); }
   async state() { if (!this.st) this.st = (await this.ctx.storage.get('stol')) || C.freshState(); return this.st; }
+  /** Takten pr. gæst (runde 13, AP7): i objektets lager, ikke kun i hukommelsen, så den overlever hibernation. Gamle vinduer ryddes. */
+  async takt(now) { if (!this.rate) this.rate = (await this.ctx.storage.get('rate')) || {}; for (const k of Object.keys(this.rate)) if (now - this.rate[k].w > C.WINDOW_MS * 2) delete this.rate[k]; return this.rate; }
+  async gem(st) { await this.ctx.storage.put({ stol: st, rate: this.rate || {} }); }
   /** Infrastrukturkortet (runde 12): hvilket datacenter bor objektet i? Svaret kommer fra Cloudflares trace for objektets eget udgående kald. */
   async topologi() { try { return await egetColo(); } catch (e) { return null; } }
   async fetch(request) {
@@ -29,9 +32,9 @@ export class ChairRoom extends DurableObject {
     const st = await this.state(), now = Date.now();
     if (m.type === 'hello') return await this.broadcast();
     if (m.type !== 'move') return this.send(ws, { type: 'error', code: 'unknown_type' });
-    const r = C.move(st, this.rate, owner, m.dx, m.dy, now);
+    const r = C.move(st, await this.takt(now), owner, m.dx, m.dy, now);
     if (!r.ok) { this.send(ws, { type: 'error', code: r.code }); return this.send(ws, C.snapshot(st, owner, this.ctx.getWebSockets().length, now)); }
-    await this.ctx.storage.put('stol', st);
+    await this.gem(st);
     this.dagbog.skriv('flyt', retning(m.dx, m.dy));
     tael(this.env, 'haendelse', 'stol-flyttet');
     await this.broadcast(r.event);
@@ -42,8 +45,8 @@ export class ChairRoom extends DurableObject {
   async mcpFlyt(owner, dx, dy) {
     if (!/^[a-f0-9]{32}$/.test(owner || '')) return { ok: false, code: 'no_session' };
     const st = await this.state(), now = Date.now();
-    const r = C.move(st, this.rate, owner, dx, dy, now);
-    if (r.ok) { await this.ctx.storage.put('stol', st); this.dagbog.skriv('flyt', retning(dx, dy)); tael(this.env, 'haendelse', 'stol-flyttet'); await this.broadcast(r.event); }
+    const r = C.move(st, await this.takt(now), owner, dx, dy, now);
+    if (r.ok) { await this.gem(st); this.dagbog.skriv('flyt', retning(dx, dy)); tael(this.env, 'haendelse', 'stol-flyttet'); await this.broadcast(r.event); }
     return { ok: r.ok, code: r.code, event: r.event || null, snapshot: C.snapshot(st, owner, this.ctx.getWebSockets().length, now) };
   }
   /** Læs stolens position (MCP-status). */

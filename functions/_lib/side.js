@@ -4,9 +4,10 @@
 // <div data-tv-del="topbar"></div>; HTMLRewriter erstatter dem undervejs i streamen med /partials/<navn>.<sprog>.html, så
 // navigationen findes ét sted. Sprogskifte-links udfyldes fra sidens egne <link rel="alternate" hreflang>, og den aktuelle side
 // markeres med aria-current ud fra <body data-side>. /assets/* m.fl. går uden om (run_worker_first i site-worker/wrangler.toml).
-import { SIKKERHED, MIKROFON } from './headers.js';
+import { SIKKERHED, MIKROFON, MIKROFON_POLITIK } from './headers.js';
 import { naegl, htmlTilMarkdown } from './markdown.js';
 import { struktureretFejl, noedside } from './fejl.js';
+import { siteOrigin } from '../../shared/origin.js';
 import { tael } from '../../shared/tael.js';
 
 const DELE = ['topbar', 'sidenav', 'footer'];
@@ -58,9 +59,9 @@ const mdHeaders = (h, tokens) => { h.set('content-type', 'text/markdown; charset
 async function mdFil(ctx, url) {
   const { request, env } = ctx;
   const sti = url.pathname.slice(0, -'index.md'.length) || '/';
-  if (sti.startsWith('/admin') || sti.startsWith('/api/') || sti.startsWith('/partials/')) return struktureretFejl(new Request(request.url, { headers: { accept: 'text/markdown' } }), 404);
+  if (sti.startsWith('/admin') || sti.startsWith('/api/') || sti.startsWith('/partials/')) return struktureretFejl(new Request(request.url, { headers: { accept: 'text/markdown' } }), 404, {}, env);
   const r = await env.ASSETS.fetch(new Request(new URL(sti, url.origin), { headers: { accept: 'text/html' } }));
-  if (!r.ok || !(r.headers.get('content-type') || '').includes('text/html')) return struktureretFejl(new Request(request.url, { headers: { accept: 'text/markdown' } }), 404);
+  if (!r.ok || !(r.headers.get('content-type') || '').includes('text/html')) return struktureretFejl(new Request(request.url, { headers: { accept: 'text/markdown' } }), 404, {}, env);
   const { markdown, tokens, meta } = htmlTilMarkdown(await r.text(), url.origin + sti);
   tael(env, 'md', sideNoegle(sti), { lang: sprogAf(sti), colo: coloAf(request) });
   const h = mdHeaders(new Headers(SIKKERHED), tokens);
@@ -76,20 +77,20 @@ export async function sideMiddleware(ctx) {
   let res;
   try { res = await ctx.next(); }
   catch (e) { // noget under middlewaren faldt: aldrig en tom 500, altid tingets fejltavle
-    return struktureretFejl(request, 503) || new Response(noedside(503, sprogAf(url0.pathname)), { status: 503, headers: { ...SIKKERHED, 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'retry-after': '30', vary: 'Accept' } });
+    return struktureretFejl(request, 503, {}, env) || new Response(noedside(503, sprogAf(url0.pathname)), { status: 503, headers: { ...SIKKERHED, 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'retry-after': '30', vary: 'Accept' } });
   }
   const type = res.headers.get('content-type') || '';
   if (request.method !== 'GET' || !type.includes('text/html')) return res;
 
   // Fejl (404 fra de statiske filer, 5xx): struktureret svar til maskiner; HTML-404'en tegnes videre herunder.
   if (res.status === 404 || res.status >= 500) {
-    const s = struktureretFejl(request, res.status >= 500 ? 503 : 404);
+    const s = struktureretFejl(request, res.status >= 500 ? 503 : 404, {}, env);
     if (s) { tael(env, 'fejl', String(res.status), { lang: sprogAf(url0.pathname), colo: coloAf(request), detalje: 'struktureret' }); return s; }
   }
 
   const headers = new Headers(res.headers);
   for (const [k, v] of Object.entries(SIKKERHED)) if (!headers.has(k)) headers.set(k, v);
-  if (MIKROFON.test(url0.pathname)) headers.set('Permissions-Policy', 'camera=(), microphone=(self), geolocation=()'); // Tal din sag: kun retssalen må bede om mikrofonen
+  if (MIKROFON.test(url0.pathname)) headers.set('Permissions-Policy', MIKROFON_POLITIK); // Tal din sag: kun retssalen må bede om mikrofonen
   if (!headers.has('Cache-Control')) headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
   headers.set('Vary', 'Accept'); // samme URL giver HTML eller Markdown efter Accept
   const fejlside = res.status === 404;
@@ -129,7 +130,7 @@ export async function sideMiddleware(ctx) {
       if (!fejlside && /^[a-f0-9]{32}$/.test(String(env.WEB_ANALYTICS_TOKEN || ''))) el.append(`<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${env.WEB_ANALYTICS_TOKEN}"}'></script>`, { html: true });
     } })
     .on('head', { element(el) {
-      if (krummerLd.length) el.append(kruemmeLd(krummerLd, 'https://tingsvad.dk'), { html: true });
+      if (krummerLd.length) el.append(kruemmeLd(krummerLd, siteOrigin(env, request)), { html: true });
       if (harMd) el.append(`<link rel="alternate" type="text/markdown" href="${escH(url.pathname)}index.md">`, { html: true });
     } })
     // 404-siden findes én gang med begge sprog; den forkerte halvdel fjernes her.

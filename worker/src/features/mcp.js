@@ -12,6 +12,7 @@ import { search as arkivSoeg, archiveEnabled } from '../lib/archive.js';
 import { soegKerne, hittegodsEnabled } from './hittegods.js';
 import { spoergKerne, arkivEnabled } from './arkiv.js';
 import { ren } from '../../../shared/gaestebog.js';
+import { siteOrigin } from '../../../shared/origin.js';
 import { laesSager, laesGaester, grundsagerEfter, skrivSag } from '../lib/gaestebog.js'; // runde 13 (AP7): gæstebogen i D1, samme vej som sitet
 
 export const MCP_KVOTER = { sag: 3, stemme: 60, stol: 300, ai: 100, ai_klient: 20 }; // runde 13: ai_klient = pr. klient pr. døgn, så én agent ikke tømmer den fælles kvote
@@ -86,7 +87,7 @@ export class TingMcpLogik {
       await rateLimitEnv(this.env, 'mcp-hittegods', klient, 8, lang);
       const r = await this.medKvote('ai', lang, () => soegKerne(this.env, q, lang, null), klient);
       tael(this.env, 'haendelse', 'mcp-hittegods', { lang });
-      return { data: { q, fund: r.fund.map(g => ({ id: g.id, titel: g.titel, aar: g.aar, sted: g.sted, tekst: g.tekst, score: g.score, billede: 'https://tingsvad.dk' + g.billede })), nyIndeks: !!r.nyIndeks } };
+      return { data: { q, fund: r.fund.map(g => ({ id: g.id, titel: g.titel, aar: g.aar, sted: g.sted, tekst: g.tekst, score: g.score, billede: siteOrigin(this.env) + g.billede })), nyIndeks: !!r.nyIndeks } };
     });
   }
 
@@ -124,7 +125,7 @@ export class TingMcpLogik {
       if (await this.env.SAGER.get(rl)) throw new ApiError('rate_limited', msg(lang, 'rate'), 429, 120);
       const ny = await this.medKvote('sag', lang, async () => { await this.env.SAGER.put(rl, '1', { expirationTtl: 120 }); return skrivSag(this.env, { navn, sag, kilde: 'mcp' }); });
       tael(this.env, 'haendelse', 'mcp-sag-rejst', { lang });
-      return { data: { sag: ny, url: `https://tingsvad.dk/${lang === 'en' ? 'en/experiences/guestbook/' : 'oplevelser/gaestebog/'}` } };
+      return { data: { sag: ny, url: `${siteOrigin(this.env)}/${lang === 'en' ? 'en/experiences/guestbook/' : 'oplevelser/gaestebog/'}` } };
     });
   }
 

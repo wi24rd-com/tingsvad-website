@@ -1,7 +1,7 @@
 /* tingsvad.dk — kæden i »Vis maskineriet« (runde 12): samme tegning som infrastrukturkortet, men kun med de led,
    den enkelte maskine faktisk bruger. Efter hvert kald lyser de bindinger, kaldet rørte (læst fra Workerens
    Server-Timing: d1, ai, r2, kv, vectorize, browser), med målte millisekunder. Andet end tjenester (idempotens,
-   WebSocket, CSP …) vises som små mærker under tegningen. Bruges af round6.js (maskinparken) og round9.js. */
+   WebSocket, CSP …) vises som små mærker under tegningen. Bruges af maskinpark.js og sagsmappe.js. */
 (function () {
   'use strict';
   const da = document.documentElement.lang !== 'en';

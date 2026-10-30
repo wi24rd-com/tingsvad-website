@@ -10,7 +10,7 @@ export function feltType(x, y) { const k = `${x},${y}`; return k === LØS ? 'loe
 
 export function freshState() { return { x: START.x, y: START.y, moves: 0, last: 0, lastBy: '', wobbles: 0, visits: 0, version: 1 }; }
 
-const RATE_MS = 250, BURST = 12, WINDOW_MS = 10_000;
+export const RATE_MS = 250, BURST = 12, WINDOW_MS = 10_000;
 /** Ét skridt. Returnerer {ok, code?, event?}. Ændrer kun state ved ok. */
 export function move(st, rate, owner, dx, dy, now) {
   dx = dx | 0; dy = dy | 0;

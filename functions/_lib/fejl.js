@@ -2,8 +2,7 @@
 // Samme forhandling som Cloudflares egne fejlsider: Accept: application/problem+json → RFC 9457, application/json → JSON,
 // text/markdown → Markdown med frontmatter, alt andet → HTML (404.html gennem middlewaren). /api/* svarer altid JSON.
 import { naegl } from './markdown.js';
-
-const ORIGIN = 'https://tingsvad.dk';
+import { siteOrigin } from '../../shared/origin.js';
 export const FEJL = {
   404: { code: 'not_found', retryable: false,
     da: { titel: 'Udsat', tekst: 'Siden er ført til protokols, men ikke fundet. Mímir husker ikke hvor. Sagen er udsat.', goer: 'Gå til en af tingets fem sider herunder, eller søg i arkivet.' },
@@ -30,7 +29,7 @@ export function fejlFormat(request, sti) {
   return 'html';
 }
 
-export function fejlData(status, sti, lang, extra = {}) {
+export function fejlData(status, sti, lang, extra = {}, ORIGIN = siteOrigin()) {
   const f = FEJL[status] || FEJL[status >= 500 ? 500 : 404];
   const t = f[lang];
   return {
@@ -41,11 +40,11 @@ export function fejlData(status, sti, lang, extra = {}) {
 }
 
 /** Struktureret fejlsvar, eller null når formatet er html (så middlewaren selv tegner 404-siden). */
-export function struktureretFejl(request, status, extra = {}) {
+export function struktureretFejl(request, status, extra = {}, env = null) {
   const url = new URL(request.url);
   const lang = url.pathname === '/en' || url.pathname.startsWith('/en/') ? 'en' : 'da';
   const fmt = fejlFormat(request, url.pathname);
-  const d = fejlData(status, url.pathname, lang, extra);
+  const d = fejlData(status, url.pathname, lang, extra, siteOrigin(env, request));
   const h = { 'cache-control': 'no-store', vary: 'Accept', 'x-content-type-options': 'nosniff' };
   if (d.retry_after) h['retry-after'] = String(d.retry_after);
   if (fmt === 'problem') return new Response(JSON.stringify(d), { status, headers: { ...h, 'content-type': 'application/problem+json; charset=utf-8' } });

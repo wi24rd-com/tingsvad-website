@@ -2,7 +2,7 @@
 """Sagsregistret (runde 10): én kilde i assets/kanon.json (sider + sagsakter).
 
   python3 sagsregister.py          tjekker alle sider, sætter manglende section-id'er, skriver tabellerne i
-                                   /arkivet/sagsregister/ og /en/archive/case-register/ og genererer ankerkortet i assets/ankre.js
+                                   /arkivet/sagsregister/ og /en/archive/case-register/ og genererer ankerkortet i assets/kilde/ankre.js
   python3 sagsregister.py --tjek   ændrer intet; afslutter med fejl, hvis noget ikke stemmer (bruges i CI og før commit)
 
 Hver akt skal stå som <div class="kicker">Sagsakt N[ · Tillæg| · Bilag] · Titel</div> på den side, registret angiver
@@ -88,11 +88,29 @@ for k, v in SIDER.items():
     for i in set(re.findall(r'\sid="([^"]+)"', hent(fil(v['da'])))): forekomst.setdefault(i, set()).add(k)
 idkort = {i: next(iter(s)) for i, s in sorted(forekomst.items()) if len(s) == 1 and not i.startswith(('sag-', 'paafund-'))}
 for i, k in ALIAS.items(): idkort.setdefault(i, k)
-rel = 'assets/ankre.js'; js = hent(rel)
+rel = 'assets/kilde/ankre.js'; js = hent(rel)
 sider_js = json.dumps({k: {'da': v['da'], 'en': v['en']} for k, v in SIDER.items()}, ensure_ascii=False, separators=(',', ':'))
 js = re.sub(r'const SIDER = .*?;\n', lambda m: f'const SIDER = {sider_js};\n', js, count=1)
 js = re.sub(r'const ID = .*?;\n', lambda m: f'const ID = {json.dumps(idkort, ensure_ascii=False, separators=(",", ":"))};\n', js, count=1)
 aendret[rel] = js
+
+# Sitemap (runde 13): kanon.json er den eneste sideliste. <lastmod> beholdes (bump.sh sætter den); begge sprog, x-default = dansk.
+rel = 'sitemap.xml'; sm = hent(rel)
+m = re.search(r'<lastmod>([0-9-]+)</lastmod>', sm); lastmod = m.group(1) if m else '2026-01-01'
+O = 'https://tingsvad.dk'
+def url(loc, da, en):
+    return (f'  <url><loc>{O}{loc}</loc><lastmod>{lastmod}</lastmod>\n'
+            f'    <xhtml:link rel="alternate" hreflang="da" href="{O}{da}"/>\n'
+            f'    <xhtml:link rel="alternate" hreflang="en" href="{O}{en}"/>\n'
+            f'    <xhtml:link rel="alternate" hreflang="x-default" href="{O}{da}"/></url>\n')
+aendret[rel] = ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+                + ''.join(url(v['da'], v['da'], v['en']) + url(v['en'], v['da'], v['en']) for v in SIDER.values()) + '</urlset>\n')
+
+# llms.txt (runde 13): listen er håndskrevet med beskrivelser, men hver side i kanon.json skal stå der – på begge sprog.
+llms = hent('llms.txt')
+for k, v in SIDER.items():
+    for sti in (v['da'], v['en']):
+        if O + sti + ' ' not in llms and O + sti + '\n' not in llms and O + sti + ' ·' not in llms: fejl.append(f'llms.txt mangler {O}{sti} ({k})')
 
 if fejl:
     print('\n'.join('FEJL ' + f for f in fejl)); sys.exit(1)

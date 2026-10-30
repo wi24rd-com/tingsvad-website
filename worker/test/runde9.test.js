@@ -49,9 +49,9 @@ test('ravn: queue delivered twice creates the instance once and acks both', asyn
   assert.equal(made.size, 1); assert.equal(acks.length, 2);
 });
 
-test('revision: 32 pages, a page passes only with 200, all partials, all elements and no JS errors', () => {
+test('revision: 62 pages, a page passes only with 200, all partials, all elements and no JS errors', () => {
   const liste = revisionsliste();
-  assert.equal(liste.length, 32);
+  assert.equal(liste.length, 62);
   const sel = liste[0].sel;
   const fuld = Object.fromEntries(Object.keys(sel).map(k => [k, 1]));
   assert.equal(vurder({ http: 200, dele: 'topbar,sidenav,footer', snap: { sel: fuld, fejl: [] }, sel }).status, 'bestaaet');

@@ -1,0 +1,12 @@
+{
+  "name": "tingsvad-website",
+  "private": true,
+  "type": "module",
+  "description": "tingsvad.dk – the site itself. No dependencies: the scripts need only Node (bundles, _headers) and Python 3 (case register, ?v= hashes).",
+  "scripts": {
+    "prep": "python3 sagsregister.py && node tools/headers.mjs && node tools/bundt.mjs && sh bump.sh",
+    "prep:tjek": "python3 sagsregister.py --tjek && node tools/headers.mjs --tjek && node tools/bundt.mjs --tjek",
+    "prep:billeder": "python3 build-images.py && python3 build-og.py --fonts og-fonts",
+    "test": "cd site-worker && npm test && cd ../worker && npm test && cd ../mcp && npm test"
+  }
+}

@@ -20,7 +20,9 @@
     const p = SIDER[k][lang];
     return p === location.pathname ? null : p + '#' + encodeURIComponent(id).replace(/%2D/g, '-');
   }
-  const nu = maal(location.hash); if (nu) { location.replace(nu); return; }
+  // Runde 13: filen ligger i bundtet tingsvad.js før sidens egne scripts, så første tjek venter til DOM'en (og de deferrede scripts) er færdige.
+  const foerste = () => { const nu = maal(location.hash); if (nu) location.replace(nu); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', foerste); else foerste();
   addEventListener('hashchange', () => { const m = maal(location.hash); if (m) location.replace(m); });
   document.addEventListener('click', e => {
     const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || e.defaultPrevented) return;

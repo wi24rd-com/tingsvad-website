@@ -9,7 +9,8 @@ import { revisionsliste, revisérSide, getRevision, kanGenbruge, fuldDag, htmlHa
 
 test('revision (round 10): the audit page and the architecture diagram are on the list', () => {
   const l = revisionsliste();
-  assert.equal(l.length, 32);
+  assert.equal(l.length, 62, 'every page in kanon.json, both languages (runde 13)');
+  assert.ok(l.find(p => p.side === 'mimirs-guide-en' && p.path === '/en/experiences/machine-park/mimirs-guide/'));
   assert.ok(l.find(p => p.side === 'revisionen-en' && p.path === '/en/machine-room/audit/'));
   assert.ok(l.find(p => p.side === 'maskinrummet-da').sel.arkitektur);
 });

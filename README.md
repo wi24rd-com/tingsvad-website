@@ -25,7 +25,7 @@ tingsvad.dk is an open-source, working demonstration of the Cloudflare Developer
 - Node.js 22 LTS and npm (Wrangler ≥ 4.145; `worker/package.json` pins the version used here)
 - Python 3.10+ with Pillow and `pillow-avif-plugin` for the image scripts (`build-images.py`, `build-og.py`); `sagsregister.py` needs only the standard library
 - A Cloudflare account (Free works for the core; see below), a GitHub account for Workers Builds and the audit's issues
-- Before every commit that touches pages, css or js: `python3 sagsregister.py`, then `python3 build-og.py` if titles or descriptions changed, then `sh bump.sh`. CI runs `sagsregister.py --tjek` and fails if the register drifts.
+- Before every commit that touches pages, css or js: `npm run prep` (case register, sitemap, `_headers`, bundles, `?v=` hashes), and `python3 build-og.py --fonts og-fonts` if titles or descriptions changed. CI runs `npm run prep:tjek` and fails if anything generated has drifted.
 
 ## Build it yourself
 
@@ -47,9 +47,9 @@ The ids in the `wrangler.toml` files (KV, D1, R2, Vectorize, Durable Objects, th
 - `index.html` – Danish front page; `en/index.html` – English edition
 - Sub-pages (Danish · English): `historien/` · `en/history/`, `oplevelser/` · `en/experiences/` with `undersoegelsen/` · `investigation/`, `maskinparken/` · `machine-park/` and `gaestebog/` · `guestbook/` and `sagsmappen/` · `case-file/`, `arkivet/` · `en/archive/`, `maskinrummet/` · `en/machine-room/` with `noedoevelser/` · `emergency-drills/` and `revisionen/` · `audit/`
 - `partials/` – shared top bar, navigation and footer (da/en); the side middleware (`functions/_lib/side.js`) inserts them with HTMLRewriter (no build step) and sets the security headers on HTML, since `_headers` only applies to responses served straight from the assets
-- `assets/kanon.json` – one source for the universe's dates and rulings (read by the page and bundled into the Worker); `assets/ankre.js` – forwards old `/#fragment` links to the sub-page where the element now lives
+- `assets/kanon.json` – one source for the universe's dates, rulings and **the page list** (sitemap, the audit, the Playwright matrix and the anchor map are all generated from it; `sagsregister.py --tjek` fails when `llms.txt` lacks a page)
 - `arkivet/protokol/`, `en/archive/minutes/` – printable minutes (not indexed; → PDF via Browser Run)
-- `assets/site.css`, `assets/site.js` – shared styles and script; `round3.js`–`round10.js` + `round5-tekst.js`/`round6-tekst.js`/`round9-tekst.js` – features added per round, with the texts of the dynamic UI (da/en) in the `-tekst` files (the newest pages still carry a few inline `lang === 'da' ? … : …` strings)
+- `assets/site.css`, `assets/site.js` – shared styles and script (loaded first). `assets/kilde/` – the feature scripts by name: `tingstedet.js` (atmosphere, counters, sharing, service worker), `historien.js` (section nav, explanations, the net), `indslag.js` + `indslag-tekst.js` (the fifteen local features), `maskinpark.js` + `maskinpark-tekst.js` (the AI machines), `kaede.js` (the chain in »Show the machinery«), `sagsmappe.js` + `sagsmappe-tekst.js` (case file, raven central, the audit), `maskinrum.js` (catalogue, architecture diagram, counting works), `ankre.js` (old `/#fragment` links → the right sub-page; generated). `assets/filer.json` says how `tools/bundt.mjs` concatenates them into the four bundles the pages load (`tingsvad.js`, `indslag.js`, `sagsmappe.js`, `maskinrum.js`) – edit the sources, never the bundles
 - `assets/pak/` – image pack (evidence, portraits, map, seals, radio, rune stones), `assets/r/` – responsive variants (avif/webp/jpg)
 - `site-worker/` – the site Worker `tingsvad-site` (round 11): `wrangler.toml` (Static Assets with `run_worker_first`, bindings, Worker Previews) and a dependency-free router (`index.js`) in front of the modules in `functions/`
 - `functions/` – the request handlers, written as Pages Functions-style modules and run by the site Worker's router: guestbook (`api/sager.js`; the cases live in D1 behind the ting-ai service binding, Turnstile and pacing stay here), Turnstile site key, `/sag/:nr` share pages, proxy to the ting-ai Worker (`api/ting-ai/[[path]].js`), `/admin/*` behind Cloudflare Access, and the shared middleware in `_lib/`
@@ -60,8 +60,8 @@ The ids in the `wrangler.toml` files (KV, D1, R2, Vectorize, Durable Objects, th
 - `.assetsignore` – everything that is not the site (Worker code, tests, docs, config) stays out of the published assets
 - `worker/` – the Worker `tingsvad-ting-ai` (D1, R2, KV, Durable Objects, Workflows, Queues, Cron, Workers AI, AI Search, Vectorize, Browser Run, Images, Realtime SFU, Workers Cache, rate limiting, and the hourly collection from the GraphQL Analytics and Radar APIs)
 - `sw.js`, `manifest.webmanifest` – offline and "add to home screen"
-- `_headers` – security headers (CSP, HSTS), cache rules; `robots.txt`, `sitemap.xml`, `llms.txt`
-- `bump.sh` – updates the `?v=` cache-busting hashes in every page after changes to css/js/kanon.json; `build-images.py` – regenerates responsive images (`pip install pillow pillow-avif-plugin`); `build-og.py` – makes the 1200×630 share image (og:image) for every page from its own painting and title, and points the page's meta tags at it (`python3 build-og.py --fonts <dir>`, see the script for the fonts)
+- `_headers` – security headers (CSP, HSTS) and cache rules, **generated** by `tools/headers.mjs` from `functions/_lib/headers.js` (the one place the CSP lives) and `assets/filer.json`; `robots.txt`, `sitemap.xml` (generated from `kanon.json`), `llms.txt`
+- `npm run prep` – the whole chain after a change: `sagsregister.py` (case register, anchor map, sitemap) → `tools/headers.mjs` → `tools/bundt.mjs` → `bump.sh` (one `?v=` hash on the files in `filer.json`, the same hash as the service worker's cache name, `<lastmod>` today); `npm run prep:tjek` is what CI runs; `npm run prep:billeder` for images. No install needed – Node and Python 3 only. `bump.sh` – `build-images.py` – regenerates responsive images (`pip install pillow pillow-avif-plugin`); `build-og.py` – makes the 1200×630 share image (og:image) for every page from its own painting and title, and points the page's meta tags at it (`python3 build-og.py --fonts <dir>`, see the script for the fonts)
 
 ## Deploy
 
@@ -81,7 +81,7 @@ Push to `main`; Workers Builds deploys the site Worker (`site-worker/`) automati
 
 ## Contributing
 
-Issues and pull requests are welcome, in English. Keep the voice of the site (the cow case stays adjourned), run the unit tests and `python3 sagsregister.py --tjek` before you push, and never commit ids that identify an account (account id, zone id, e-mail addresses) – they go in secrets. Security problems: see [SECURITY.md](SECURITY.md), not an issue.
+Issues and pull requests are welcome, in English. Keep the voice of the site (the cow case stays adjourned), run the unit tests and `npm run prep:tjek` before you push, and never commit ids that identify an account (account id, zone id, e-mail addresses) – they go in secrets. Security problems: see [SECURITY.md](SECURITY.md), not an issue.
 
 ## Credits
 

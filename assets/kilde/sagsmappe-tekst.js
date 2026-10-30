@@ -35,7 +35,7 @@ window.TV_R9 = {
     },
     rev: {
       ikkeKoert: 'Revisionen er ikke kørt endnu. Gudrun venter på morgenen.', seneste: 'Seneste revision', bestaaet: 'bestået', fejlet: 'fejlet', ikke: 'ikke kørt',
-      koerer: 'Revisionen er i gang. Gudrun er nået til side {n}.',
+      koerer: 'Revisionen er i gang. Gudrun er nået til side {n}.', udgave: 'Udgave {c} af maskinerne · {n} af {k} sider i kanon.json er med i revisionen.',
       gudrun: { alle: 'Gudrun: Alle bilag foreligger. Det er mistænkeligt.', nogle: 'Gudrun: {n} side(r) mangler bilag. Det er noteret med rødt.', mange: 'Gudrun: Halvdelen af vadestedet mangler bilag. Tinget er indkaldt. Mødet er udsat.' },
       kol: { side: 'Side', status: 'Status', http: 'HTTP', ms: 'Browser', fund: 'Bemærkninger', billede: 'Billede' },
       mangler: 'mangler', fejlJs: 'JS-fejl', vis: 'Se', ingenBem: '–', henter: 'Henter revisionen …', ikkeTilsluttet: 'Revisionen er ikke tilsluttet. Gudrun reviderer i hånden, hvilket vil sige slet ikke.',
@@ -97,7 +97,7 @@ window.TV_R9 = {
     },
     rev: {
       ikkeKoert: 'The audit has not run yet. Gudrun is waiting for the morning.', seneste: 'Latest audit', bestaaet: 'passed', fejlet: 'failed', ikke: 'not run',
-      koerer: 'The audit is under way. Gudrun has reached page {n}.',
+      koerer: 'The audit is under way. Gudrun has reached page {n}.', udgave: 'Release {c} of the machines · {n} of {k} pages in kanon.json are covered by the audit.',
       gudrun: { alle: 'Gudrun: All supporting documents are present. That is suspicious.', nogle: 'Gudrun: {n} page(s) lack supporting documents. Noted in red.', mange: 'Gudrun: Half the ford lacks supporting documents. The thing has been convened. The meeting is adjourned.' },
       kol: { side: 'Page', status: 'Status', http: 'HTTP', ms: 'Browser', fund: 'Remarks', billede: 'Image' },
       mangler: 'missing', fejlJs: 'JS errors', vis: 'View', ingenBem: '–', henter: 'Fetching the audit …', ikkeTilsluttet: 'The audit is not connected. Gudrun audits by hand, which is to say not at all.',

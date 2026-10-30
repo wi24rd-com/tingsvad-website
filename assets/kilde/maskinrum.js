@@ -1,7 +1,7 @@
 /* tingsvad.dk — runde 10: Maskinparken som katalog over alle 16 maskiner (filter efter Cloudflare-produkt),
    Maskinrummets arkitekturdiagram ud fra GET /api/ting-ai/health, resuméet af Gudruns revision,
    kant-kortet (GET /api/kant, request.cf) og tingets tælleværk (GET /api/ting-ai/taelle, Analytics Engine).
-   Kataloget herunder er den eneste liste over maskinerne. Runde 6-kortenes navne og tekster står i round6-tekst.js
+   Kataloget herunder er den eneste liste over maskinerne. Runde 6-kortenes navne og tekster står i maskinpark-tekst.js
    (de åbner deres panel her på siden); runde 9-maskinerne har eget rum og linker dertil. */
 (function () {
   const lang = document.documentElement.lang === 'en' ? 'en' : 'da', da = lang === 'da';

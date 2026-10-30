@@ -24,14 +24,6 @@
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/"/></url>
-  <url><loc>https://tingsvad.dk/oplevelser/undersoegelsen/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/investigation/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/></url>
-  <url><loc>https://tingsvad.dk/en/experiences/investigation/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/investigation/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/></url>
   <url><loc>https://tingsvad.dk/oplevelser/maskinparken/</loc><lastmod>2026-10-30</lastmod>
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/maskinparken/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/machine-park/"/>
@@ -40,6 +32,14 @@
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/maskinparken/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/machine-park/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/maskinparken/"/></url>
+  <url><loc>https://tingsvad.dk/oplevelser/undersoegelsen/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/investigation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/></url>
+  <url><loc>https://tingsvad.dk/en/experiences/investigation/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/investigation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/undersoegelsen/"/></url>
   <url><loc>https://tingsvad.dk/oplevelser/gaestebog/</loc><lastmod>2026-10-30</lastmod>
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/gaestebog/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/guestbook/"/>
@@ -48,22 +48,14 @@
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/gaestebog/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/guestbook/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/gaestebog/"/></url>
-  <url><loc>https://tingsvad.dk/arkivet/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/arkivet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/archive/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/arkivet/"/></url>
-  <url><loc>https://tingsvad.dk/en/archive/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/arkivet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/archive/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/arkivet/"/></url>
-  <url><loc>https://tingsvad.dk/maskinrummet/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/"/></url>
-  <url><loc>https://tingsvad.dk/en/machine-room/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/"/></url>
+  <url><loc>https://tingsvad.dk/oplevelser/runevaerkstedet/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/rune-workshop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/></url>
+  <url><loc>https://tingsvad.dk/en/experiences/rune-workshop/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/rune-workshop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/></url>
   <url><loc>https://tingsvad.dk/oplevelser/sagsmappen/</loc><lastmod>2026-10-30</lastmod>
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/sagsmappen/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/case-file/"/>
@@ -96,22 +88,14 @@
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/kodegryden/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/the-cauldron/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/kodegryden/"/></url>
-  <url><loc>https://tingsvad.dk/maskinrummet/noedoevelser/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/emergency-drills/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/></url>
-  <url><loc>https://tingsvad.dk/en/machine-room/emergency-drills/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/emergency-drills/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/></url>
-  <url><loc>https://tingsvad.dk/oplevelser/runevaerkstedet/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/rune-workshop/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/></url>
-  <url><loc>https://tingsvad.dk/en/experiences/rune-workshop/</loc><lastmod>2026-10-30</lastmod>
-    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/experiences/rune-workshop/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/oplevelser/runevaerkstedet/"/></url>
+  <url><loc>https://tingsvad.dk/arkivet/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/arkivet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/archive/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/arkivet/"/></url>
+  <url><loc>https://tingsvad.dk/en/archive/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/arkivet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/archive/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/arkivet/"/></url>
   <url><loc>https://tingsvad.dk/arkivet/sagsregister/</loc><lastmod>2026-10-30</lastmod>
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/arkivet/sagsregister/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/archive/case-register/"/>
@@ -120,6 +104,22 @@
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/arkivet/sagsregister/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/archive/case-register/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/arkivet/sagsregister/"/></url>
+  <url><loc>https://tingsvad.dk/maskinrummet/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/"/></url>
+  <url><loc>https://tingsvad.dk/en/machine-room/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/"/></url>
+  <url><loc>https://tingsvad.dk/maskinrummet/noedoevelser/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/emergency-drills/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/></url>
+  <url><loc>https://tingsvad.dk/en/machine-room/emergency-drills/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/emergency-drills/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tingsvad.dk/maskinrummet/noedoevelser/"/></url>
   <url><loc>https://tingsvad.dk/maskinrummet/revisionen/</loc><lastmod>2026-10-30</lastmod>
     <xhtml:link rel="alternate" hreflang="da" href="https://tingsvad.dk/maskinrummet/revisionen/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://tingsvad.dk/en/machine-room/audit/"/>

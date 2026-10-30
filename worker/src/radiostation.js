@@ -5,6 +5,7 @@
 // som protobuf-pakker (stereo, 40 ms pr. besked). Alle lyttere abonnerer på samme spor over WebRTC og hører det samme
 // sted i udsendelsen. Når den er slut, lukkes adapteren af en alarm.
 import { DurableObject } from 'cloudflare:workers';
+import { siteOrigin } from '../../shared/origin.js';
 import { pakke, monoTilStereo, varighedMs, sfu, kunPcm, MONO_BYTES_PR_PAKKE, PAKKE_MS, RATE } from './lib/sfu.js';
 import { hemmelighed } from './lib/hemmelighed.js';
 import { timingSafeEqual } from './lib/crypto.js';
@@ -40,7 +41,7 @@ export class RadioStation extends DurableObject {
     const varighed = varighedMs(pcm.bytes);
     u = { k: randomId(16), dato: pcm.dato, key: pcm.key, bytes: pcm.bytes, varighed, start: now, slut: now + varighed + 8000 };
     await this.ctx.storage.put('udsendelse', u); // nøglen skal findes, før SFU'en ringer tilbage
-    const kilde = (this.env.SITE_ORIGIN || 'https://tingsvad.dk').replace(/^http/, 'ws') + '/api/ting-ai/radio/live/kilde?k=' + u.k;
+    const kilde = siteOrigin(this.env).replace(/^http/, 'ws') + '/api/ting-ai/radio/live/kilde?k=' + u.k;
     const r = await sfu(appId, token, 'POST', '/adapters/websocket/new', { tracks: [{ location: 'local', trackName: SPOR, endpoint: kilde, inputCodec: 'pcm' }] });
     const t = (r.tracks || [])[0] || {};
     if (!t.adapterId || !t.sessionId) { await this.ctx.storage.delete('udsendelse'); throw new Error('sfu adapter ' + (t.errorCode || 'missing')); }

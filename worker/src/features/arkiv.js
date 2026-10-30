@@ -5,6 +5,7 @@
 // Forespørgsler: AI Search fakturerer fra 1. november 2026 med 1.000 semantiske forespørgsler om måneden inkluderet →
 // hård døgnkvote (ARKIV_PER_DAY, standard 25) i D1 og rate limit pr. gæst. Mímir formulerer svaret med tekstmodellen (egen kvote).
 import { ok, ApiError, readJson, langOf, msg } from '../lib/http.js';
+import { siteOrigin } from '../../../shared/origin.js';
 import { str } from '../lib/validate.js';
 import { runJson } from '../lib/ai.js';
 import { withQuota, quotaLimit, rateLimitEnv, reserve, commit, release, rateLimitSession } from '../lib/quota.js';
@@ -38,7 +39,7 @@ async function sikrInstans(env, lang) {
 /** Synkroniserer arkivet. Returnerer {uploadet, uaendret, fejl}. Kaldes fra Cron; max ARKIV_SYNK_MAX uploads pr. kørsel. */
 export async function synkArkiv(env, log, { tving = false } = {}) {
   if (!arkivEnabled(env) || !env.SAGER) return { status: 'off' };
-  const origin = env.SITE_ORIGIN || 'https://tingsvad.dk';
+  const origin = siteOrigin(env);
   const kort = (await env.SAGER.get(KV_NOEGLE, 'json')) || {};
   const instanser = {};
   let uploadet = 0, uaendret = 0; const fejl = [];
@@ -105,7 +106,7 @@ export async function spoergKerne(env, q, lang, { sammenlign = false, log } = {}
   const kilder = (r && r.chunks || []).map(c => {
     const noegle = c.item && c.item.key || '', k = kort[noegle] || {};
     const fuld = renChunk(c.text);
-    return { titel: k.titel || noegle.replace(/\.md$/, ''), url: 'https://tingsvad.dk' + (k.path || '/'), fuld, uddrag: udsnit(fuld, q), score: Math.round((c.score || 0) * 100) / 100 };
+    return { titel: k.titel || noegle.replace(/\.md$/, ''), url: siteOrigin(env) + (k.path || '/'), fuld, uddrag: udsnit(fuld, q), score: Math.round((c.score || 0) * 100) / 100 };
   }).filter(k => k.fuld).slice(0, 5);
   let svar = null, model = null, msModel = 0;
   if (kilder.length && env.AI && env.DB) {

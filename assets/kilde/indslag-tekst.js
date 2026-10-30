@@ -1,5 +1,5 @@
 /* tingsvad.dk — runde 5: tekstdata (da/en) til de 15 indslag og faktasporet.
-   Ren data. Ingen logik. round5.js slår op i window.TV5[lang]. */
+   Ren data. Ingen logik. indslag.js slår op i window.TV5[lang]. */
 window.TV5 = {
   da: {
     faner: [

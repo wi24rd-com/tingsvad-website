@@ -1,5 +1,5 @@
 /* tingsvad.dk — runde 5: det levende tingsted.
-   15 indslag (F01–F15) + faktaspor (H01–H03). Tekster i round5-tekst.js, stil i site.css.
+   15 indslag (F01–F15) + faktaspor (H01–H03). Tekster i indslag-tekst.js, stil i site.css.
    Alt kører lokalt i browseren. Intet sendes, intet oprettes, intet afgøres. */
 (function () {
   const lang = document.documentElement.lang === 'en' ? 'en' : 'da', da = lang === 'da';

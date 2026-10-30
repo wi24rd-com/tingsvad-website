@@ -1,3 +1,5 @@
+# Genereret af tools/headers.mjs – ret functions/_lib/headers.js eller assets/filer.json, ikke denne fil (npm run prep).
+
 /
   Cache-Control: public, max-age=0, must-revalidate
 
@@ -23,7 +25,31 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+/assets/kanon.json
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
 /assets/site.css
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
+/assets/site.js
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
+/assets/tingsvad.js
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
+/assets/indslag.js
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
+/assets/sagsmappe.js
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
+/assets/maskinrum.js
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
 
@@ -55,10 +81,6 @@
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
 
-/assets/kaede.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
 /assets/vagt.css
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
@@ -75,6 +97,10 @@
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
 
+/assets/doeren.js
+  ! Cache-Control
+  Cache-Control: public, max-age=600, must-revalidate
+
 /assets/vagt-eksempel.json
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
@@ -83,57 +109,9 @@
   ! Cache-Control
   Cache-Control: public, max-age=600, must-revalidate
 
-/assets/site.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/kanon.json
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round3.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round4.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round5.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round5-tekst.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round6.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round6-tekst.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
 /assets/kodegryde-worker-v1.js
   ! Content-Security-Policy
   Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-eval'
-
-/assets/round9.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round9-tekst.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/round10.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
-
-/assets/ankre.js
-  ! Cache-Control
-  Cache-Control: public, max-age=600, must-revalidate
 
 /partials/*
   X-Robots-Tag: noindex
@@ -142,7 +120,7 @@
 /sw.js
   Cache-Control: no-cache
 
-# Runde 11: Workers Static Assets sender text/plain uden charset (Pages sendte utf-8); llms.txt har ·, – og →.
+# Workers Static Assets sender text/plain uden charset; llms.txt har ·, – og →.
 /llms.txt
   ! Content-Type
   Content-Type: text/plain; charset=utf-8
@@ -154,7 +132,7 @@
 /api/*
   Cache-Control: no-store
 
-# Runde 12: maskinlæsbare opslag for AI-agenter (RFC 9727 API-katalog og MCP server card)
+# Maskinlæsbare opslag for AI-agenter (RFC 9727 API-katalog, security.txt og MCP server card)
 /.well-known/api-catalog
   ! Content-Type
   Content-Type: application/linkset+json; charset=utf-8

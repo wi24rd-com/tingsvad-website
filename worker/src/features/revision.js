@@ -5,30 +5,37 @@
 // Runde 10: Browser Run er dyrt på gratisplanen. HTML'en hashes (SHA-256); er den uændret siden et bestået browsertjek
 // inden for GENBRUG_DAGE, genbruges tjekket (genbrugt_fra), og browseren åbnes ikke. Om mandagen tjekkes alt fuldt.
 import { hentGithubUdfald } from './gudrun-github.js';
+import { siteOrigin } from '../../../shared/origin.js';
 import { tael } from '../../../shared/tael.js';
 import { ok, ApiError, langOf } from '../lib/http.js';
 import { cphDateKey } from '../lib/dates.js';
 import { browserAction } from '../lib/budget.js';
 
+import { KANON } from '../lib/kanon.js';
+import { release } from '../../../shared/release.js';
+
 const FÆLLES = { nav: '.r12-nav a', footer: 'footer', indhold: 'main section' }; // runde 12: topbjælken afløste sidemenuen
-export const SIDER = [
-  ['forside', '/', '/en/', { hero: '#hero', kort: '#kortet', steder: '#steder a' }],
-  ['historien', '/historien/', '/en/history/', { personer: '#personer-sektion', slaegt: '#slaegt .tavle li', nettet: '#net-svg' }],
-  ['oplevelser', '/oplevelser/', '/en/experiences/', { oversigt: '.r12s-oplev-gitter a' }],
-  ['undersoegelsen', '/oplevelser/undersoegelsen/', '/en/experiences/investigation/', { afgoer: '#afgoer-knap', faner: '#r5-faner button' }],
-  ['maskinparken', '/oplevelser/maskinparken/', '/en/experiences/machine-park/', { kort: '#r6-kort a', moede: '#moede-form' }],
-  ['gaestebog', '/oplevelser/gaestebog/', '/en/experiences/guestbook/', { formular: '#gb-form' }],
-  ['runevaerkstedet', '/oplevelser/runevaerkstedet/', '/en/experiences/rune-workshop/', { bevis: '#cert-form', runer: '#rune-ind' }],
-  ['sagsmappen', '/oplevelser/sagsmappen/', '/en/experiences/case-file/', { mappe: '#sagsmappe' }],
-  ['stolen', '/oplevelser/stolen/', '/en/experiences/the-stool/', { felt: '#st-felt .r9-felt' }],
-  ['hittegods', '/oplevelser/hittegods/', '/en/experiences/lost-property/', { formular: '#hg-form' }],
-  ['kodegryden', '/oplevelser/kodegryden/', '/en/experiences/the-cauldron/', { opgaver: '#kg-faner button' }],
-  ['arkivet', '/arkivet/', '/en/archive/', { protokol: '.protokol table', spoerg: '#arkiv-form' }],
-  ['sagsregister', '/arkivet/sagsregister/', '/en/archive/case-register/', { register: '.sagsregister tbody tr' }],
-  ['maskinrummet', '/maskinrummet/', '/en/machine-room/', { kort: '#maskinrum-gitter article', arkitektur: '#arkitektur' }],
-  ['revisionen', '/maskinrummet/revisionen/', '/en/machine-room/audit/', { tabel: '#revisionen-ind' }],
-  ['noedoevelser', '/maskinrummet/noedoevelser/', '/en/machine-room/emergency-drills/', { oevelser: '[data-oev]' }],
-];
+// Runde 13: kanon.json er den eneste sideliste (31 sider × 2 sprog); her står kun de ekstra ting, Gudrun tæller på bestemte sider.
+export const SELEKTORER = {
+  forside: { hero: '#hero', kort: '#kortet', steder: '#steder a' },
+  historien: { personer: '#personer-sektion', slaegt: '#slaegt .tavle li', nettet: '#net-svg' },
+  oplevelser: { oversigt: '.r12s-oplev-gitter a' },
+  undersoegelsen: { afgoer: '#afgoer-knap', faner: '#r5-faner button' },
+  maskinparken: { kort: '#r6-kort a', moede: '#moede-form' },
+  gaestebog: { formular: '#gb-form' },
+  runevaerkstedet: { bevis: '#cert-form', runer: '#rune-ind' },
+  sagsmappen: { mappe: '#sagsmappe' },
+  stolen: { felt: '#st-felt .r9-felt' },
+  hittegods: { formular: '#hg-form' },
+  kodegryden: { opgaver: '#kg-faner button' },
+  arkivet: { protokol: '.protokol table', spoerg: '#arkiv-form' },
+  sagsregister: { register: '.sagsregister tbody tr' },
+  maskinrummet: { kort: '#maskinrum-gitter article', arkitektur: '#arkitektur' },
+  revisionen: { tabel: '#revisionen-ind' },
+  noedoevelser: { oevelser: '[data-oev]' },
+};
+export const SIDER = Object.entries(KANON.sider).map(([k, v]) => [k, v.da, v.en, SELEKTORER[k] || {}]);
+const sideNavn = side => { const k = side.replace(/-(da|en)$/, ''); return (KANON.sider[k] && KANON.sider[k].navn) || null; };
 export const revisionsliste = () => SIDER.flatMap(([k, da, en, sel]) => [{ side: `${k}-da`, path: da, sel: { ...FÆLLES, ...sel } }, { side: `${k}-en`, path: en, sel: { ...FÆLLES, ...sel } }]);
 export const revisionEnabled = env => !!(env.REVISION && env.DB && env.MEDIA && env.BROWSER && typeof env.BROWSER.quickAction === 'function');
 
@@ -73,7 +80,7 @@ export function tjekScriptUrl(origin, sel) { return `${origin}/assets/revision-t
 
 /** Ét step: én side. Kaldes fra RevisionWorkflow. */
 export async function revisérSide(env, dateKey, item, { fuld = false } = {}) {
-  const origin = env.SITE_ORIGIN || 'https://tingsvad.dk', url = origin + item.path;
+  const origin = siteOrigin(env), url = origin + item.path;
   let http = 0, dele = '', hash = null;
   try { const r = await fetch(url, { redirect: 'manual', headers: { 'user-agent': 'tingsvad-revisionen/1 (Gudrun)' } }); http = r.status; dele = r.headers.get('x-tingsvad-dele') || ''; if (http === 200) hash = await htmlHash(await r.text(), item.sel); else await r.body?.cancel(); } catch (e) { http = 0; }
   const forrige = await env.DB.prepare("SELECT date_key, status, html_hash, genbrugt_fra, screenshot_key FROM revision_sider WHERE side = ? AND date_key < ? AND genbrugt_fra IS NULL ORDER BY date_key DESC LIMIT 1").bind(item.side, dateKey).first();
@@ -130,17 +137,18 @@ export async function startRevision(env, log, dateKey = cphDateKey(), hour = 6) 
 export async function getRevision(request, env, ctx) {
   const lang = langOf(new URL(request.url).searchParams.get('lang'));
   const rev = await env.DB.prepare('SELECT * FROM revisioner ORDER BY date_key DESC LIMIT 1').first();
-  if (!rev) return ok({ date: null, pages: revisionsliste().map(p => ({ side: p.side, path: p.path, status: 'ikke_koert' })) }, 'server');
+  const meta = { release: release(env), daekning: { sider: revisionsliste().length, kanon: Object.keys(KANON.sider).length * 2 } }; // runde 13: hvilken udgave, og hvor mange af kanon.json's sider
+  if (!rev) return ok({ date: null, ...meta, pages: revisionsliste().map(p => ({ side: p.side, path: p.path, navn: sideNavn(p.side), status: 'ikke_koert' })) }, 'server');
   const rows = (await env.DB.prepare('SELECT * FROM revision_sider WHERE date_key = ?').bind(rev.date_key).all()).results || [];
   const map = Object.fromEntries(rows.map(r => [r.side, r]));
-  const pages = revisionsliste().map(p => { const r = map[p.side]; return r ? { side: p.side, path: p.path, status: r.status, http: r.http, mangler: JSON.parse(r.mangler_json || '[]'), fejl: JSON.parse(r.fejl_json || '[]'), browserMs: r.browser_ms, checkedAt: r.checked_at, genbrugt: r.genbrugt_fra || undefined, screenshot: r.screenshot_key ? `/api/ting-ai/revision/billede/${r.genbrugt_fra || rev.date_key}/${p.side}` : null } : { side: p.side, path: p.path, status: 'ikke_koert' }; });
+  const pages = revisionsliste().map(p => { const r = map[p.side]; return r ? { side: p.side, path: p.path, navn: sideNavn(p.side), status: r.status, http: r.http, mangler: JSON.parse(r.mangler_json || '[]'), fejl: JSON.parse(r.fejl_json || '[]'), browserMs: r.browser_ms, checkedAt: r.checked_at, genbrugt: r.genbrugt_fra || undefined, screenshot: r.screenshot_key ? `/api/ting-ai/revision/billede/${r.genbrugt_fra || rev.date_key}/${p.side}` : null } : { side: p.side, path: p.path, navn: sideNavn(p.side), status: 'ikke_koert' }; });
   const github = await hentGithubUdfald(env, rev.date_key);
-  return ok({ date: rev.date_key, github, full: fuldDag(rev.date_key), browserMs: pages.reduce((a, p) => a + (+p.browserMs || 0), 0), reused: pages.filter(p => p.genbrugt).length, state: rev.state, startedAt: rev.started_at, finishedAt: rev.finished_at, passed: pages.filter(p => p.status === 'bestaaet').length, failed: pages.filter(p => p.status === 'fejlet').length, pages, lang }, 'server');
+  return ok({ date: rev.date_key, ...meta, github, full: fuldDag(rev.date_key), browserMs: pages.reduce((a, p) => a + (+p.browserMs || 0), 0), reused: pages.filter(p => p.genbrugt).length, state: rev.state, startedAt: rev.started_at, finishedAt: rev.finished_at, passed: pages.filter(p => p.status === 'bestaaet').length, failed: pages.filter(p => p.status === 'fejlet').length, pages, lang }, 'server');
 }
 
 /** GET revision/billede/:dato/:side → screenshot fra R2 */
 export async function revisionBillede(request, env, ctx, dateKey, side) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey) || !/^[a-z]+-(da|en)$/.test(side)) throw new ApiError('not_found', 'no', 404);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey) || !/^[a-z0-9-]+-(da|en)$/.test(side)) throw new ApiError('not_found', 'no', 404);
   const obj = await env.MEDIA.get(`revision/${dateKey}/${side}.jpg`);
   if (!obj) throw new ApiError('not_found', 'no', 404);
   return new Response(obj.body, { headers: { 'content-type': 'image/jpeg', 'cache-control': 'public, max-age=86400', 'x-content-type-options': 'nosniff' } });

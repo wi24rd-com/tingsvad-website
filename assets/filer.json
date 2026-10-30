@@ -1,0 +1,10 @@
+{
+  "_note": "Runde 13: sitets JavaScript. Kilderne ligger i assets/kilde/ og samles af tools/bundt.mjs til bundterne herunder (ren sammenkædning – alle filer er IIFE'er eller window-data, rækkefølgen er den gamle script-rækkefølge). »versioneret« er de filer, bump.sh giver ?v= i HTML'en og 10 minutters kantcache i _headers (tools/headers.mjs). Kør alt med `npm run prep`.",
+  "bundter": {
+    "tingsvad.js": ["tingstedet.js", "historien.js", "indslag-tekst.js", "indslag.js", "maskinpark-tekst.js", "kaede.js", "maskinpark.js", "ankre.js"],
+    "indslag.js": ["indslag-tekst.js", "indslag.js", "kaede.js"],
+    "sagsmappe.js": ["sagsmappe-tekst.js", "sagsmappe.js"],
+    "maskinrum.js": ["maskinrum.js"]
+  },
+  "versioneret": ["kanon.json", "site.css", "site.js", "tingsvad.js", "indslag.js", "sagsmappe.js", "maskinrum.js", "forside.css", "forside.js", "undersider.css", "undersider.js", "arkiv-v1.js", "infrakort.css", "infrakort.js", "vagt.css", "vagt.js", "maaling.js", "arkivskab.js", "doeren.js", "vagt-eksempel.json", "verden.json"]
+}

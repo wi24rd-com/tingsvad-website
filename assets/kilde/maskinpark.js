@@ -1,4 +1,4 @@
-/* tingsvad.dk — runde 6: Tingets maskinpark (C01–C08). Tekster i round6-tekst.js, stil nederst i site.css.
+/* tingsvad.dk — runde 6: Tingets maskinpark (C01–C08). Tekster i maskinpark-tekst.js, stil nederst i site.css.
    Taler med Worker-laget under /api/ting-ai/. Uden tilsluttet backend vises mærkede redaktionelle eksempler;
    intet redaktionelt vises som et AI-svar, og ingen demo ligner andre gæster. */
 (function () {

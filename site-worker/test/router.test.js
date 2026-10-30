@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { haandter, find, haandtering, OMDIRIGERINGER } from '../index.js';
 import { makeDb } from '../../worker/test/d1mock.js';
+import { lavHeaders } from '../../tools/headers.mjs';
+import { bagud } from '../../tools/bundt.mjs';
+import { SIKKERHED } from '../../functions/_lib/headers.js';
 import { intern as tingIntern } from '../../worker/src/features/gaestebog.js';
 
 const rod = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -203,4 +206,14 @@ test('run_worker_first: the static paths are served from the edge, and previews 
   const toml = readFileSync(join(rod, 'site-worker', 'wrangler.toml'), 'utf8');
   for (const ex of ['/assets/*', '/partials/*', '/sw.js', '/manifest.webmanifest', '/robots.txt', '/sitemap.xml', '/llms.txt', '/favicon.ico', '/arkivet/protokol/*', '/en/archive/minutes/*']) assert.ok(toml.includes(`"!${ex}"`), ex);
   assert.match(toml, /\[\[previews\.services\]\]\nbinding = "TING_AI"\nservice = "tingsvad-ting-ai-preview"/);
+});
+
+test('_headers is generated from headers.js + filer.json, and the bundles match their sources (npm run prep)', () => {
+  assert.equal(readFileSync(join(rod, '_headers'), 'utf8'), lavHeaders(), '_headers is behind: node tools/headers.mjs');
+  assert.deepEqual(bagud(), [], 'bundles are behind: node tools/bundt.mjs');
+  assert.ok(lavHeaders().includes('Content-Security-Policy: ' + SIKKERHED['Content-Security-Policy']));
+  // bump.sh and _headers read the same list, so every versioned file exists
+  const filer = JSON.parse(readFileSync(join(rod, 'assets', 'filer.json'), 'utf8'));
+  for (const f of filer.versioneret) readFileSync(join(rod, 'assets', f));
+  for (const [navn, kilder] of Object.entries(filer.bundter)) for (const k of kilder) readFileSync(join(rod, 'assets', 'kilde', k));
 });

@@ -3,6 +3,7 @@
 // Køen leverer mindst én gang; Workflow-instansens id (ravn-<job>-<forsøg>) gør dobbeltlevering ufarlig.
 // Uden kø (RAVN_QUEUE) oprettes Workflow-instansen direkte og jobbet mærkes via:"direct".
 import { ok, ApiError, readJson, langOf, msg } from '../lib/http.js';
+import { siteOrigin } from '../../../shared/origin.js';
 import { str } from '../lib/validate.js';
 import { rateLimitEnv } from '../lib/quota.js';
 import { browserAction } from '../lib/budget.js';
@@ -149,7 +150,7 @@ export async function skrivBilag(env, id) {
   if (!row) throw new Error('job missing');
   const key = `ravn/${row.id}.pdf`;
   if (await env.MEDIA.head(key)) return key;
-  const html = sagsmappeHtml(JSON.parse(row.input_json), row.language, row, env.SITE_ORIGIN || 'https://tingsvad.dk');
+  const html = sagsmappeHtml(JSON.parse(row.input_json), row.language, row, siteOrigin(env));
   const r = await browserAction(env, 'pdf', { html, gotoOptions: { waitUntil: 'load', timeout: 30000 }, pdfOptions: { format: 'a4', printBackground: true, margin: { top: '14mm', bottom: '16mm', left: '14mm', right: '14mm' } } });
   const bytes = new Uint8Array(await (r instanceof Response ? r.arrayBuffer() : new Response(r).arrayBuffer()));
   if (bytes.length < 1000 || bytes[0] !== 0x25) throw new Error('not a pdf: ' + new TextDecoder().decode(bytes.slice(0, 120)));

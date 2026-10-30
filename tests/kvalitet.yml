@@ -39,8 +39,8 @@ jobs:
         run: cd site-worker && npm ci --ignore-scripts && npm test
       - name: MCP (tingsvad-mcp)
         run: cd mcp && npm ci --ignore-scripts && node --test test/*.test.js
-      - name: Sagsregister stemmer med siderne
-        run: python3 -I sagsregister.py --tjek
+      - name: Sagsregister, _headers og bundter stemmer med kilderne
+        run: python3 -I sagsregister.py --tjek && node tools/headers.mjs --tjek && node tools/bundt.mjs --tjek
 
   adresse:
     if: github.event_name != 'pull_request'

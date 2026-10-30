@@ -24,13 +24,13 @@ function siteFetch(over = {}) {
 test('mdTitel and the page list: both languages, one file per page, ARKIV_UDELAD respected', () => {
   assert.equal(mdTitel(md('Historien', 'x')), 'Historien');
   const alle = arkivSider({});
-  assert.ok(alle.length >= 30 && alle.every(s => /^[a-z]+-(da|en)\.md$/.test(s.noegle)));
+  assert.ok(alle.length === 62 && alle.every(s => /^[a-z0-9-]+-(da|en)\.md$/.test(s.noegle)));
   assert.equal(arkivSider({ ARKIV_UDELAD: 'kodegryden-da,kodegryden-en' }).length, alle.length - 2);
   assert.equal(instansNavn({}, 'en'), 'tingsvad-arkiv-en');
 });
 
 test('synk: first run uploads every page into two instances; second run uploads nothing; a changed page replaces its old item', async () => {
-  const env = { AI_SEARCH: aiSearch(), SAGER: kv() };
+  const env = { AI_SEARCH: aiSearch(), SAGER: kv(), ARKIV_SYNK_MAX: '100' }; // runde 13: 62 sider; standarden er 40 pr. kørsel
   siteFetch();
   const r1 = await synkArkiv(env, null);
   assert.equal(r1.uploadet, arkivSider({}).length); assert.equal(r1.fejl.length, 0);

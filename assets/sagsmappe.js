@@ -1,5 +1,136 @@
+/* tingsvad.dk — sagsmappe.js: samlet af tools/bundt.mjs fra assets/kilde/ (sagsmappe-tekst.js, sagsmappe.js). Ret kilderne, ikke denne fil. */
+/* ═══ sagsmappe-tekst.js (assets/kilde/sagsmappe-tekst.js) ═══ */
+/* tingsvad.dk — runde 9: Ravnecentralen, Sagsmappen og Revisionen. Alle tekster, da/en. */
+window.TV_R9 = {
+  da: {
+    kilde: { server: 'Tingets protokol', cached: 'Gemt resultat', editorial: 'Redaktionelt eksempel', simulation: 'Simulation', browser: 'Kører i din browser' },
+    mappe: {
+      tom: 'Mappen er tom. Tinget har ikke noget på dig endnu.', tomHjaelp: 'Find et stykke af side 2 i Undersøgelsen, træk et kønummer eller søg om en stol, så kommer det i mappen.',
+      felter: { side2: 'Side 2 af afgørelsen', stykker: 'Fundne stykker', fund: 'Fund i udgravningen', koe: 'Kønummer', stol: 'Stolansøgning', oensker: 'Stolønsker', forsoeg: 'Forsøg på at afgøre sagen', cert: 'Bevis for fremmøde' },
+      certLink: '/oplevelser/runevaerkstedet/#cert-form', certHent: 'Hent beviset',
+      af: 'af', samlet: 'Samlet. Den siger: udsat.', ingen: 'Intet ført til protokols', ikkeIndsendt: 'noteret, ikke indsendt', alleUdsat: 'alle udsat',
+      stykker: { archive: 'Stykke A · aktindsigten', shield: 'Stykke B · skjoldets bagside', excavation: 'Stykke C · udgravningen' },
+      fundNavne: { kam: 'Kam', moent: 'Mønt', runepind: 'Runepind' },
+      lokalt: 'Alt herover ligger kun i din browser. Først når du sender ravnen, får tinget en kopi – og kun af det, der står her.',
+      navn: 'Navn på mappen (valgfrit)', navnPh: 'fx Toke den Yngre', send: 'Send ravnen efter sagsmappen (PDF)', sender: 'Ravnen gør sig klar …',
+    },
+    ravn: {
+      titel: 'Ravnecentralen', under: 'Din bestilling er et rigtigt baggrundsjob. Du kan lukke siden; ravnen flyver alligevel.',
+      trin: { i_koe: 'I køen', modtaget: 'Modtaget i Ravnecentralen', flyver: 'Ravnen flyver', skriver: 'Bilaget skrives', leveret: 'Leveret', fejlet: 'Ravnen kom ikke frem' },
+      hent: 'Hent sagsmappen (PDF)', igen: 'Send ravnen igen', forsoeg: 'Forsøg {a} af {b}', fejl: 'Ravnen vendte om undervejs. Det er ført til protokols.', opbrugt: 'Ravnen er sendt tre gange. Den nægter nu.',
+      samme: 'Samme indhold som sidst: ravnen henter den mappe, den allerede har skrevet.', via: { queue: 'via kø og Workflow', direct: 'direkte til Workflow (ingen kø)' },
+      kl: 'kl.', turnstile: 'Turnstile kunne ikke bekræfte, at du er et menneske (kode {kode}). Ravnen blev ikke sendt. Prøv igen, eller slå skjold/annonceblokering fra for tingsvad.dk.', ikkeTilsluttet: 'Ravnecentralen er ikke tilsluttet. Mappen kan stadig ses her, men ikke sendes.', netfejl: 'Nettet svarede ikke. Prøv igen om lidt.',
+    },
+    stol: {
+      online: '{n} ved vadestedet', flyt: 'Flyt stolen', op: 'Op', ned: 'Ned', venstre: 'Venstre', hoejre: 'Højre', traek: 'Brug piletasterne, knapperne eller tryk på et nabofelt.',
+      flytninger: 'Stolen er flyttet {n} gange', vip: 'Den har vippet på den løse sten {n} gange', toke: 'Toke har kunnet nå den {n} gange. Han har ikke sat sig. Sagen om at sidde ned er udsat.',
+      senest: 'Senest flyttet for {s} sekunder siden', afDig: 'af dig', afAnden: 'af en anden gæst', aldrig: 'Ingen har flyttet stolen endnu.',
+      fejl: { river: 'Stolen må ikke stå i åen. Den er af træ, men tinget er ikke.', edge: 'Vadestedet slutter her. Tinget gør ikke.', too_fast: 'Langsomt. Stolen har ventet i tusind år; den kan vente et kvart sekund.', one_step: 'Ét felt ad gangen.' },
+      begiv: { wobble: 'Den fjerde sten vippede. Alle så det. Ingen gør noget.', toke: 'Stolen står hos Toke. Han kigger på den.' },
+      forbinder: 'Forbinder til stolen …', mistet: 'Forbindelsen til stolen er tabt. Prøver igen …', offline: 'Stolen er ikke tilsluttet.',
+      felt: { bred: 'Bred', aa: 'Åen', sten: 'Vadesten', loes: 'Den løse sten', toke: 'Toke' }, stolAlt: 'Stolen',
+    },
+    hg: {
+      label: 'Hvad har du mistet?', ph: 'fx noget at sidde på, noget vådt, noget med koen', soeg: 'Søg i hittegodset', eksempler: ['noget at sidde på', 'noget vådt', 'noget Gudrun ejer', 'noget fra 2000-tallet'],
+      soeger: 'Mímir leder på hylderne …', ingen: 'Intet på hylderne ligner. Mímir har noteret efterlysningen.', lav: 'Mímir: Det ligner ikke rigtig. Men det er det nærmeste, vi har.',
+      score: 'lighed', fundet: 'Fundet', aar: 'år', kort: 'Skriv mindst to tegn.', nyIndeks: 'Mímir har lige sat hylderne op. Vectorize skal bruge et øjeblik, før de nye genstande kan findes. Prøv igen om ti sekunder.', offline: 'Hittegodskontoret er lukket. Maskinen er ikke tilsluttet.', note: 'Søgningen sammenligner betydning, ikke ord: dit spørgsmål og genstandene er lavet om til vektorer med bge-m3 og slået op i Vectorize. Hvad der står om genstanden, kommer fra kataloget, ikke fra en sprogmodel.',
+    },
+    rev: {
+      ikkeKoert: 'Revisionen er ikke kørt endnu. Gudrun venter på morgenen.', seneste: 'Seneste revision', bestaaet: 'bestået', fejlet: 'fejlet', ikke: 'ikke kørt',
+      koerer: 'Revisionen er i gang. Gudrun er nået til side {n}.', udgave: 'Udgave {c} af maskinerne · {n} af {k} sider i kanon.json er med i revisionen.',
+      gudrun: { alle: 'Gudrun: Alle bilag foreligger. Det er mistænkeligt.', nogle: 'Gudrun: {n} side(r) mangler bilag. Det er noteret med rødt.', mange: 'Gudrun: Halvdelen af vadestedet mangler bilag. Tinget er indkaldt. Mødet er udsat.' },
+      kol: { side: 'Side', status: 'Status', http: 'HTTP', ms: 'Browser', fund: 'Bemærkninger', billede: 'Billede' },
+      mangler: 'mangler', fejlJs: 'JS-fejl', vis: 'Se', ingenBem: '–', henter: 'Henter revisionen …', ikkeTilsluttet: 'Revisionen er ikke tilsluttet. Gudrun reviderer i hånden, hvilket vil sige slet ikke.',
+      sider: { forside: 'Forsiden', historien: 'Historien', oplevelser: 'Oplevelser', undersoegelsen: 'Undersøgelsen', maskinparken: 'Maskinparken', gaestebog: 'Gæstebogen', runevaerkstedet: 'Runeværkstedet', sagsmappen: 'Sagsmappen', stolen: 'Stolen', hittegods: 'Hittegodset', kodegryden: 'Kodegryden', noedoevelser: 'Nødøvelserne', arkivet: 'Arkivet', sagsregister: 'Sagsregistret', maskinrummet: 'Maskinrummet', revisionen: 'Revisionen' },
+      ghLed: 'GitHub · issues ved fejl',
+      gh: { aabnet: 'Gudrun åbnede issue {link} med dagens fejl.', findes: 'Dagens fejl står allerede i issue {link}.', lukket: 'Alt bestod, så Gudrun lukkede {link}.', stille: 'Alt bestod, og der var intet åbent issue at lukke.', slukket: 'Forbindelsen til GitHub er ikke sat op; fejlene står kun her.', fejl: 'GitHub svarede ikke. Workflowet prøvede tre gange og lod revisionen stå.', venter: 'Dagens fejl sendes til GitHub som ét issue, når revisionen er færdig.', ingenData: 'Ved fejl åbner Gudrun ét issue pr. dag og lukker det selv, når alt består.', alle: 'Alle Gudruns issues',
+        ledAabnet: 'issue #{n} åbnet', ledLukket: 'lukkede {n}', ledStille: 'intet at melde', ledSlukket: 'ikke sat op', ledFejl: 'svarede ikke', ledVenter: 'issues ved fejl' },
+      seBillede: 'Se billede', detaljer: 'Detaljer', iAltK: 'sider i alt', nMangler: '{n} mangler', nJs: '{n} JS-fejl', uaendretKort: 'uændret siden {dato}', luk: 'Luk', forrige: 'Forrige', naeste: 'Næste', tjekket: 'Tjekket', genbrugtH: 'Genbrugt', sti: 'Siden', ingenBillede: 'Intet skærmbillede fra dette tjek.', billedeAlt: 'Skærmbillede af {side} fra Gudruns revision',
+      genbrugt: 'uændret siden {dato} · browsertjekket genbrugt', fuld: 'Mandag: alle sider åbnet i browseren.', spar: 'Browser Run brugte {s}; {g} uændrede sider blev ikke åbnet igen.',
+    },
+    kg: {
+      opgaver: [
+        { id: 'taage', titel: 'Tæl tågedagene', tekst: 'Mímir har ført vejret i en måned. Returnér antallet af dage med »tåge«.', start: "function løs(dage) {\n  // dage er fx ['tåge', 'sol', 'tåge']\n  return 0;\n}", tests: [{ input: ['tåge', 'sol', 'tåge'], forventet: 2 }, { input: ['sol', 'regn'], forventet: 0 }, { input: ['tåge', 'tåge', 'tåge', 'tåge', 'sol', 'tåge'], forventet: 5 }], losning: "function løs(dage) {\n  return dage.filter(d => d === 'tåge').length;\n}" },
+        { id: 'sten', titel: 'Find den løse sten', tekst: 'Syv vadesten, og hvor mange millimeter hver af dem vipper. Returnér nummeret (1–7) på den sten, der vipper mest.', start: "function løs(vip) {\n  // vip er fx [0, 1, 0, 9, 1, 0, 2]\n  return 1;\n}", tests: [{ input: [0, 1, 0, 9, 1, 0, 2], forventet: 4 }, { input: [3, 3, 3, 3, 4, 3, 3], forventet: 5 }, { input: [7, 0, 0, 0, 0, 0, 0], forventet: 1 }], losning: "function løs(vip) {\n  return vip.indexOf(Math.max(...vip)) + 1;\n}" },
+        { id: 'udsaet', titel: 'Udsæt alle sager', tekst: 'Du får en liste af sager. Returnér den samme liste, hvor hver sag har status »udsat«. Rækkefølgen skal bevares.', start: "function løs(sager) {\n  // sager er fx [{ nr: '980-0001', status: 'ny' }]\n  return sager;\n}", tests: [{ input: [{ nr: '980-0001', status: 'ny' }], forventet: [{ nr: '980-0001', status: 'udsat' }] }, { input: [{ nr: '980-0002', status: 'afgjort' }, { nr: '980-0003', status: 'udsat' }], forventet: [{ nr: '980-0002', status: 'udsat' }, { nr: '980-0003', status: 'udsat' }] }, { input: [], forventet: [] }], losning: "function løs(sager) {\n  return sager.map(s => ({ ...s, status: 'udsat' }));\n}" },
+        { id: 'aar', titel: 'Hvor længe er sagen udsat?', tekst: 'Tinget blev sat i 980. Returnér antallet af år, sagen har været udsat i det givne år.', start: "function løs(aar) {\n  return 0;\n}", tests: [{ input: 2026, forventet: 1046 }, { input: 980, forventet: 0 }, { input: 1572, forventet: 592 }], losning: "function løs(aar) {\n  return aar - 980;\n}" },
+        { id: 'referat', titel: 'Mímirs referat', tekst: 'Sæt ordene sammen med mellemrum, start med stort bogstav, og slut med ». Udsat.«', start: "function løs(ord) {\n  // ord er fx ['koen', 'er', 'til', 'stede']\n  return '';\n}", tests: [{ input: ['koen', 'er', 'til', 'stede'], forventet: 'Koen er til stede. Udsat.' }, { input: ['ingen', 'afgørelse'], forventet: 'Ingen afgørelse. Udsat.' }], losning: "function løs(ord) {\n  const s = ord.join(' ');\n  return s[0].toUpperCase() + s.slice(1) + '. Udsat.';\n}" },
+      ],
+      koer: 'Kør i gryden', nulstil: 'Start forfra', visLos: 'Vis Mímirs løsning', skjulLos: 'Skjul løsningen', koger: 'Gryden koger …', overkog: 'Gryden kogte over: koden tog mere end 2 sekunder og blev stoppet. Måske en uendelig løkke?',
+      alle: 'Alle prøver bestået. Gudrun har revideret resultatet og fundet det mistænkeligt korrekt.', nogle: '{a} af {b} prøver bestået.', compile: 'Koden kan ikke læses: {f}', forventet: 'forventet', fik: 'fik', fejl: 'fejl', loest: 'løst',
+      lokalt: 'Koden kører i din egen browser, i en Web Worker uden netværk, og stoppes efter 2 sekunder. Intet sendes til tinget.', label: 'Din kode',
+    },
+    oev: { koer: 'Kør øvelsen', koerer: 'Øvelsen kører …', ms: 'ms', sim: 'Simulation', titler: { timeout: 'Maskinen svarer ikke', dublet: 'Ravnen leveres to gange', reconnect: 'Forbindelsen ryger' } },
+    post: { adresse: 'Skriv til', vent: 'Postkassen er ved at blive sat op. Ravnen er ikke helt landet endnu.', ingen: 'Ingen breve er hængt op endnu.', tal: '{n} breve modtaget · {v} venter på, at Mímir læser dem', modtaget: 'Modtaget' },
+    mk: { titel: 'Vis maskineriet', produkter: 'Produkter', kald: 'Seneste kald', ingen: 'Ingen kald endnu.', browser: 'målt i browseren', total: 'i alt i Workeren', kode: 'Kildekoden på GitHub', tid: 'kl.', kald1: 'kald' },
+  },
+  en: {
+    kilde: { server: 'The thing’s minutes', cached: 'Stored result', editorial: 'Editorial example', simulation: 'Simulation', browser: 'Runs in your browser' },
+    mappe: {
+      tom: 'The file is empty. The thing has nothing on you yet.', tomHjaelp: 'Find a piece of page 2 in the Investigation, take a queue number or apply for a stool, and it goes into the file.',
+      felter: { side2: 'Page 2 of the decision', stykker: 'Pieces found', fund: 'Finds in the excavation', koe: 'Queue number', stol: 'Stool application', oensker: 'Stool wishes', forsoeg: 'Attempts to decide the case', cert: 'Certificate of attendance' },
+      certLink: '/en/experiences/rune-workshop/#cert-form', certHent: 'Get the certificate',
+      af: 'of', samlet: 'Assembled. It says: adjourned.', ingen: 'Nothing minuted', ikkeIndsendt: 'noted, not submitted', alleUdsat: 'all adjourned',
+      stykker: { archive: 'Piece A · the file access', shield: 'Piece B · the back of the shield', excavation: 'Piece C · the excavation' },
+      fundNavne: { kam: 'Comb', moent: 'Coin', runepind: 'Rune stick' },
+      lokalt: 'Everything above lives only in your browser. Only when you send the raven does the thing get a copy – and only of what is shown here.',
+      navn: 'Name on the file (optional)', navnPh: 'e.g. Toke the Younger', send: 'Send the raven for the case file (PDF)', sender: 'The raven is getting ready …',
+    },
+    ravn: {
+      titel: 'The raven exchange', under: 'Your order is a real background job. You can close the page; the raven flies anyway.',
+      trin: { i_koe: 'In the queue', modtaget: 'Received at the raven exchange', flyver: 'The raven is flying', skriver: 'The document is being written', leveret: 'Delivered', fejlet: 'The raven did not arrive' },
+      hent: 'Download the case file (PDF)', igen: 'Send the raven again', forsoeg: 'Attempt {a} of {b}', fejl: 'The raven turned back on the way. It has been minuted.', opbrugt: 'The raven has been sent three times. It now refuses.',
+      samme: 'Same contents as last time: the raven fetches the file it has already written.', via: { queue: 'via queue and Workflow', direct: 'straight to Workflow (no queue)' },
+      kl: 'at', turnstile: 'Turnstile could not confirm that you are human (code {kode}). The raven was not sent. Try again, or turn off shields/ad blocking for tingsvad.dk.', ikkeTilsluttet: 'The raven exchange is not connected. The file can still be read here, but not sent.', netfejl: 'The network did not answer. Try again in a moment.',
+    },
+    stol: {
+      online: '{n} at the ford', flyt: 'Move the stool', op: 'Up', ned: 'Down', venstre: 'Left', hoejre: 'Right', traek: 'Use the arrow keys, the buttons or tap a neighbouring square.',
+      flytninger: 'The stool has been moved {n} times', vip: 'It has wobbled on the loose stone {n} times', toke: 'Toke has been able to reach it {n} times. He has not sat down. The case on sitting down is adjourned.',
+      senest: 'Last moved {s} seconds ago', afDig: 'by you', afAnden: 'by another guest', aldrig: 'Nobody has moved the stool yet.',
+      fejl: { river: 'The stool may not stand in the river. It is made of wood, but the thing is not.', edge: 'The ford ends here. The thing does not.', too_fast: 'Slowly. The stool has waited a thousand years; it can wait a quarter of a second.', one_step: 'One square at a time.' },
+      begiv: { wobble: 'The fourth stone wobbled. Everyone saw it. Nobody does anything.', toke: 'The stool is with Toke. He is looking at it.' },
+      forbinder: 'Connecting to the stool …', mistet: 'The connection to the stool was lost. Trying again …', offline: 'The stool is not connected.',
+      felt: { bred: 'Bank', aa: 'The river', sten: 'Stepping stone', loes: 'The loose stone', toke: 'Toke' }, stolAlt: 'The stool',
+    },
+    hg: {
+      label: 'What have you lost?', ph: 'e.g. something to sit on, something wet, something about the cow', soeg: 'Search the lost property', eksempler: ['something to sit on', 'something wet', 'something Gudrun owns', 'something from the 2000s'],
+      soeger: 'Mímir is searching the shelves …', ingen: 'Nothing on the shelves looks like it. Mímir has filed the notice.', lav: 'Mímir: It does not really look like it. But it is the closest we have.',
+      score: 'similarity', fundet: 'Found', aar: 'year', kort: 'Write at least two characters.', nyIndeks: 'Mímir has just put up the shelves. Vectorize needs a moment before the new objects can be found. Try again in ten seconds.', offline: 'The lost property office is closed. The machine is not connected.', note: 'The search compares meaning, not words: your question and the objects are turned into vectors with bge-m3 and looked up in Vectorize. What is said about each object comes from the catalogue, not from a language model.',
+    },
+    rev: {
+      ikkeKoert: 'The audit has not run yet. Gudrun is waiting for the morning.', seneste: 'Latest audit', bestaaet: 'passed', fejlet: 'failed', ikke: 'not run',
+      koerer: 'The audit is under way. Gudrun has reached page {n}.', udgave: 'Release {c} of the machines · {n} of {k} pages in kanon.json are covered by the audit.',
+      gudrun: { alle: 'Gudrun: All supporting documents are present. That is suspicious.', nogle: 'Gudrun: {n} page(s) lack supporting documents. Noted in red.', mange: 'Gudrun: Half the ford lacks supporting documents. The thing has been convened. The meeting is adjourned.' },
+      kol: { side: 'Page', status: 'Status', http: 'HTTP', ms: 'Browser', fund: 'Remarks', billede: 'Image' },
+      mangler: 'missing', fejlJs: 'JS errors', vis: 'View', ingenBem: '–', henter: 'Fetching the audit …', ikkeTilsluttet: 'The audit is not connected. Gudrun audits by hand, which is to say not at all.',
+      sider: { forside: 'Front page', historien: 'History', oplevelser: 'Experiences', undersoegelsen: 'Investigation', maskinparken: 'Machine park', gaestebog: 'Guestbook', runevaerkstedet: 'Rune workshop', sagsmappen: 'Case file', stolen: 'The stool', hittegods: 'Lost property', kodegryden: 'The cauldron', noedoevelser: 'Emergency drills', arkivet: 'Archive', sagsregister: 'Case register', maskinrummet: 'Machine room', revisionen: 'The audit' },
+      ghLed: 'GitHub · issues on failure',
+      gh: { aabnet: 'Gudrun opened issue {link} with today’s failures.', findes: 'Today’s failures are already in issue {link}.', lukket: 'Everything passed, so Gudrun closed {link}.', stille: 'Everything passed, and there was no open issue to close.', slukket: 'The GitHub connection is not set up; the failures are only listed here.', fejl: 'GitHub did not answer. The workflow tried three times and left the audit as it was.', venter: 'Today’s failures are sent to GitHub as one issue when the audit has finished.', ingenData: 'On failure, Gudrun opens one issue per day and closes it herself when everything passes.', alle: 'All of Gudrun’s issues',
+        ledAabnet: 'issue #{n} opened', ledLukket: 'closed {n}', ledStille: 'nothing to report', ledSlukket: 'not set up', ledFejl: 'did not answer', ledVenter: 'issues on failure' },
+      seBillede: 'Screenshot', detaljer: 'Details', iAltK: 'pages in all', nMangler: '{n} missing', nJs: '{n} JS errors', uaendretKort: 'unchanged since {dato}', luk: 'Close', forrige: 'Previous', naeste: 'Next', tjekket: 'Checked', genbrugtH: 'Reused', sti: 'Page', ingenBillede: 'No screenshot from this check.', billedeAlt: 'Screenshot of {side} from Gudrun’s audit',
+      genbrugt: 'unchanged since {dato} · browser check reused', fuld: 'Monday: every page opened in the browser.', spar: 'Browser Run used {s}; {g} unchanged pages were not opened again.',
+    },
+    kg: {
+      opgaver: [
+        { id: 'taage', titel: 'Count the foggy days', tekst: 'Mímir has recorded the weather for a month. Return the number of days with “fog”.', start: "function løs(days) {\n  // days is e.g. ['fog', 'sun', 'fog']\n  return 0;\n}", tests: [{ input: ['fog', 'sun', 'fog'], forventet: 2 }, { input: ['sun', 'rain'], forventet: 0 }, { input: ['fog', 'fog', 'fog', 'fog', 'sun', 'fog'], forventet: 5 }], losning: "function løs(days) {\n  return days.filter(d => d === 'fog').length;\n}" },
+        { id: 'sten', titel: 'Find the loose stone', tekst: 'Seven stepping stones, and how many millimetres each one wobbles. Return the number (1–7) of the stone that wobbles most.', start: "function løs(wobble) {\n  // wobble is e.g. [0, 1, 0, 9, 1, 0, 2]\n  return 1;\n}", tests: [{ input: [0, 1, 0, 9, 1, 0, 2], forventet: 4 }, { input: [3, 3, 3, 3, 4, 3, 3], forventet: 5 }, { input: [7, 0, 0, 0, 0, 0, 0], forventet: 1 }], losning: "function løs(wobble) {\n  return wobble.indexOf(Math.max(...wobble)) + 1;\n}" },
+        { id: 'udsaet', titel: 'Adjourn every case', tekst: 'You get a list of cases. Return the same list where every case has the status “adjourned”. Keep the order.', start: "function løs(cases) {\n  // cases is e.g. [{ nr: '980-0001', status: 'new' }]\n  return cases;\n}", tests: [{ input: [{ nr: '980-0001', status: 'new' }], forventet: [{ nr: '980-0001', status: 'adjourned' }] }, { input: [{ nr: '980-0002', status: 'decided' }, { nr: '980-0003', status: 'adjourned' }], forventet: [{ nr: '980-0002', status: 'adjourned' }, { nr: '980-0003', status: 'adjourned' }] }, { input: [], forventet: [] }], losning: "function løs(cases) {\n  return cases.map(c => ({ ...c, status: 'adjourned' }));\n}" },
+        { id: 'aar', titel: 'How long has the case been adjourned?', tekst: 'The thing convened in 980. Return the number of years the case has been adjourned in the given year.', start: "function løs(year) {\n  return 0;\n}", tests: [{ input: 2026, forventet: 1046 }, { input: 980, forventet: 0 }, { input: 1572, forventet: 592 }], losning: "function løs(year) {\n  return year - 980;\n}" },
+        { id: 'referat', titel: 'Mímir’s minutes', tekst: 'Join the words with spaces, start with a capital letter and end with “. Adjourned.”', start: "function løs(words) {\n  // words is e.g. ['the', 'cow', 'is', 'present']\n  return '';\n}", tests: [{ input: ['the', 'cow', 'is', 'present'], forventet: 'The cow is present. Adjourned.' }, { input: ['no', 'ruling'], forventet: 'No ruling. Adjourned.' }], losning: "function løs(words) {\n  const s = words.join(' ');\n  return s[0].toUpperCase() + s.slice(1) + '. Adjourned.';\n}" },
+      ],
+      koer: 'Put it in the cauldron', nulstil: 'Start over', visLos: 'Show Mímir’s solution', skjulLos: 'Hide the solution', koger: 'The cauldron is boiling …', overkog: 'The cauldron boiled over: the code took more than 2 seconds and was stopped. An endless loop, perhaps?',
+      alle: 'All tests passed. Gudrun has audited the result and found it suspiciously correct.', nogle: '{a} of {b} tests passed.', compile: 'The code cannot be read: {f}', forventet: 'expected', fik: 'got', fejl: 'error', loest: 'solved',
+      lokalt: 'The code runs in your own browser, in a Web Worker without network access, and is stopped after 2 seconds. Nothing is sent to the thing.', label: 'Your code',
+    },
+    oev: { koer: 'Run the drill', koerer: 'The drill is running …', ms: 'ms', sim: 'Simulation', titler: { timeout: 'The machine does not answer', dublet: 'The raven is delivered twice', reconnect: 'The connection drops' } },
+    post: { adresse: 'Write to', vent: 'The mailbox is being set up. The raven has not quite landed yet.', ingen: 'No letters have been put up yet.', tal: '{n} letters received · {v} waiting for Mímir to read them', modtaget: 'Received' },
+    mk: { titel: 'Show the machinery', produkter: 'Products', kald: 'Latest calls', ingen: 'No calls yet.', browser: 'measured in the browser', total: 'in total in the Worker', kode: 'Source code on GitHub', tid: 'at', kald1: 'calls' },
+  },
+};
+;
+/* ═══ sagsmappe.js (assets/kilde/sagsmappe.js) ═══ */
 /* tingsvad.dk — runde 9: Sagsmappen + Ravnecentralen (bilag som baggrundsjob) og Revisionen (Gudruns daglige gennemgang).
-   Tekster i round9-tekst.js. API-kontrakt som round6: {ok, source, requestId, data} / {ok:false, code, message, retryAfter?}. */
+   Tekster i sagsmappe-tekst.js. API-kontrakt som maskinpark.js: {ok, source, requestId, data} / {ok:false, code, message, retryAfter?}. */
 (function () {
   const lang = document.documentElement.lang === 'en' ? 'en' : 'da', da = lang === 'da';
   const T = (window.TV_R9 || {})[lang]; if (!T) return;
@@ -81,7 +212,7 @@
     ravnEl.innerHTML = `<form class="r6-form r9-ravn-form" id="rv-form"><label for="rv-navn">${esc(M.navn)}</label><input id="rv-navn" type="text" maxlength="40" placeholder="${esc(M.navnPh)}" value="${data.cert ? esc(data.cert.navn) : ''}" autocomplete="off">
       <div class="turnstile-slot" id="rv-ts"></div><button class="knap" type="submit" id="rv-send">${esc(M.send)}</button></form>
       <p class="r6-status" id="rv-status" aria-live="polite"></p><div id="rv-job" aria-live="polite"></div>`;
-    const mk = maskineri(ravnEl, { p: ['Turnstile', 'Workers', 'D1 (unik pr. ejer og input)', 'Queues', 'Workflows', 'Browser Run · PDF', 'R2', 'Idempotency'], f: ['worker/src/features/ravn.js', 'worker/src/workflow.js', 'worker/migrations/0002_runde9.sql', 'assets/round9.js'] });
+    const mk = maskineri(ravnEl, { p: ['Turnstile', 'Workers', 'D1 (unik pr. ejer og input)', 'Queues', 'Workflows', 'Browser Run · PDF', 'R2', 'Idempotency'], f: ['worker/src/features/ravn.js', 'worker/src/workflow.js', 'worker/migrations/0002_runde9.sql', 'assets/kilde/sagsmappe.js'] });
     let ts = { token: () => '', reset() { } }; if (window.tvTurnstile) window.tvTurnstile.mount($('#rv-ts', ravnEl), 'ravn').then(t => ts = t);
     const st = $('#rv-status', ravnEl), jobEl = $('#rv-job', ravnEl), knap = $('#rv-send', ravnEl);
     const status = (t, cls) => { st.className = 'r6-status' + (cls ? ' ' + cls : ''); st.textContent = t || ''; };
@@ -129,7 +260,7 @@
   /* ── Den fælles stol: Durable Object + WebSocket. Serveren ejer positionen; vi beder kun om ét skridt ad gangen. ── */
   const stolEl = $('#stolen');
   if (stolEl) {
-    const S = T.stol, mk = maskineri($('#stolen-maskineri'), { p: ['Durable Objects (SQLite)', 'WebSocket Hibernation', 'Workers', 'Workers Cache', 'Sessionscookie (HMAC)'], f: ['worker/src/chair.js', 'worker/src/lib/chairlogic.js', 'worker/src/lib/dagbog.js', 'assets/round9.js'] });
+    const S = T.stol, mk = maskineri($('#stolen-maskineri'), { p: ['Durable Objects (SQLite)', 'WebSocket Hibernation', 'Workers', 'Workers Cache', 'Sessionscookie (HMAC)'], f: ['worker/src/chair.js', 'worker/src/lib/chairlogic.js', 'worker/src/lib/dagbog.js', 'assets/kilde/sagsmappe.js'] });
     const W = 12, H = 6, STEN = new Set(['5,1', '6,2', '5,3', '6,3', '5,5', '6,4', '5,0']), LØS = '5,3', TOKE = '10,3';
     const type = (x, y) => { const k = `${x},${y}`; return k === LØS ? 'loes' : STEN.has(k) ? 'sten' : (x === 5 || x === 6) ? 'aa' : k === TOKE ? 'toke' : 'bred'; };
     stolEl.innerHTML = `<p class="r6-status venter" id="st-status" aria-live="polite">${esc(S.forbinder)}</p>
@@ -172,7 +303,7 @@
   /* ── Hittegodskontoret: Vectorize + bge-m3. Svarene kommer fra kataloget i koden. ── */
   const hgEl = $('#hittegods');
   if (hgEl) {
-    const G = T.hg, mk = maskineri($('#hittegods-maskineri'), { p: ['Vectorize (namespace hittegods-da/-en)', 'Workers AI · bge-m3 embeddings', 'AI Gateway', 'D1 (joblås)', 'Rate Limiting'], f: ['worker/src/features/hittegods.js', 'worker/src/lib/hittegods.js', 'assets/round9.js'] });
+    const G = T.hg, mk = maskineri($('#hittegods-maskineri'), { p: ['Vectorize (namespace hittegods-da/-en)', 'Workers AI · bge-m3 embeddings', 'AI Gateway', 'D1 (joblås)', 'Rate Limiting'], f: ['worker/src/features/hittegods.js', 'worker/src/lib/hittegods.js', 'assets/kilde/sagsmappe.js'] });
     hgEl.innerHTML = `<form class="r6-form" id="hg-form"><label for="hg-q">${esc(G.label)}</label><input id="hg-q" type="search" maxlength="120" placeholder="${esc(G.ph)}" autocomplete="off"><button class="knap" type="submit">${esc(G.soeg)}</button></form>
       <p class="r9-chips">${G.eksempler.map(x => `<button type="button" class="knap sek r9-chip-knap">${esc(x)}</button>`).join('')}</p>
       <p class="r6-status" id="hg-status" aria-live="polite"></p><div id="hg-fund" aria-live="polite"></div><p class="note">${esc(G.note)}</p>`;
@@ -198,7 +329,7 @@
     const K = T.kg, KKEY = 'tingsvad.kodegryde.v1';
     const S = Object.assign({ schemaVersion: 1, loest: [], kode: {} }, læs(KKEY) || {});
     const gem = () => { try { localStorage.setItem(KKEY, JSON.stringify(S)); } catch (e) { } };
-    const mk = maskineri($('#kodegryden-maskineri'), { p: ['Web Worker (din browser)', 'Content Security Policy: worker-src \'self\'', 'Egen CSP for workeren: default-src \'none\'', 'Ingen server'], f: ['assets/kodegryde-worker-v1.js', '_headers', 'assets/round9.js', 'assets/round9-tekst.js'] });
+    const mk = maskineri($('#kodegryden-maskineri'), { p: ['Web Worker (din browser)', 'Content Security Policy: worker-src \'self\'', 'Egen CSP for workeren: default-src \'none\'', 'Ingen server'], f: ['assets/kodegryde-worker-v1.js', '_headers', 'assets/kilde/sagsmappe.js', 'assets/kilde/sagsmappe-tekst.js'] });
     let aktiv = K.opgaver[0].id;
     kgEl.innerHTML = `<p class="r6-kildelinje">${kilde('browser')}</p><div class="r9-faner" role="tablist" id="kg-faner"></div><div id="kg-opgave"></div><p class="note">${esc(K.lokalt)}</p>`;
     const faner = $('#kg-faner', kgEl), boks = $('#kg-opgave', kgEl);
@@ -268,17 +399,18 @@
     const V = T.rev;
     revEl.innerHTML = `<p class="r6-status venter">${esc(V.henter)}</p>`;
     const mkSpec = { p: ['Cron Triggers', 'Workflows', 'Browser Run · snapshot', 'R2', 'D1', 'Workers KV', V.ghLed] };
-    const mk = maskineri($('#revisionen-maskineri'), Object.assign(mkSpec, { f: ['worker/src/features/revision.js', 'worker/src/workflow.js', 'worker/src/features/gudrun-github.js', 'assets/round9.js'] }));
+    const mk = maskineri($('#revisionen-maskineri'), Object.assign(mkSpec, { f: ['worker/src/features/revision.js', 'worker/src/workflow.js', 'worker/src/features/gudrun-github.js', 'assets/kilde/sagsmappe.js'] }));
     api(`revision?lang=${lang}`, null, mk).then(res => {
       if (!res.ok || !res.data) { revEl.innerHTML = `<p class="note">${esc(V.ikkeTilsluttet)}</p>`; return; }
       const d = res.data, sider = d.pages || [];
       const n = { ok: sider.filter(p => p.status === 'bestaaet').length, fejl: sider.filter(p => p.status === 'fejlet').length, ikke: sider.filter(p => p.status === 'ikke_koert').length };
       const gud = !d.date ? V.ikkeKoert : d.state === 'running' ? fmt(V.koerer, { n: n.ok + n.fejl + 1 }) : !n.fejl ? V.gudrun.alle : n.fejl > sider.length / 2 ? V.gudrun.mange : fmt(V.gudrun.nogle, { n: n.fejl });
-      const navn = side => { const [k, l] = side.split('-'); return `${V.sider[k] || k} · ${l}`; };
+      const navn = (side, p) => { const i = side.lastIndexOf('-'), k = side.slice(0, i), l = side.slice(i + 1); return `${(p && p.navn && p.navn[lang]) || V.sider[k] || k} · ${l}`; }; // runde 13: navnet kommer fra kanon.json via Workeren
       const chip = s => `<span class="r9-chip r9-${esc(s)}">${esc(s === 'bestaaet' ? V.bestaaet : s === 'fejlet' ? V.fejlet : V.ikke)}</span>`;
       revEl.innerHTML = `<p class="r6-kildelinje">${kilde('server')}${d.date ? ` <b>${esc(V.seneste)}:</b> ${esc(dato(d.date))}${d.finishedAt ? ` ${esc(T.ravn.kl)} ${esc(tid(d.finishedAt))}` : ''}` : ''}</p>
         <ul class="r9-fliser" role="list"><li class="r9-flise-ok"><b>${n.ok}</b><span>${esc(V.bestaaet)}</span></li><li class="r9-flise-fejl${n.fejl ? ' har' : ''}"><b>${n.fejl}</b><span>${esc(V.fejlet)}</span></li><li class="r9-flise-ikke"><b>${n.ikke}</b><span>${esc(V.ikke)}</span></li><li class="r9-flise-alle"><b>${sider.length}</b><span>${esc(V.iAltK)}</span></li></ul>
         <p class="r9-gudrun">${esc(gud)}</p>
+        ${d.daekning ? `<p class="note">${esc(fmt(V.udgave, { c: d.release && d.release.commit ? d.release.commit.slice(0, 7) : '–', n: d.daekning.sider, k: d.daekning.kanon }))}</p>` : ''}
         ${ghLinje()}
         ${d.date && d.state !== 'running' ? `<p class="note">${d.full ? esc(V.fuld) + ' ' : ''}${esc(fmt(V.spar, { s: (d.browserMs || 0) >= 90000 ? (Math.round((d.browserMs || 0) / 6000) / 10).toLocaleString(da ? 'da-DK' : 'en-GB') + ' min' : Math.round((d.browserMs || 0) / 1000) + ' s', g: d.reused || 0 }))}</p>` : ''}
         ${tabel()}`;
@@ -303,7 +435,7 @@
       function harMere(p) { return !!(p.screenshot || (p.mangler || []).length || (p.fejl || []).length || p.genbrugt); }
       function tabel() {
         return `<div class="r9-tabel-wrap" tabindex="0" role="region" aria-label="${esc(V.titel || 'Revision')}"><table class="r9-tabel"><thead><tr><th>${esc(V.kol.side)}</th><th>${esc(V.kol.status)}</th><th>${esc(V.kol.http)}</th><th>${esc(V.kol.ms)}</th><th>${esc(V.kol.fund)}</th><th><span class="sr-only">${esc(V.kol.billede)}</span></th></tr></thead><tbody>
-        ${sider.map((p, i) => `<tr class="r9-r-${esc(p.status)}"><td><a href="${esc(p.path)}">${esc(navn(p.side))}</a></td><td>${chip(p.status)}</td><td>${esc(p.http || '–')}</td><td>${p.browserMs ? esc(Math.round(p.browserMs / 100) / 10 + ' s') : '–'}</td>
+        ${sider.map((p, i) => `<tr class="r9-r-${esc(p.status)}"><td><a href="${esc(p.path)}">${esc(navn(p.side, p))}</a></td><td>${chip(p.status)}</td><td>${esc(p.http || '–')}</td><td>${p.browserMs ? esc(Math.round(p.browserMs / 100) / 10 + ' s') : '–'}</td>
           <td class="r9-bem">${esc(bemKort(p))}</td>
           <td class="r9-handling">${harMere(p) ? `<button type="button" class="r9-vis" data-i="${i}">${esc(p.screenshot ? V.seBillede : V.detaljer)}</button>` : ''}</td></tr>`).join('')}
         </tbody></table></div>`;
@@ -324,9 +456,9 @@
         const j = med.indexOf(i), forr = med[j - 1], naes = med[j + 1];
         const rk = (t, v) => v ? `<div><dt>${esc(t)}</dt><dd>${v}</dd></div>` : '';
         dlg.innerHTML = `<div class="r9-dlg-in">
-          <header class="r9-dlg-hoved"><div><p class="r9-dlg-over">${chip(p.status)} <span>HTTP ${esc(p.http || '–')}${p.browserMs ? ' · ' + esc(V.kol.ms) + ' ' + esc(Math.round(p.browserMs / 100) / 10 + ' s') : ''}</span></p><h3 id="r9-dlg-h">${esc(navn(p.side))}</h3></div>
+          <header class="r9-dlg-hoved"><div><p class="r9-dlg-over">${chip(p.status)} <span>HTTP ${esc(p.http || '–')}${p.browserMs ? ' · ' + esc(V.kol.ms) + ' ' + esc(Math.round(p.browserMs / 100) / 10 + ' s') : ''}</span></p><h3 id="r9-dlg-h">${esc(navn(p.side, p))}</h3></div>
             <button type="button" class="r9-dlg-luk" data-luk aria-label="${esc(V.luk)}">×</button></header>
-          ${p.screenshot ? `<a class="r9-dlg-fig" href="${esc(p.screenshot)}" target="_blank" rel="noopener"><img src="${esc(p.screenshot)}" alt="${esc(fmt(V.billedeAlt, { side: navn(p.side) }))}" decoding="async"></a>` : `<p class="note">${esc(V.ingenBillede)}</p>`}
+          ${p.screenshot ? `<a class="r9-dlg-fig" href="${esc(p.screenshot)}" target="_blank" rel="noopener"><img src="${esc(p.screenshot)}" alt="${esc(fmt(V.billedeAlt, { side: navn(p.side, p) }))}" decoding="async"></a>` : `<p class="note">${esc(V.ingenBillede)}</p>`}
           <dl class="r9-dlg-dl">
             ${rk(V.mangler, (p.mangler || []).length ? (p.mangler || []).map(x => `<code>${esc(x)}</code>`).join(' ') : '')}
             ${rk(V.fejlJs, (p.fejl || []).length ? `<ul>${(p.fejl || []).map(x => `<li><code>${esc(x)}</code></li>`).join('')}</ul>` : '')}
@@ -346,3 +478,4 @@
     });
   }
 })();
+;
