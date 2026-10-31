@@ -17,6 +17,7 @@ import * as tingAi from '../functions/api/ting-ai/[[path]].js';
 import * as adminRavnepost from '../functions/admin/api/ravnepost.js';
 import * as adminAviser from '../functions/admin/api/aviser.js';
 import * as adminSager from '../functions/admin/api/sager.js';
+import * as adminNoedstop from '../functions/admin/api/noedstop.js';
 import * as sag from '../functions/sag/[nr].js';
 
 // _redirects gælder kun svar fra de statiske filer, ikke svar fra Worker-koden; de fire protokol-adresser står derfor også her.
@@ -32,7 +33,7 @@ export const OMDIRIGERINGER = {
 };
 
 const API = { '/api/afgoer': afgoer, '/api/besoeg': besoeg, '/api/kant': kant, '/api/sager': sager, '/api/turnstile': turnstile };
-const ADMIN_API = { '/admin/api/ravnepost': adminRavnepost, '/admin/api/sager': adminSager, '/admin/api/aviser': adminAviser };
+const ADMIN_API = { '/admin/api/ravnepost': adminRavnepost, '/admin/api/sager': adminSager, '/admin/api/aviser': adminAviser, '/admin/api/noedstop': adminNoedstop };
 
 /** Pages-semantik: onRequestGet/Post/… før onRequest; HEAD bruger GET-håndteringen. Ingen håndtering → null (videre til filerne). */
 export function haandtering(mod, method) {

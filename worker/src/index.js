@@ -22,6 +22,7 @@ export { TingRoom } from './room.js';
 export { ChairRoom } from './chair.js';
 export { RadioStation } from './radiostation.js';
 export { EuSkab } from './euskab.js';
+export { Semafor } from './semafor.js';
 export { TingMcp } from './mcp-entry.js';
 import { soeg as hittegodsSoeg, hittegodsEnabled } from './features/hittegods.js';
 import { oevelse } from './features/oevelse.js';
@@ -94,7 +95,9 @@ async function handle(request, env, ctx) {
     let session;
     try {
       session = await getSession(request, env); // health sætter også sessionscookien, så WebSocket-forbindelsen har en ejer
-      if (path === 'health') return withCookie(ok({ configured: configured(env), date: cphDateKey(), miljoe: env.MILJOE || 'production', release: release(env) }, 'server'), session);
+      const stoppet = await noedstop(env);
+      if (path === 'health') return withCookie(ok({ configured: configured(env), date: cphDateKey(), miljoe: env.MILJOE || 'production', release: release(env), noedstop: stoppet }, 'server'), session);
+      if (stoppet && !path.startsWith('intern/')) return withCookie(fail('unavailable', lang === 'en' ? 'The thing is taking a break. The machines are switched off until further notice.' : 'Tinget holder pause. Maskinerne er slukket indtil videre.', 503, { retryAfter: 300 }), session); // runde 13 (AP9): nødstop
       if (!env.DB) return withCookie(fail('not_configured', msg(lang, 'notconf'), 503), session);
       const c = { session, log, waitUntil: p => ctx.waitUntil(p.catch(e => log({ event: 'background_error', error: String(e && e.message).slice(0, 120) }))) };
       const m = request.method;
@@ -160,8 +163,12 @@ async function handle(request, env, ctx) {
   }
 }
 
+/** Nødstop (runde 13, AP9): KV-nøglen NOEDSTOP i SAGER slukker alle maskiner (ikke health, ikke intern/) og stopper cron. KV er eventuelt konsistent: op til et minut. */
+async function noedstop(env) { try { return !!(env.SAGER && await env.SAGER.get('NOEDSTOP')); } catch (e) { return false; } }
+
 async function scheduled(event, env, ctx) {
     const log = o => console.log(JSON.stringify({ cron: event.cron, ...o }));
+    if (await noedstop(env)) { log({ event: 'noedstop', skipped: true }); return; }
     // Værnet og Crawlerne (runde 12): hver time, også om natten
     if (env.DB) {
       let ny = false;

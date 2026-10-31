@@ -333,4 +333,4 @@ Plans and prices change. Always check [Cloudflare's documentation](https://devel
 
 ---
 
-Want to build your own site on the same foundation? See [BUILD-YOUR-OWN.md](BUILD-YOUR-OWN.md).
+Want to run your own site on the same foundation? See [BUILD-YOUR-OWN.md](BUILD-YOUR-OWN.md) – and [OPERATIONS.md](OPERATIONS.md) for backups, rollback and what to watch.

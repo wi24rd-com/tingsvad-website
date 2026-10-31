@@ -1,8 +1,10 @@
-# Byg din egen hjemmeside på tingsvad.dk's fundament
+# Kør din egen kopi af tingsvad.dk's fundament
 
 *English version: [../BUILD-YOUR-OWN.md](../BUILD-YOUR-OWN.md)*
 
-I stedet for at købe et CMS eller en færdig hjemmeside kan du bygge din egen med Claude, en GitHub-konto og en Cloudflare-konto. tingsvad.dk er bygget præcis sådan. Al koden ligger åbent i dette repo under MIT-licensen, og du må bruge den, rette i den og bygge videre.
+I stedet for at købe et CMS eller en færdig hjemmeside kan du køre din egen side på samme fundament som tingsvad.dk, med Claude, en GitHub-konto og en Cloudflare-konto. Al koden ligger åbent i dette repo under MIT-licensen, og du må bruge den, rette i den og bygge videre.
+
+**Ærlige forventninger først.** Det her er ikke en startskabelon med en deploy-knap. Det er hele demonstrationen – 58 sider, tre Workers og over 40 Cloudflare-funktioner – og du gør den til din ved at forke den og bede Claude skrælle den ned og bygge den op om dit indhold. Det er en dags arbejde for en første side med en håndfuld undersider, ikke en time, og du kommer til at læse og godkende det, Claude gør, undervejs. Vil du bare have en lille statisk side uden Workers, er en almindelig HTML-skabelon mindre arbejde.
 
 Denne vejledning tager dig fra ingenting til din egen side på nettet. Claude gør det tunge arbejde: læser koden, ombygger den til din side, skriver tekster og laver billedprompts til ChatGPT, som laver grafikken.
 
@@ -17,9 +19,26 @@ Denne vejledning tager dig fra ingenting til din egen side på nettet. Claude g�
 - **Du ejer det hele.** Koden ligger i din egen GitHub, og hver ændring kan rulles tilbage.
 
 **Det, du ikke får**
+- **Ingen redigeringsknap i browseren.** Du retter siden ved at bede Claude om det (eller ved selv at rette HTML). Det er hurtigt, når man er vant til det, men det er en anden arbejdsgang end et CMS, og der er ingen administrationsside til tekster og billeder.
+- **Ingen startskabelon.** Du begynder med hele demonstrationen og fjerner det, du ikke skal bruge. Det er Claude god til, men det er stadig arbejde, og den første udgave af din side arver beslutninger truffet for et satirisk vikingeting, indtil du ændrer dem.
 - **Det er ikke uhackbart.** Angrebsfladen er langt mindre, men den er der stadig. Den vigtigste sikkerhed er nu dine konti: slå **tofaktorgodkendelse** til på GitHub og Cloudflare, del aldrig tokens i en chat, og lad Claude bruge `wrangler secret put` til hemmeligheder.
-- **Ingen redigeringsknap i browseren.** Du retter siden ved at bede Claude om det. Det er hurtigt, når man er vant til det, men det er en anden arbejdsgang end et CMS.
 - **Du har selv ansvaret.** Persondata, cookies og GDPR på din side er dit ansvar, ligesom med et CMS. tingsvad.dk bruger ingen cookies til sporing, og det er et godt udgangspunkt.
+
+**Hvad det koster** (listepriser oktober 2026; tjek Cloudflares prissider, de ændrer sig)
+
+| Post | Pris | Bruges til |
+|---|---|---|
+| Domæne | ca. 70–150 kr. om året | din egen adresse (valgfrit i starten) |
+| Cloudflare Free | 0 kr. | statiske sider, site-Workeren, KV, D1, R2, Turnstile, Web Analytics, Access til én administrator |
+| Workers Paid | 5 USD om måneden + forbrug | den daglige revision (mange subrequests), Browser Run, Durable Objects med SQLite, større AI-mængder |
+| Workers AI | inkluderet kvote, derefter pr. neuron | AI-maskinerne (retssalen, billedbeviset, guiden) |
+| AI Gateway / Web Search | efter forbrug | »udlandet«-spalten i avisen |
+| Claude | dit abonnement | byggeriet |
+| ChatGPT | dit abonnement | malerierne |
+
+tingsvad.dk selv kører for domænet plus Workers Paid; AI-forbruget holder sig inden for de daglige lofter, Workerne håndhæver (`worker/src/lib/budget.js`).
+
+**Hvor lang tid det tager.** En første side med forside, tre undersider, fælles topbjælke og footer og site-Workeren på en workers.dev-adresse: en dag, inklusive læsning. Eget domæne og Turnstile på en formular: en time mere. Hver AI-funktion fra maskinparken: en halv dag hver, fordi hver af dem skal have egne bindinger, hemmeligheder og tekster.
 
 **Start småt.** tingsvad.dk er en stor demonstration med over 40 Cloudflare-funktioner. Din første side behøver kun det første kapitel: statiske sider og én Worker. Resten kan du tilføje én ting ad gangen. Se [CLOUDFLARE-FUNKTIONER.md](CLOUDFLARE-FUNKTIONER.md).
 
@@ -30,10 +49,11 @@ Denne vejledning tager dig fra ingenting til din egen side på nettet. Claude g�
 1. **Claude-appen på din computer** (Mac eller Windows) med et betalt abonnement, så Claude kan arbejde med filerne i en mappe på din computer. Udviklere kan også bruge Claude Code i terminalen.
 2. **En GitHub-konto** på github.com, med tofaktorgodkendelse slået til.
 3. **En Cloudflare-konto** på dash.cloudflare.com, med tofaktorgodkendelse slået til. Den gratis plan er nok til at starte.
-4. **Node.js** (LTS-versionen) fra nodejs.org. Det giver kommandoen `npx`, som Cloudflares værktøj `wrangler` kører med.
-5. **Git eller GitHub Desktop.** GitHub Desktop er lettest, hvis du ikke har brugt git før.
-6. **Et domæne** (valgfrit i starten). Du kan begynde på en gratis `*.workers.dev`-adresse og flytte til dit eget domæne senere.
-7. **ChatGPT** til grafikken. Den laver de bedste billeder til dette projekt lige nu. Gemini virker også.
+4. **Node.js** (LTS-versionen) fra nodejs.org. Det giver kommandoen `npx`, som Cloudflares værktøj `wrangler` kører med, og kører projektets egne scripts (`npm run prep`).
+5. **Python 3** med Pillow (`pip install pillow pillow-avif-plugin`). Scriptene, der genererer responsive billeder (`build-images.py`), delingsbilleder (`build-og.py`) og sagsregister og sitemap (`sagsregister.py`), er Python. Mac og Linux har Python; på Windows installeres den fra python.org med flueben i »Add to PATH«.
+6. **Git eller GitHub Desktop.** GitHub Desktop er lettest, hvis du ikke har brugt git før.
+7. **Et domæne** (valgfrit i starten). Du kan begynde på en gratis `*.workers.dev`-adresse og flytte til dit eget domæne senere.
+8. **ChatGPT** til grafikken. Den laver de bedste billeder til dette projekt lige nu. Gemini virker også.
 
 ---
 
@@ -111,6 +131,17 @@ Når den første side kører, kan du tilføje én funktion ad gangen. Fx:
 - **Data, der kun gemmes i EU**, som arkivskabet.
 
 Bed Claude om det med samme ord: *"Jeg vil gerne have en kontaktformular som gæstebogen på tingsvad.dk. Læs, hvordan den er bygget, og byg en enklere version til min side."*
+
+---
+
+## Når noget ikke virker
+
+- **`npx wrangler` beder om login eller token.** Kør `npx wrangler login` én gang; den åbner browseren. I CI sættes `CLOUDFLARE_API_TOKEN` i stedet. Sæt aldrig et token ind i en chat.
+- **Deployet klager over en binding (KV, D1, R2, en service binding).** Id'erne i `wrangler.toml` hører til tingsvad.dk's konto. Opret din egen ressource (`npx wrangler kv namespace create …`, `npx wrangler d1 create …`) og sæt dens id ind, eller slet bindingen, hvis du ikke bruger den. `docs/da/CLOUDFLARE-FUNKTIONER.md` nævner dem alle.
+- **Siden virker, men en funktion siger »ikke tilsluttet«.** Workeren tjekkede `health` og manglede en binding eller en hemmelighed. Det er med vilje: hver funktion fejler lukket og siger det i sitets egen stemme. Tilføj bindingen eller hemmeligheden, eller lad funktionen være ude.
+- **Billeder ser forkerte ud på telefonen.** Siderne forventer de responsive varianter, `build-images.py` laver. Kør den, når du har lagt billeder ind (`python3 build-images.py`), og derefter `npm run prep`.
+- **Kvalitetstestene fejler på en side, du har tilføjet.** `npm run prep:tjek` fortæller, hvad der er bagud (sagsregistret, `_headers` eller et bundt); `cd tests && npm test` kører Playwright-suiten mod din adresse (`BASE_URL=https://… npm test`).
+- **Du har slettet `worker/`, og site-Workeren bygger stadig.** Godt – det er meningen. Site-Workeren behøver kun `functions/`, `shared/` og siderne.
 
 ---
 

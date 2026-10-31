@@ -1,0 +1,23 @@
+# Runde 13 (AP9): afhængigheder holdes ajour af Dependabot – én PR pr. uge pr. pakke; Kvalitet-kørslen afgør, om den kan merges.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /site-worker
+    schedule: { interval: weekly, day: monday, time: "06:00", timezone: Europe/Copenhagen }
+    labels: [afhaengigheder]
+  - package-ecosystem: npm
+    directory: /worker
+    schedule: { interval: weekly, day: monday, time: "06:00", timezone: Europe/Copenhagen }
+    labels: [afhaengigheder]
+  - package-ecosystem: npm
+    directory: /mcp
+    schedule: { interval: weekly, day: monday, time: "06:00", timezone: Europe/Copenhagen }
+    labels: [afhaengigheder]
+  - package-ecosystem: npm
+    directory: /tests
+    schedule: { interval: weekly, day: monday, time: "06:00", timezone: Europe/Copenhagen }
+    labels: [afhaengigheder]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly, day: monday, time: "06:00", timezone: Europe/Copenhagen }
+    labels: [afhaengigheder]

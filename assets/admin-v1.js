@@ -14,6 +14,27 @@
   }
   const status = (el, tekst, fejl) => { el.textContent = tekst; el.className = 'r6-status' + (fejl ? ' fejl' : ''); };
 
+  /* ── Nødstoppet (runde 13) ── */
+  const ns = $('#adm-ns-knap'), nsSt = $('#adm-ns-status');
+  async function hentNs() {
+    const r = await kald('/admin/api/noedstop');
+    if (!r.ok) { status(nsSt, r.status === 403 ? 'Ikke logget ind som administrator.' : r.message, true); return; }
+    const a = !!r.data.aktiv;
+    status(nsSt, a ? 'NØDSTOP ER AKTIVT: maskinerne svarer 503, og cron springer over.' : 'Maskinerne kører. Nødstoppet er ikke aktivt.', a);
+    ns.disabled = false; ns.textContent = a ? 'Start maskinerne igen' : 'Slå nødstop til'; ns.classList.toggle('adm-fare', !a); ns.dataset.aktiv = a ? '1' : '';
+  }
+  if (ns) {
+    ns.addEventListener('click', async () => {
+      const til = ns.dataset.aktiv !== '1';
+      if (til && ns.dataset.sikker !== '1') { ns.dataset.sikker = '1'; ns.textContent = 'Sluk alle maskiner nu?'; setTimeout(() => { if (ns.isConnected && ns.dataset.sikker === '1') { ns.dataset.sikker = ''; hentNs(); } }, 5000); return; } // to tryk, ingen browser-dialog
+      ns.disabled = true; ns.dataset.sikker = '';
+      const r = await kald('/admin/api/noedstop', { method: 'POST', body: JSON.stringify({ aktiv: til }) });
+      if (!r.ok) { status(nsSt, r.message, true); ns.disabled = false; return; }
+      hentNs();
+    });
+    hentNs();
+  }
+
   /* ── Gæstebogen ── */
   const gb = $('#adm-gb'), gbSt = $('#adm-gb-status'), gbSl = $('#adm-gb-slettet');
   async function hentGb() {

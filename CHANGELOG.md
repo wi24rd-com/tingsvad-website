@@ -10,6 +10,14 @@ A sprint that works through every finding of the 29 October review (security, OP
 
 <details><summary>Details</summary>
 
+### Running it: honesty, operations, brakes, privacy
+- **»Run your own copy«** replaces »Build your own«: the guide (da + en) says up front that there is no starter template, that a first site is a day's work, what it costs (a price table), that Python 3 and Pillow are needed next to Node, how long each step takes, and what to do when `wrangler`, a binding or a test complains. README's section is renamed to match.
+- **`docs/OPERATIONS.md`**: the moving parts, backup and restore of D1/KV/R2, rollback per Worker, migrations, what every missing secret does, the emergency stop, costs and what keeps each in check, dependencies, and a weekly glance.
+- **Emergency stop**: the KV key `NOEDSTOP` makes ting-ai answer 503 in tone on every machine (not `health`, not the site's internal routes) and skips the cron; the administration page has the button (two presses). `health` reports it.
+- **Concurrency caps**: a `Semafor` Durable Object hands out seats with expiry – at most four Browser Run calls at once (`BROWSER_SAMTIDIG`) and 25 live-radio listeners (`LIVE_SAMTIDIG`); a fifth caller gets 503 `busy` with `Retry-After`. Share images and the minutes PDF are rate-limited per session and per IP when not already in R2. Speech already had a one-minute byte cap.
+- **`/privatliv/` · `/en/privacy/`**: what is stored by ordinary visits, the guestbook, the raven post, the machines, the browser and the administration; where it lives and who processes it; your rights. Linked from the footer and the guestbook.
+- Dependabot keeps `wrangler`, `postal-mime`, Playwright and the pinned GitHub Actions current (`.github/dependabot.yml`), and `.github/workflows/kvalitet.yml` is in sync with `tests/kvalitet.yml` again.
+
 ### Fewer pages
 - **The four number pages are one**: `/maskinrummet/tal/` · `/en/machine-room/numbers/` shows the Defences, the Crawlers, the Speed and Denmark right now as four tabs (`assets/tal.js`; the address follows the tab, the painting in the top changes with it, arrow keys move between tabs, and without JavaScript all four boards stand below each other). The old addresses answer 301 to their tab, and old `#vaernet-live`-style anchors land on the right board too. `vagt.js` and `maaling.js` run once per board on the page. 56 pages in the sitemap instead of 62; the Zero Trust door and the European archive cabinet stay on their own, since they are explanations, not boards.
 - **The front page is four screens, not five**: »While we wait for a decision …« and the two small cards at the bottom are one line of text links under »Good company« (the village map already points at everything). The three map signs that said nothing about what you can do (the thing-stead, the cauldron, the case file) say it now, in both languages; the architecture diagram counts eighteen machines, as the catalogue does.

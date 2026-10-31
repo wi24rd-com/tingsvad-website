@@ -18,7 +18,7 @@ const O = 'https://tingsvad.dk';
 
 function kv(start = {}) {
   const m = new Map(Object.entries(start));
-  return { get: async (k, t) => (m.has(k) ? (t === 'json' ? JSON.parse(m.get(k)) : m.get(k)) : null), put: async (k, v) => { m.set(k, v); }, m };
+  return { get: async (k, t) => (m.has(k) ? (t === 'json' ? JSON.parse(m.get(k)) : m.get(k)) : null), put: async (k, v) => { m.set(k, v); }, delete: async k => { m.delete(k); }, m };
 }
 function assets() {
   const kald = [];
@@ -189,6 +189,13 @@ test('admin: without a valid Access JWT both the API and the admin page are 403 
   assert.equal(side.status, 403);
   assert.equal(side.headers.get('x-robots-tag'), 'noindex, nofollow');
   assert.ok(!e.ASSETS.kald.includes('/admin/'), 'the admin page is never fetched without Access');
+});
+
+test('admin: the emergency stop is behind Access like the other admin routes', async () => {
+  const e = env();
+  const r = await haandter(req('/admin/api/noedstop'), e);
+  assert.equal(r.status, 403);
+  assert.equal(e.SAGER.m.has('NOEDSTOP'), false);
 });
 
 test('shareable case /sag/:nr: og tags and refresh to the guest book', async () => {

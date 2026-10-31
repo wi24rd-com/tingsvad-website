@@ -59,6 +59,8 @@ EMBED_PER_DAY = "400"             # nødbremse: embedding-kald pr. døgn (hitteg
 MCP_QUOTA_AI_KLIENT = "20"       # runde 13: AI-kald via MCP pr. klient pr. døgn (den fælles MCP-kvote er 100)
 EU_SEGL_PER_DAY = "300"           # runde 13: segl i EU-skabet pr. døgn (fem skrivninger pr. segl)
 LIVE_LYT_PER_DAY = "200"          # runde 13: SFU-lyttersessioner pr. døgn
+BROWSER_SAMTIDIG = "4"            # runde 13 (AP9): højst fire Browser Run-kald ad gangen (Semafor-objektet)
+LIVE_SAMTIDIG = "25"              # runde 13 (AP9): højst 25 live-lyttere ad gangen
 BEVIS_PER_DAY = "300"             # runde 13: ML-DSA-signeringer pr. døgn
 RATE_PER_MINUTE = "8"             # pr. session pr. endpoint; IP-laget får 3× (runde 13, lib/quota.js rateLimitSession)
 CASE_DELAYS_SECONDS = "60,7200,86400"  # Modtaget→Afventer kontrol→Sendt tilbage→Stol muligvis ledig
@@ -186,6 +188,16 @@ class_name = "EuSkab"
 [[migrations]]
 tag = "v4"
 new_sqlite_classes = ["EuSkab"]
+
+# Semaforen (runde 13, AP9): samtidige pladser med udløb – højst BROWSER_SAMTIDIG (4) Browser Run-kald og LIVE_SAMTIDIG (25)
+# live-lyttere ad gangen. Ét objekt pr. navn ('browser', 'live'); pladser, der ikke slippes, udløber selv.
+[[durable_objects.bindings]]
+name = "SEMAFOR"
+class_name = "Semafor"
+
+[[migrations]]
+tag = "v5"
+new_sqlite_classes = ["Semafor"]
 
 # De tre andre lagre i skabet skal oprettes med jurisdiktion EU, før de kan bindes (jurisdiktionen kan kun sættes ved oprettelsen):
 #   npx wrangler d1 create tingsvad-eu-skab --jurisdiction=eu
@@ -382,6 +394,10 @@ class_name = "ChairRoom"
 [[env.preview.durable_objects.bindings]]
 name = "RADIO_STATION"
 class_name = "RadioStation"
+
+[[env.preview.durable_objects.bindings]]
+name = "SEMAFOR"
+class_name = "Semafor"
 
 [[env.preview.workflows]]
 name = "tingsvad-chair-cases-preview"

@@ -7,7 +7,7 @@
 import { ok, fail, ApiError, readJson, langOf, msg } from '../lib/http.js';
 import { harHemmelighed, hemmelighed } from '../lib/hemmelighed.js';
 import { rateLimitSession, rateLimitEnv } from '../lib/quota.js';
-import { medLoft } from '../lib/budget.js';
+import { medLoft, tagPlads } from '../lib/budget.js';
 import { sfu, gyldigSessionId } from '../lib/sfu.js';
 
 export const liveEnabled = env => !!((env.REALTIME_SFU_APP_ID || '').trim() && harHemmelighed(env, 'REALTIME_SFU_TOKEN') && env.RADIO_STATION && env.MEDIA && env.AI && (env.TTS_PROVIDER || 'none') === 'workers-ai');
@@ -24,6 +24,7 @@ export async function liveLyt(request, env, c) {
   await rateLimitSession(env, 'live', c.session, 4, lang, { strict: true });
   let st;
   await medLoft(env, 'live', async () => null, lang); // døgnloft på SFU-sessioner (budget.js)
+  await tagPlads(env, 'live', Math.max(1, parseInt(env.LIVE_SAMTIDIG, 10) || 25), 15 * 60_000); // runde 13 (AP9): højst 25 lyttere ad gangen; pladsen udløber med sessionen (15 min)
   try { st = await station(env).start(); }
   catch (e) { c.log({ event: 'live_start_failed', error: String(e && e.message).slice(0, 160) }); throw new ApiError('provider_error', msg(lang, 'provider'), 503, 60); }
   if (!st || !st.aktiv) throw new ApiError('provider_error', msg(lang, 'provider'), 503, 30);

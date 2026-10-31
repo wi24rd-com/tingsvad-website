@@ -3,6 +3,7 @@ import { ok, fail, ApiError, langOf } from '../lib/http.js';
 import { sha256Hex } from '../lib/crypto.js';
 import { cphDateKey } from '../lib/dates.js';
 import { browserAction } from '../lib/budget.js';
+import { rateLimitSession } from '../lib/quota.js';
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const renderEnabled = env => !!(env.BROWSER && typeof env.BROWSER.quickAction === 'function' && env.MEDIA);
@@ -41,6 +42,7 @@ export async function ogSag(request, env, ctx, nrRaw) {
   const key = `og/sag/${nr}-${lang}-${(await sha256Hex((sag ? sag.sag + sag.navn : 'none') + '|' + (env.OG_VERSION || '1'))).slice(0, 10)}.png`;
   const cached = await env.MEDIA.get(key);
   if (cached) return new Response(cached.body, { headers: { 'content-type': 'image/png', 'cache-control': 'public, max-age=86400', 'x-content-type-options': 'nosniff' } });
+  await rateLimitSession(env, 'render', ctx.session, 3, lang, { strict: true }); // runde 13 (AP9): kun ucachede tegninger tæller; pr. session og pr. IP
   const t0 = Date.now();
   let bytes;
   try {
@@ -65,6 +67,7 @@ export async function pdfProtokol(request, env, ctx) {
   const headers = { 'content-type': 'application/pdf', 'content-disposition': `inline; filename="${navn}"`, 'cache-control': 'public, max-age=3600', 'x-content-type-options': 'nosniff' };
   const cached = await env.MEDIA.get(key);
   if (cached) return new Response(cached.body, { headers });
+  await rateLimitSession(env, 'render', ctx.session, 3, lang, { strict: true }); // runde 13 (AP9)
   const url = `${env.SITE_ORIGIN}/${lang === 'en' ? 'en/archive/minutes/' : 'arkivet/protokol/'}`; // browseren henter siden selv (ingen Worker-subrequest til egen zone)
   const t0 = Date.now();
   let bytes;

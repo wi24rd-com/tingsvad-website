@@ -29,6 +29,7 @@
     "tal": { "da": "/maskinrummet/tal/", "en": "/en/machine-room/numbers/", "navn": { "da": "Tallene", "en": "The numbers" } },
     "arkivskabet": { "da": "/maskinrummet/arkivskabet/", "en": "/en/machine-room/archive-cabinet/", "navn": { "da": "Det europæiske arkivskab", "en": "The European archive cabinet" } },
     "doeren": { "da": "/maskinrummet/doeren/", "en": "/en/machine-room/the-door/", "navn": { "da": "Tingets dør", "en": "The thing’s door" } },
+    "privatliv": { "da": "/privatliv/", "en": "/en/privacy/", "navn": { "da": "Privatliv", "en": "Privacy" } },
     "retssalen": { "da": "/oplevelser/maskinparken/retssalen/", "en": "/en/experiences/machine-park/courtroom/", "navn": { "da": "AI-retssalen", "en": "The AI courtroom" } },
     "afstemningen": { "da": "/oplevelser/maskinparken/afstemningen/", "en": "/en/experiences/machine-park/the-vote/", "navn": { "da": "Den Store Afstemning", "en": "The Great Vote" } },
     "tidende": { "da": "/oplevelser/maskinparken/tidende/", "en": "/en/experiences/machine-park/the-paper/", "navn": { "da": "Tingsvad Tidende", "en": "Tingsvad Tidende" } },

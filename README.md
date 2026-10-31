@@ -16,9 +16,9 @@ tingsvad.dk is an open-source, working demonstration of the Cloudflare Developer
 
 **License:** code under MIT, content under CC BY 4.0 – see [LICENSING.md](LICENSING.md).
 
-**Build your own:** [Build your own website](docs/BUILD-YOUR-OWN.md) – a guide and a start prompt for Claude · [The Cloudflare features](docs/CLOUDFLARE-FEATURES.md) – every Cloudflare feature the site uses, with a short setup guide · Claude skills in [`.claude/skills/`](.claude/skills/) · På dansk: [Byg din egen](docs/da/BYG-DIN-EGEN.md), [Cloudflare-funktionerne](docs/da/CLOUDFLARE-FUNKTIONER.md)
+**Run your own copy:** [Run your own copy](docs/BUILD-YOUR-OWN.md) – honest expectations, costs, a guide and a start prompt for Claude · [The Cloudflare features](docs/CLOUDFLARE-FEATURES.md) – every Cloudflare feature the site uses, with a short setup guide · Claude skills in [`.claude/skills/`](.claude/skills/) · På dansk: [Byg din egen](docs/da/BYG-DIN-EGEN.md), [Cloudflare-funktionerne](docs/da/CLOUDFLARE-FUNKTIONER.md)
 
-**Contents:** [Requirements](#requirements) · [Build it yourself](#build-it-yourself) · [Structure](#structure) · [What the site does](#what-the-site-does) · [Deploy](#deploy) · [Changelog](CHANGELOG.md) · [Security](SECURITY.md) · [License](LICENSING.md)
+**Contents:** [Requirements](#requirements) · [Run your own copy](#run-your-own-copy) · [Structure](#structure) · [What the site does](#what-the-site-does) · [Deploy](#deploy) · [Changelog](CHANGELOG.md) · [Security](SECURITY.md) · [License](LICENSING.md)
 
 ## Requirements
 
@@ -27,9 +27,9 @@ tingsvad.dk is an open-source, working demonstration of the Cloudflare Developer
 - A Cloudflare account (Free works for the core; see below), a GitHub account for Workers Builds and the audit's issues
 - Before every commit that touches pages, css or js: `npm run prep` (case register, sitemap, `_headers`, bundles, `?v=` hashes), and `python3 build-og.py --fonts og-fonts` if titles or descriptions changed. CI runs `npm run prep:tjek` and fails if anything generated has drifted.
 
-## Build it yourself
+## Run your own copy
 
-The core runs on a free Cloudflare account, including Queues (available on Workers Free since February 2026). A few features need Workers Paid (USD 5 a month plus usage) or AI Gateway credit: the daily audit's many subrequests, the Web Search column and higher AI volumes. For a gentler start that rebuilds the site into your own, see [docs/BUILD-YOUR-OWN.md](docs/BUILD-YOUR-OWN.md).
+The core runs on a free Cloudflare account, including Queues (available on Workers Free since February 2026). A few features need Workers Paid (USD 5 a month plus usage) or AI Gateway credit: the daily audit's many subrequests, the Web Search column and higher AI volumes. There is no starter template: you fork the whole demonstration and strip it down. For what that takes, what it costs and a start prompt for Claude, see [docs/BUILD-YOUR-OWN.md](docs/BUILD-YOUR-OWN.md).
 
 1. **Fork/clone** the repo. There is no build step at deploy time; `index.html` is the front page (the three scripts above are run by the author before commit, not by Cloudflare).
 2. **KV**: create the namespace `tingsvad-sager` and put its id in `site-worker/wrangler.toml` and in `worker/wrangler.toml`.
@@ -56,7 +56,7 @@ The ids in the `wrangler.toml` files (KV, D1, R2, Vectorize, Durable Objects, th
 - `shared/` – the few modules both Workers use: the response contract (`svar.js`), the counting works (`tael.js`), the Access check (`access.js`), the guestbook's constants (`gaestebog.js`) and the release id (`release.js`). `worker/` can be deleted without the site Worker failing to build
 - Machine room pages (Danish · English): `maskinrummet/kortet/` · `en/machine-room/map/` (infrastructure map), `vaernet/` · `defences/`, `crawlerne/` · `crawlers/`, `hastigheden/` · `speed/`, `danmark/` · `denmark/`, `arkivskabet/` · `archive-cabinet/` and `doeren/` · `the-door/` (Zero Trust and the Access-locked admin door), drawn by `assets/infrakort.js`, `assets/vagt.js`, `assets/maaling.js`, `assets/arkivskab.js` and `assets/doeren.js`
 - `mcp/` – the MCP server `tingsvad-mcp` on `mcp.tingsvad.dk` (its own Worker)
-- `docs/` – [Build your own](docs/BUILD-YOUR-OWN.md) and [the Cloudflare features](docs/CLOUDFLARE-FEATURES.md), with Danish editions in `docs/da/`; `.claude/skills/` – Claude skills for rebuilding the site (`build-your-own-site`, `image-prompts`, `cloudflare-setup`)
+- `docs/` – [Run your own copy](docs/BUILD-YOUR-OWN.md), [Operations](docs/OPERATIONS.md) and [the Cloudflare features](docs/CLOUDFLARE-FEATURES.md), with Danish editions in `docs/da/`; `.claude/skills/` – Claude skills for rebuilding the site (`build-your-own-site`, `image-prompts`, `cloudflare-setup`)
 - `.assetsignore` – everything that is not the site (Worker code, tests, docs, config) stays out of the published assets
 - `worker/` – the Worker `tingsvad-ting-ai` (D1, R2, KV, Durable Objects, Workflows, Queues, Cron, Workers AI, AI Search, Vectorize, Browser Run, Images, Realtime SFU, Workers Cache, rate limiting, and the hourly collection from the GraphQL Analytics and Radar APIs)
 - `sw.js`, `manifest.webmanifest` – offline and "add to home screen"

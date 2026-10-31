@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#111417">
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/fav-ko-512.png">
-<link rel="stylesheet" href="/assets/site.css?v=c7f5a69e">
+<link rel="stylesheet" href="/assets/site.css?v=5f885cea">
 </head>
 <body data-side="admin" class="admin">
 <header class="side-hoved" id="top">
@@ -20,6 +20,12 @@
   </div>
 </header>
 <main id="indhold" class="col gutter adm">
+  <section id="adm-noedstop-sektion">
+    <div class="kicker">Nødstop</div>
+    <p class="note">Slukker alle maskiner bag <code>/api/ting-ai/*</code> (undtagen <code>health</code>) og stopper den timelige cron, mens siderne selv bliver stående. Bruges, hvis noget løber løbsk eller koster. KV er eventuelt konsistent, så det tager op til et minut at slå igennem alle datacentre.</p>
+    <p class="r6-status" id="adm-ns-status" aria-live="polite">Henter …</p>
+    <p><button type="button" class="knap" id="adm-ns-knap" disabled>Henter …</button></p>
+  </section>
   <section>
     <div class="kicker">Gæstebogen</div>
     <p class="note">Sager rejst af gæster, nyeste først. En slettet sag forsvinder fra gæstebogen og fra dens delelink (<code>/sag/980-…</code>). Kun nummer, tidspunkt og hvem der slettede gemmes, ikke teksten. De tre faste grundsager kan ikke slettes.</p>
