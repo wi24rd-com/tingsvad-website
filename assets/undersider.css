@@ -635,3 +635,11 @@ body.r12m { --bg: #efe5cf; --bg-2: #f7f0de; --mist: #2a2118; --mist-dim: #5a4934
 .r6-mik[aria-pressed="true"] { background: #b8432e; border-color: #b8432e; color: #fff; animation: r6-mik 1.4s ease-in-out infinite; }
 @keyframes r6-mik { 50% { box-shadow: 0 0 0 6px rgba(184,67,46,.25); } }
 @media (prefers-reduced-motion: reduce) { .r6-mik[aria-pressed="true"] { animation: none; } }
+
+/* Runde 13 (AP8): live-radioen (Realtime SFU) er foldet sammen bag et resumé; MP3'en fra R2 er standardafspilleren. ?live=1 åbner den. */
+.r6-live-fold { margin-top: 1.25rem; }
+.r6-live-fold > summary { cursor: pointer; padding: .6rem 0; color: var(--mist-dim); line-height: 1.4; }
+.r6-live-fold > summary b { color: var(--mist); }
+.r6-live-fold > summary:hover b { color: var(--dawn); }
+.r6-live-fold > summary:focus-visible { outline: 3px solid var(--dawn); outline-offset: 2px; border-radius: 4px; }
+.r6-live-fold[open] > summary { margin-bottom: -.6rem; }

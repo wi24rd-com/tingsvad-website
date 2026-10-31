@@ -360,3 +360,8 @@ body.r12 h1 { line-height: .95; }
 .r12-kort > picture, .r12-kort > picture img { display: block; } /* ingen linjeafstand under billedet: lagets procenter = billedets */
 /* Vandhjulet ved »Nysgerrig på maskineriet?« (runde 12): fritlagt, uden skjoldets ramme, samme størrelse */
 .r12-smaa img.r12-vandhjul { border: 0; border-radius: 0; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(60,35,10,.35)); }
+
+/* Runde 13 (AP8): »Mens vi venter …« og de to små kort nederst er én linje tekstlinks under Godt selskab – forsiden er fire skærmhøjder, ikke fem */
+.r12-vent-linje { margin: 2rem 0 0; padding-top: 1.2rem; border-top: 1px solid var(--linje); color: var(--ink2); font-size: 1rem; line-height: 1.7; text-align: center; }
+.r12-vent-linje a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--linje); text-underline-offset: .18em; }
+.r12-vent-linje a:hover { text-decoration-color: var(--guld); }
